@@ -109,6 +109,7 @@ import OrderCompletedPage from "./pages/shop/order-completed";
 import SentryPage from "@/pages/sentry-spot-id/index";
 import { Toaster } from "react-hot-toast";
 import SignUpDialog from "./components/auth/SignUp";
+import Showcase from "./pages/showcase/Index";
 
 function App() {
   useEffect(() => {
@@ -143,7 +144,7 @@ function App() {
                   <Route path="home-15" element={<HomePage15 />} />
                   <Route path="home-16" element={<HomePage16 />} />
                   <Route path="home-17" element={<HomePage17 />} /> */}
-
+                <Route path="showcase/:org" element={<Showcase />} />
                 <Route path="job-list-v1" element={<JobListPage1 />} />
                 <Route path="job-list-v2" element={<JobListPage2 />} />
                 {/*<Route path="job-list-v3" element={<JobListPage3 />} />

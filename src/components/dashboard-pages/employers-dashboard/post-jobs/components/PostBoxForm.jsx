@@ -307,14 +307,14 @@ const PostBoxForm = () => {
             <option value="" disabled>
               select Min
             </option>
-            {/* {Array.from({ length: 30 }, (_, i) => i).map((x, i) => (
-<option value={x}>{x}</option>
-))} */}
-            {experienceLevelData?.data?.map((experieneItem) => (
+            {Array.from({ length: 30 }, (_, i) => i).map((x, i) => (
+              <option value={x}>{x}</option>
+            ))}
+            {/* {experienceLevelData?.data?.map((experieneItem) => (
               <option key={experieneItem?.id} value={experieneItem?.id}>
                 {experieneItem?.name}
               </option>
-            ))}
+            ))} */}
           </select>
           {errors.min_year_of_experience && (
             <p className="!text-red-500 text-sm">
