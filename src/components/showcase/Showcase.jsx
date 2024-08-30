@@ -7,7 +7,7 @@ import { FaHospital, FaHeart, FaCalendarAlt } from "react-icons/fa";
 import { TbTargetArrow } from "react-icons/tb";
 import { FaCarBurst } from "react-icons/fa6";
 
-import { Card, CardContent } from "@/components/ui/card";
+// import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -16,7 +16,21 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import ImageGalleryComponent from "./ImageGallery";
+// import { Button } from "bootstrap";
 
 const ShowcaseComponent = () => {
   const [openImageGallery, setOpenImageGallery] = useState(false);
@@ -90,6 +104,213 @@ const ShowcaseComponent = () => {
               Read More
             </button>
           </div>
+        </div>
+      </section>
+
+      {/* Inside Cognizant */}
+      {/* <section className="inside-cognizant">
+        <div className="auto-container w-[90%]">
+          <div className="sec-title text-center">
+            <p className="font-bold text-xl sm:text-3xl text-black">
+              Inside Cognizant
+            </p>
+          </div>
+          <Tabs
+            defaultValue="account"
+            className=" w-full flex flex-col  justify-center align-middle   border "
+          >
+            <div className="w-full border justify-center  ">
+              <TabsList className="grid w-[600px]  grid-cols-3 border border-2 border-red-700">
+                {" "}
+                <TabsTrigger value="culture">Culture</TabsTrigger>
+                <TabsTrigger value="people">People</TabsTrigger>
+                <TabsTrigger value="workplace">Workplace</TabsTrigger>
+              </TabsList>
+            </div>
+            <TabsContent value="culture">
+              <Card className="w-full  flex gap-2  border border-slate-950 border-4   ">
+                <div className="w-[800px] h-[70vh] ">
+                  <img
+                    src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
+                    alt="about"
+                    className="object-cover w-full"
+                  />{" "}
+                </div>
+                <div className=" w-[500px] border border-slate-400 flex flex-col">
+                  <div className="h-[35vh]">
+                    <img
+                      src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
+                      alt="about"
+                      className="object-cover w-full"
+                    />{" "}
+                  </div>
+                  <div className="h-[35vh]">
+                    <img
+                      src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
+                      alt="about"
+                      className="object-cover w-full"
+                    />{" "}
+                  </div>
+                </div>
+              </Card>
+            </TabsContent>
+            <TabsContent value="people">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Password</CardTitle>
+                  <CardDescription>
+                    Change your password here. After saving, you'll be logged
+                    out.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <div className="space-y-1">
+                    <Label htmlFor="current">Current password</Label>
+                    <Input id="current" type="password" />
+                  </div>
+                  <div className="space-y-1">
+                    <Label htmlFor="new">New password</Label>
+                    <Input id="new" type="password" />
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Button>Save password</Button>
+                </CardFooter>
+              </Card>
+            </TabsContent>
+            <TabsContent value="workplace">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Password</CardTitle>
+                  <CardDescription>
+                    Change your password here. After saving, you'll be logged
+                    out.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <div className="space-y-1">
+                    <Label htmlFor="current">Current password</Label>
+                    <Input id="current" type="password" />
+                  </div>
+                  <div className="space-y-1">
+                    <Label htmlFor="new">New password</Label>
+                    <Input id="new" type="password" />
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Button>Save password</Button>
+                </CardFooter>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </section> */}
+
+      <section className="inside-cognizant">
+        <div className="auto-container w-[90%]">
+          <div className="sec-title text-center">
+            <p className="font-bold text-xl sm:text-3xl text-black">
+              Inside Cognizant
+            </p>
+          </div>
+          <Tabs
+            defaultValue="culture"
+            className="w-full flex flex-col justify-center align-middle"
+          >
+            <div className="w-full flex justify-center">
+              <TabsList className="grid w-[600px] grid-cols-3 bg-none ">
+                <TabsTrigger value="culture" className="">
+                  Culture
+                </TabsTrigger>
+                <TabsTrigger value="people">People</TabsTrigger>
+                <TabsTrigger value="workplace">Workplace</TabsTrigger>
+              </TabsList>
+            </div>
+            <TabsContent
+              value="culture"
+              className="transition-opacity duration-300 ease-in-out"
+            >
+              <Card className="w-full flex gap-2 ">
+                <div className="w-[800px] h-[71vh]">
+                  <img
+                    src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
+                    alt="about"
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+                <div className="w-[500px]  flex flex-col gap-2">
+                  <div className="h-[35vh]">
+                    <img
+                      src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
+                      alt="about"
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                  <div className="h-[35vh]">
+                    <img
+                      src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
+                      alt="about"
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                </div>
+              </Card>
+            </TabsContent>
+            <TabsContent value="people">
+              <Card className="w-full flex gap-2 ">
+                <div className="w-[800px] h-[71vh]">
+                  <img
+                    src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
+                    alt="about"
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+                <div className="w-[500px]  flex flex-col gap-2">
+                  <div className="h-[35vh]">
+                    <img
+                      src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
+                      alt="about"
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                  <div className="h-[35vh]">
+                    <img
+                      src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
+                      alt="about"
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                </div>
+              </Card>
+            </TabsContent>
+            <TabsContent value="workplace">
+              <Card className="w-full flex gap-2 ">
+                <div className="w-[800px] h-[71vh]">
+                  <img
+                    src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
+                    alt="about"
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+                <div className="w-[500px]  flex flex-col gap-2">
+                  <div className="h-[35vh]">
+                    <img
+                      src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
+                      alt="about"
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                  <div className="h-[35vh]">
+                    <img
+                      src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
+                      alt="about"
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                </div>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
       </section>
 
