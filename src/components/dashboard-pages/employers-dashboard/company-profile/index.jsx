@@ -25,20 +25,11 @@ const index = () => {
       title: "Personal Details",
       component: <MyProfile onNext={() => setCurrentStep(1)} />,
     },
+
     {
       id: 2,
-      title: "Social Network",
+      title: "Company Details",
       component: <SocialNetworkBox onNext={() => setCurrentStep(2)} />,
-    },
-    {
-      id: 3,
-      title: "Professional Details",
-      component: <ContactInfoBox onNext={() => setCurrentStep(3)} />,
-    },
-    {
-      id: 4,
-      title: "Contact",
-      component: <ContactInfoBox onNext={() => setCurrentStep(4)} />,
     },
   ];
   return (

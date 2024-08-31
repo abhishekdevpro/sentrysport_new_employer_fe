@@ -46,6 +46,7 @@ const PostBoxForm = () => {
 
   const [createpost, { data, isSuccess, isError, isLoading, error }] =
     useCreatePostMutation();
+
   const {
     data: jobTypeData,
     isSuccess: isJobTypeSuccess,
@@ -68,21 +69,18 @@ const PostBoxForm = () => {
     isError: isExperienceError,
     error: experienceError,
   } = useGetExperienceLevelQuery();
-
   const {
     data: salaryData,
     isLoading: isSalaryLoading,
     isError: isSalaryError,
     error: salaryError,
   } = useGetSalaryQuery();
-
   const {
     data: functionalAreaData,
     isLoading: isFunctionalAreaLoading,
     isError: isFunctionalAreaError,
     error: functionalAreaError,
   } = useGetFunctionalAreaQuery();
-
   const {
     data: yearData,
     isLoading: isYearLoading,
@@ -104,80 +102,7 @@ const PostBoxForm = () => {
     { value: "Digital", label: "Digital" },
     { value: "Creative Art", label: "Creative Art" },
   ];
-
-  // const submitHandler = (e) => {
-  // const {
-  // job_title,
-  // job_description,
-  // job_type,
-  // email,
-  // location,
-  // min_year_of_experience,
-  // max_year_of_experience,
-  // graduation_year_min,
-  // graduation_year_max,
-  // } = e;
-
-  // const jobData = {
-  // job_title: job_title,
-  // job_description: job_description,
-  // email_address: email,
-  // specialisms_id: 1,
-  // job_type_id: 1,
-  // offered_salary_id: 1,
-  // career_level_id: 1,
-  // experience_id: 1,
-  // industry_id: 1,
-  // qualification_id: 1,
-  // application_deadline: "2024-12-31",
-  // country_id: 2,
-  // state_id: 2,
-  // city_id: 2,
-  // complete_address: location,
-  // latitude: 23.95,
-  // longitude: 12.45,
-  // status: 1,
-  // graduation_year_min: graduation_year_min,
-  // graduation_year_max: graduation_year_max,
-  // workplace_type_id: 2,
-  // id: Date.now(),
-  // };
-  // for (const key in jobData) {
-  // formData.append(key, jobData[key]);
-  // }
-
-  // createpost(
-  // formData
-
-  // // {
-  // // job_title: job_title,
-  // // job_description: job_description,
-  // // email_address: email,
-  // // specialisms_id: 1,
-  // // job_type_id: 1,
-  // // offered_salary_id: 1,
-  // // career_level_id: 1,
-  // // experience_id: 1,
-  // // industry_id: 1,
-  // // qualification_id: 1,
-  // // application_deadline: "2024-12-31",
-  // // country_id: 2,
-  // // state_id: 2,
-  // // city_id: 2,
-  // // complete_address: location,
-  // // latitude: 23.95,
-  // // longitude: 12.45,
-  // // status: 1,
-  // // graduation_year_min: graduation_year_min,
-  // // graduation_year_max: graduation_year_max,
-  // // workplace_type_id: 2,
-  // // id: Date.now(),
-  // // }
-  // );
-  // };
-
   const submitHandler = (e) => {
-    // Extract values from the event (assuming e is an object containing these fields)
     const {
       job_title,
       job_description,
@@ -189,7 +114,6 @@ const PostBoxForm = () => {
       graduation_year_min,
       graduation_year_max,
     } = e;
-
     // Create a jobData object with all necessary fields
     const jobData = {
       job_title: job_title,
@@ -202,7 +126,6 @@ const PostBoxForm = () => {
       experience_id: 1,
       industry_id: 1,
       qualification_id: 1,
-      // application_deadline: "02/08/2024",
       country_id: 2,
       state_id: 2,
       city_id: 2,
@@ -213,7 +136,6 @@ const PostBoxForm = () => {
       graduation_year_min: graduation_year_min,
       graduation_year_max: graduation_year_max,
       workplace_type_id: 2,
-      // id: Date.now(),
     };
 
     // Initialize a new FormData object

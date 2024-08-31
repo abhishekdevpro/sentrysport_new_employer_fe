@@ -1,50 +1,44 @@
-
-
-
 import { useState } from "react";
 
-const LogoCoverUploader = () => {
-    const [logoImg, setLogoImg] = useState("");
-    const [converImg, setCoverImg] = useState("");
+const LogoCoverUploader = ({ text }) => {
+  const [logoImg, setLogoImg] = useState("");
+  const [converImg, setCoverImg] = useState("");
 
-    // logo image
-    const logoHandler = (file) => {
-        setLogoImg(file);
-    };
+  // logo image
+  const logoHandler = (file) => {
+    setLogoImg(file);
+  };
 
-    // cover image
-    const coverHandler = (file) => {
-        setCoverImg(file);
-    };
+  // cover image
+  const coverHandler = (file) => {
+    setCoverImg(file);
+  };
 
-    return (
-        <>
-            <div className="uploading-outer">
-                <div className="uploadButton">
-                    <input
-                        className="uploadButton-input"
-                        type="file"
-                        name="attachments[]"
-                        accept="image/*"
-                        id="upload"
-                        required
-                        onChange={(e) => logoHandler(e.target.files[0])}
-                    />
-                    <label
-                        className="uploadButton-button ripple-effect"
-                        htmlFor="upload"
-                    >
-                        {logoImg !== "" ? logoImg?.name : " Browse Logo"}
-                    </label>
-                    <span className="uploadButton-file-name"></span>
-                </div>
-                <div className="text">
-                    Max file size is 1MB, Minimum dimension: 330x300 And
-                    Suitable files are .jpg & .png
-                </div>
-            </div>
+  return (
+    <>
+      <div className="uploading-outer">
+        <div className="uploadButton">
+          {/* <input
+            className="uploadButton-input"
+            type="file"
+            name="attachments[]"
+            accept="image/*"
+            id="upload"
+            required
+            onChange={(e) => logoHandler(e.target.files[0])}
+          /> */}
+          <label className="uploadButton-button ripple-effect" htmlFor="upload">
+            {logoImg !== "" ? logoImg?.name : text ? `${text}` : " Add photo"}
+          </label>
+          <span className="uploadButton-file-name"></span>
+        </div>
+        <div className="text">
+          Max file size is 1MB, Minimum dimension: 330x300 And Suitable files
+          are .jpg & .png
+        </div>
+      </div>
 
-            <div className="uploading-outer">
+      {/* <div className="uploading-outer">
                 <div className="uploadButton">
                     <input
                         className="uploadButton-input"
@@ -66,9 +60,9 @@ const LogoCoverUploader = () => {
                     Max file size is 1MB, Minimum dimension: 330x300 And
                     Suitable files are .jpg & .png
                 </div>
-            </div>
-        </>
-    );
+            </div> */}
+    </>
+  );
 };
 
 export default LogoCoverUploader;
