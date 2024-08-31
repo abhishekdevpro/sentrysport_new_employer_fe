@@ -1,5 +1,3 @@
-"use client";
-
 import { Badge } from "./badge";
 import { Command, CommandItem, CommandEmpty, CommandList } from "./command";
 import { cn } from "@/lib/utils";
