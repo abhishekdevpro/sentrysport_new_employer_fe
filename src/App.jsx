@@ -79,6 +79,7 @@ import ContactPage from "./pages/others/contact";
 import NotFoundPage from "./pages/others/404";
 import DashboardEmploeeDBPage from "./pages/employers-dashboard/dashboard";
 import CompanyProfileEmploeeDBPage from "./pages/employers-dashboard/company-profile";
+import MyProfileEmploeeDBPage from "./pages/employers-dashboard/my-profile/index";
 import PostJobsEmploeeDBPage from "./pages/employers-dashboard/post-jobs";
 import ManageJobsEmploeeDBPage from "./pages/employers-dashboard/manage-jobs";
 import AllApplicantsEmploeesPage from "./pages/employers-dashboard/all-applicants";
@@ -251,6 +252,10 @@ function App() {
                   <Route
                     path="dashboard"
                     element={<DashboardEmploeeDBPage />}
+                  />
+                  <Route
+                    path="my-profile"
+                    element={<MyProfileEmploeeDBPage />}
                   />
                   <Route
                     path="company-profile"

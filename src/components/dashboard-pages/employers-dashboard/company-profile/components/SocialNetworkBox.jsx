@@ -1,4 +1,4 @@
-import LogoCoverUploader from "./my-profile/LogoCoverUploader";
+import LogoCoverUploader from "./LogoCoverUploader";
 
 const SocialNetworkBox = () => {
   return (

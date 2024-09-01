@@ -3,11 +3,11 @@ import DashboardHeader from "../../../header/DashboardHeader";
 import LoginPopup from "../../../common/form/login/LoginPopup";
 import DashboardEmployerSidebar from "../../../header/DashboardEmployerSidebar";
 import BreadCrumb from "../../BreadCrumb";
-import SocialNetworkBox from "./components/SocialNetworkBox";
-import CopyrightFooter from "../../CopyrightFooter";
+import MyProfile from "./components";
+
 import MenuToggler from "../../MenuToggler";
 
-const index = () => {
+const MyProfileEmploeeDBPage = () => {
   return (
     <div className="page-wrapper dashboard">
       <span className="header-span"></span>
@@ -28,22 +28,26 @@ const index = () => {
       {/* <!-- Dashboard --> */}
       <section className="user-dashboard">
         <div className="dashboard-outer">
-          <BreadCrumb title="Company Profile" />
+          <BreadCrumb title="My Profile" />
           {/* breadCrumb */}
 
           <MenuToggler />
           {/* Collapsible sidebar button */}
+
+          {/* <MyProfile onNext={() => setCurrentStep(1)} />
+           */}
+
           <div className="row">
             <div className="col-lg-12">
               {/* <!-- Ls widget --> */}
               <div className="ls-widget">
                 <div className="tabs-box">
                   <div className="widget-title">
-                    <h4>Company Profile</h4>
+                    <h4>My Profile</h4>
                   </div>
 
                   <div className="widget-content">
-                    <SocialNetworkBox />
+                    <MyProfile />
                   </div>
                 </div>
               </div>
@@ -54,10 +58,10 @@ const index = () => {
       </section>
       {/* <!-- End Dashboard --> */}
 
-      <CopyrightFooter />
+      {/* <CopyrightFooter /> */}
       {/* <!-- End Copyright --> */}
     </div>
   );
 };
 
-export default index;
+export default MyProfileEmploeeDBPage;

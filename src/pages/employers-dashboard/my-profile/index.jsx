@@ -1,4 +1,4 @@
-import CompanyProfile from "@/components/dashboard-pages/employers-dashboard/company-profile";
+import SocialNetworkBox from "@/components/dashboard-pages/employers-dashboard/my-profile/index";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
@@ -6,13 +6,14 @@ const metadata = {
   description: "sentryspot - Job Borad ReactJs Template",
 };
 
-const CompanyProfileEmploeeDBPage = () => {
+const MyProfileEmploeeDBPage = () => {
   return (
     <>
       <MetaComponent meta={metadata} />
-      <CompanyProfile />
+      {/* <CompanyProfile /> */}
+      <SocialNetworkBox />
     </>
   );
 };
 
-export default CompanyProfileEmploeeDBPage;
+export default MyProfileEmploeeDBPage;

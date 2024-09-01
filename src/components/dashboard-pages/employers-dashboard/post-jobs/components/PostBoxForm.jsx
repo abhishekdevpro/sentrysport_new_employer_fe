@@ -1,13 +1,10 @@
 import Map from "../../../Map";
-import Select from "react-select";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PostJobSchema } from "@/schema/PostJobSchema";
-import axios from "axios";
-
 import {
   useCreatePostMutation,
   useGetJobTypeQuery,
@@ -23,6 +20,8 @@ import toast from "react-hot-toast";
 import AddScreeningQuestion from "./AddScreeningQuestion";
 import { Button } from "@/components/ui/button";
 import { Constant } from "@/utils/constant/constant";
+import ReactQuill from "react-quill";
+
 import {
   MultiSelector,
   MultiSelectorContent,
@@ -31,6 +30,69 @@ import {
   MultiSelectorList,
   MultiSelectorTrigger,
 } from "@/components/ui/multiSelector";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { CircleX } from "lucide-react";
+
+const tags = [
+  { value: "Banking", label: "Banking" },
+  { value: "Digital & Creative", label: "Digital & Creative" },
+  { value: "Retail", label: "Retail" },
+  { value: "Human Resources", label: "Human Resources" },
+  { value: "Managemnet", label: "Managemnet" },
+  { value: "Accounting & Finance", label: "Accounting & Finance" },
+  { value: "Digital", label: "Digital" },
+  { value: "Creative Art", label: "Creative Art" },
+];
+const modules = {
+  toolbar: [
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [{ size: [] }],
+    [{ font: [] }],
+    [{ align: ["right", "center", "justify"] }],
+    [{ list: "ordered" }, { list: "bullet" }],
+    ["link", "image"],
+    [{ color: ["red", "#785412"] }],
+    [{ background: ["red", "#785412"] }],
+  ],
+};
+
+const formats = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "link",
+  "color",
+  "image",
+  "background",
+  "align",
+  "size",
+  "font",
+];
+
+const locationOption = [
+  {
+    label: "--Anywhere--",
+    arr: ["Metros", "Any Location"],
+  },
+  {
+    label: "--National Locations--",
+    arr: ["Scotland", "Other"],
+  },
+];
 
 const PostBoxForm = () => {
   const navigate = useNavigate();
@@ -87,21 +149,21 @@ const PostBoxForm = () => {
     isError: isYearError,
     error: yearError,
   } = useGetYearQuery();
+  const {
+    data: stateData,
+    isLoading: isstateLoading,
+    isError: isstateError,
+    error: stateError,
+  } = useGetStateQuery();
 
   const [openScreeningQuestionDialog, setOpenScreeningQuestionDialog] =
     useState(false);
   const [screeningQuestion, setScreeningQuestion] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState({});
-  const tags = [
-    { value: "Banking", label: "Banking" },
-    { value: "Digital & Creative", label: "Digital & Creative" },
-    { value: "Retail", label: "Retail" },
-    { value: "Human Resources", label: "Human Resources" },
-    { value: "Managemnet", label: "Managemnet" },
-    { value: "Accounting & Finance", label: "Accounting & Finance" },
-    { value: "Digital", label: "Digital" },
-    { value: "Creative Art", label: "Creative Art" },
-  ];
+
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedLocations, setSelectedLocations] = useState([]);
+
   const submitHandler = (e) => {
     const {
       job_title,
@@ -174,6 +236,13 @@ const PostBoxForm = () => {
     setScreeningQuestion(temp);
     setSelectedQuestion({});
   };
+  const handleRemoveLocation = (item) => {
+    let temp = JSON.parse(JSON.stringify(selectedLocations));
+    temp = temp.filter(
+      (location) => location?.toLowerCase() != item?.toLowerCase()
+    );
+    setSelectedLocations(temp);
+  };
 
   useEffect(() => {
     if (isSuccess) {
@@ -186,6 +255,11 @@ const PostBoxForm = () => {
     }
     if (isError) toast.error(error?.error || error?.data?.message);
   }, [isSuccess, isError]);
+
+  const [code, setCode] = useState("");
+  const handleProcedureContentChange = (content, delta, source, editor) => {
+    setCode(content);
+  };
 
   return (
     <form className="default-form" onSubmit={handleSubmit(submitHandler)}>
@@ -206,12 +280,56 @@ const PostBoxForm = () => {
         {/* location */}
         <div className="form-group col-lg-12 col-md-12">
           <label htmlFor="location">Location</label>
-          <input
+          {/* <input
             type="text"
             name="location"
             placeholder="location"
             {...register("location")}
           />
+          {errors.location && (
+            <p className="!text-red-500 text-sm">{errors.location.message}</p>
+          )} */}
+          <div className="flex p-1n gap-2 mb-2">
+            {selectedLocations?.map((item) => (
+              <div className="flex items-center justify-between gap-2 bg-[#4fa995] text-white p-1 rounded-lg">
+                <span className="">{item}</span>
+                <span>
+                  <CircleX
+                    size={18}
+                    className="cursor-pointer"
+                    onClick={() => handleRemoveLocation(item)}
+                  />
+                </span>
+              </div>
+            ))}
+          </div>
+          <Select
+            className="border w-full"
+            value=""
+            onValueChange={(e) =>
+              setSelectedLocations((prev) => [...new Set([...prev, e])])
+            }
+            name="location"
+          >
+            <SelectTrigger className="w-full justify-start">
+              <SelectValue placeholder="Select a location" />
+            </SelectTrigger>
+            <SelectContent>
+              {locationOption?.map((item, i) => (
+                <SelectGroup key={i}>
+                  <SelectLabel>{item?.label}</SelectLabel>
+                  {item?.arr.map(
+                    (opt, i) =>
+                      !selectedLocations?.includes(opt) && (
+                        <SelectItem value={opt} key={i}>
+                          {opt}
+                        </SelectItem>
+                      )
+                  )}
+                </SelectGroup>
+              ))}
+            </SelectContent>
+          </Select>
           {errors.location && (
             <p className="!text-red-500 text-sm">{errors.location.message}</p>
           )}
@@ -269,12 +387,22 @@ const PostBoxForm = () => {
         {/* <!-- About Company --> */}
         <div className="form-group col-lg-12 col-md-12">
           <label htmlFor="job_description">Job Description *</label>
-          <textarea
+          {/* <textarea
             id="job_description"
             name="job_description"
             placeholder="Spent several years working on sheep on Wall Street. Had moderate success investing in Yugo's on Wall Street. Managed a small team buying and selling Pogo sticks for farmers. Spent several years licensing licorice in West Palm Beach, FL. Developed several new methods for working it banjos in the aftermarket. Spent a weekend importing banjos in West Palm Beach, FL.In this position, the Software Engineer collaborates with Evention's Development team to continuously enhance our current software solutions as well as create new solutions to eliminate the back-office operations and management challenges present"
             {...register("job_description")}
-          ></textarea>
+          ></textarea> */}
+
+          <ReactQuill
+            theme="snow"
+            // modules={modules}
+            formats={formats}
+            value={code}
+            onChange={handleProcedureContentChange}
+            placeholder="Job Description"
+          />
+
           {errors.job_description && (
             <p className="!text-red-500 text-sm">
               {errors.job_description.message}
@@ -448,15 +576,11 @@ const PostBoxForm = () => {
         <div className="form-group col-lg-12 col-md-12">
           <label htmlFor="tags">Tags</label>
           <MultiSelector
-            values={[]}
-            // onValuesChange={(e) =>
-            //   setTags(
-            //     JSON.parse(
-            //       JSON.stringify(e)
-            //     )
-            //   )
-            // }
-            className="w-full relative"
+            values={selectedTags || []}
+            onValuesChange={(e) =>
+              setSelectedTags(JSON.parse(JSON.stringify(e)))
+            }
+            className="w-full relative !border-none"
             name="tags"
             {...register("tags")}
           >
@@ -465,9 +589,9 @@ const PostBoxForm = () => {
             </MultiSelectorTrigger>
             <MultiSelectorContent>
               <MultiSelectorList className="bg-white absolute z-10">
-                {["tag-1", "tag-2", "tag-3"]?.map((item) => (
-                  <MultiSelectorItem value={item} key={item}>
-                    {item}
+                {tags?.map((item) => (
+                  <MultiSelectorItem value={item?.value} key={item}>
+                    {item?.label}
                   </MultiSelectorItem>
                 ))}
               </MultiSelectorList>
@@ -495,7 +619,7 @@ classNamePrefix="select"
 )}
 </div> */}
 
-        <div className="form-group col-lg-12 col-md-12">
+        {/* <div className="form-group col-lg-12 col-md-12">
           <label htmlFor="tags">Tags</label>
           <MultiSelector
             values={[]}
@@ -523,10 +647,10 @@ classNamePrefix="select"
               </MultiSelectorList>
             </MultiSelectorContent>
           </MultiSelector>
-          {/* {errors.job_type && (
+          {errors.job_type && (
             <p className="!text-red-500 text-sm">{errors.job_type.message}</p>
-          )} */}
-        </div>
+          )}
+        </div> */}
 
         <div className="form-group col-lg-12 col-md-12">
           <label htmlFor="job_type">Job Type</label>

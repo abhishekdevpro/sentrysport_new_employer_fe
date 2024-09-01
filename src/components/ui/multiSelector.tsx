@@ -160,7 +160,7 @@ const MultiSelectorTrigger = forwardRef<
     <div
       ref={ref}
       className={cn(
-        "flex flex-wrap gap-1 p-1 py-2 border border-muted rounded-lg bg-background",
+        "flex flex-wrap gap-1 border border-muted rounded-lg bg-background p-2",
         className
       )}
       {...props}
@@ -210,7 +210,7 @@ const MultiSelectorInput = forwardRef<
       onFocus={() => setOpen(true)}
       onClick={() => setActiveIndex(-1)}
       className={cn(
-        "ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1",
+        "bg-transparent outline-none placeholder:text-muted-foreground flex-1",
         className,
         activeIndex !== -1 && "caret-transparent"
       )}

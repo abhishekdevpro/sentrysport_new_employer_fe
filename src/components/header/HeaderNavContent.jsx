@@ -194,7 +194,7 @@ const HeaderNavContent = () => {
             </ul>
           </li>
           {/* End Employers menu items */}
-          <li
+          {/* <li
             className={`${
               isActiveParent(employerItems, pathname) ||
               pathname?.split("/")[1] === "employers-dashboard"
@@ -204,7 +204,7 @@ const HeaderNavContent = () => {
           >
             <span>SentrySpot ID</span>
             <ul>
-              {/*{employerItems.map((item) => (
+              {employerItems.map((item) => (
                 <li className="dropdown" key={item.id}>
                   <span
                     className={
@@ -230,7 +230,7 @@ const HeaderNavContent = () => {
                     ))}
                   </ul>
                 </li>
-              ))} */}
+              ))}
               <li
                 className={pathname?.includes("/sentry-spot") ? "current" : ""}
               >
@@ -265,7 +265,7 @@ const HeaderNavContent = () => {
                 </Link>
               </li>
             </ul>
-          </li>
+          </li> */}
 
           <li
             className={`${
