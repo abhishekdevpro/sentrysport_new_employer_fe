@@ -4,11 +4,11 @@ import { passwordSchema, phoneSchema } from "./CommonSchema";
 // Define the validation schema using Zod
 const PostJobSchema = zod.object({
   job_title: zod.string().min(1, "Job title is required"),
-  location: zod.string().min(1, "Location is required"),
+  // location: zod.string().min(1, "Location is required"),
   min_year_of_experience: zod.string().min(1, "Min Experience is required"),
   max_year_of_experience: zod.string().min(1, "Max Experience is required"),
 
-  job_description: zod.string().min(1, "Job description is required"),
+  // job_description: zod.string(),
   video_jd: zod.string(),
   category: zod.string().min(1, "Category is required"),
   function_area: zod.string().min(1, "functin_area"),
@@ -30,6 +30,7 @@ const PostJobSchema = zod.object({
   //   phone: phoneSchema,
   //   organization: zod.string().min(1, "Organization is required"),
   //   designation: zod.string().min(1, "Designation is required"),
+  // min(1, "Job description is required")
 });
 
 export { PostJobSchema };

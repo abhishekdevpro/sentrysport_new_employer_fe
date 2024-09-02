@@ -25,6 +25,7 @@ export const EndpointSlug = {
   GET_SALARY: "/api/jobseeker/salary-range",
   GET_FUNCTION_AREA: "/api/jobseeker/functional-area",
   GET_YEARS: "/api/jobseeker/years",
+  GET_STATE: "/api/jobseeker/stats/44",
 
   //   Dummy
   DUMMY_JSON: "https://jsonplaceholder.typicode.com/posts",

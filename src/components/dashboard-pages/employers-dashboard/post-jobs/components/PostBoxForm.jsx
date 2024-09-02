@@ -13,6 +13,7 @@ import {
   useGetSalaryQuery,
   useGetFunctionalAreaQuery,
   useGetYearQuery,
+  useGetStateQuery,
 } from "@/store/slices/service/index";
 import ActionLoader from "@/components/loader/ActionLoader";
 import { useEffect, useState } from "react";
@@ -21,6 +22,11 @@ import AddScreeningQuestion from "./AddScreeningQuestion";
 import { Button } from "@/components/ui/button";
 import { Constant } from "@/utils/constant/constant";
 import ReactQuill from "react-quill";
+import { BiHandicap } from "react-icons/bi";
+import { SlUserFemale } from "react-icons/sl";
+import { IoFemale, IoShieldOutline } from "react-icons/io5";
+import { FaCheckCircle } from "react-icons/fa";
+// import {  } from "react-icons/io5";
 
 import {
   MultiSelector,
@@ -109,6 +115,34 @@ const PostBoxForm = () => {
   const [createpost, { data, isSuccess, isError, isLoading, error }] =
     useCreatePostMutation();
 
+  const Dhiring = [
+    { icon: <IoFemale size={30} color="gray" />, label: "female Candidate" },
+    {
+      icon: <SlUserFemale size={30} color="gray" />,
+      label: "women joining back the work force",
+    },
+    {
+      icon: <IoShieldOutline size={30} color="gray" />,
+      label: "Ex-Defence personnel",
+    },
+    {
+      icon: <BiHandicap size={30} color="gray" />,
+      label: " Differently abled candidates",
+    },
+    { icon: <SlUserFemale size={30} color="gray" />, label: "work from home" },
+  ];
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const handleSelect = (id) => {
+    setSelectedItem(id);
+  };
+
+  const [isFileInput, setIsFileInput] = useState(false);
+
+  const handleButtonClick = () => {
+    setIsFileInput(!isFileInput);
+  };
+
   const {
     data: jobTypeData,
     isSuccess: isJobTypeSuccess,
@@ -149,12 +183,12 @@ const PostBoxForm = () => {
     isError: isYearError,
     error: yearError,
   } = useGetYearQuery();
-  // const {
-  //   data: stateData,
-  //   isLoading: isstateLoading,
-  //   isError: isstateError,
-  //   error: stateError,
-  // } = useGetStateQuery();
+  const {
+    data: stateData,
+    isLoading: isstateLoading,
+    isError: isstateError,
+    error: stateError,
+  } = useGetStateQuery();
 
   const [openScreeningQuestionDialog, setOpenScreeningQuestionDialog] =
     useState(false);
@@ -167,31 +201,41 @@ const PostBoxForm = () => {
   const submitHandler = (e) => {
     const {
       job_title,
-      job_description,
+      // job_description,
       job_type,
       email,
-      location,
+      // location,
       min_year_of_experience,
       max_year_of_experience,
       graduation_year_min,
       graduation_year_max,
     } = e;
+
+    console.log(
+      // job_description,
+      min_year_of_experience,
+      // diversity_hiring,
+      job_type,
+      selectedLocations,
+      code
+    );
+    return;
     // Create a jobData object with all necessary fields
     const jobData = {
       job_title: job_title,
       job_description: job_description,
       email_address: email,
       specialisms_id: 1,
-      job_type_id: 1,
-      offered_salary_id: 1,
+      job_type_id: job_type,
+      offered_salary_id: annual_salary,
       career_level_id: 1,
-      experience_id: 1,
+      experience_id: min_year_of_experience,
       industry_id: 1,
       qualification_id: 1,
       country_id: 2,
       state_id: 2,
       city_id: 2,
-      complete_address: location,
+      complete_address: selectedLocations,
       latitude: 23.95,
       longitude: 12.45,
       status: 1,
@@ -330,11 +374,10 @@ const PostBoxForm = () => {
               ))}
             </SelectContent>
           </Select>
-          {errors.location && (
+          {/* {errors.location && (
             <p className="!text-red-500 text-sm">{errors.location.message}</p>
-          )}
+          )} */}
         </div>
-
         {/* experience */}
         <div className="form-group col-lg-6 col-md-12">
           <label htmlFor="min_year_of_experience">Year of Experience*</label>
@@ -362,7 +405,6 @@ const PostBoxForm = () => {
             </p>
           )}
         </div>
-
         <div className="form-group col-lg-6 col-md-12">
           <label className="text-white">l</label>
           <select
@@ -383,7 +425,6 @@ const PostBoxForm = () => {
             </p>
           )}
         </div>
-
         {/* <!-- About Company --> */}
         <div className="form-group col-lg-12 col-md-12">
           <label htmlFor="job_description">Job Description *</label>
@@ -403,25 +444,71 @@ const PostBoxForm = () => {
             placeholder="Job Description"
           />
 
-          {errors.job_description && (
+          {/* {errors.job_description && (
             <p className="!text-red-500 text-sm">
               {errors.job_description.message}
             </p>
-          )}
+          )} */}
         </div>
         {/* videojd */}
-        <div className="form-group col-lg-12 col-md-12">
-          <label>Video JD</label>
-          <input
-            type="text"
-            name="videoJD"
-            placeholder="paste the Url"
-            {...register("video_jd")}
-          />
+        {/* <div className=" flex justify-between  gap-2 form-group col-lg-10 col-md-10">
+          <div className="flex flex-col w-full">
+            {" "}
+            <label>Video JD</label>
+            <input
+              type="url"
+              name="videoJD"
+              placeholder="paste the Url"
+              {...register("video_jd")}
+            />
+          </div>
+
+          <div className="form-group col-lg-3 col-md-3">
+            <label className="">For upload file</label>
+            <Button>upload file </Button>{" "}
+          </div>
           {errors.video_jd && (
             <p className="!text-red-500 text-sm">{errors.video_jd.message}</p>
           )}
+        </div> */}
+        <div
+          className="flex justify-between gap-2 form-group col-lg-12
+        col-md-12"
+        >
+          {/* Input field taking 10/12 of the width */}
+          <div className="  flex flex-col w-10/12">
+            <label htmlFor="videojd" className="text-md  font-medium">
+              Video JD
+            </label>
+            {/* <input
+              type={isFileInput ? "file" : "url"}
+              name="videoJD"
+              placeholder="Paste the URL"
+              {...register("video_jd")}
+              className={isFileInput ? "uploadButton" : ""}
+            /> */}
+            <input
+              type={isFileInput ? "file" : "url"}
+              name="videoJD"
+              placeholder="Paste the URL"
+              {...register("video_jd")}
+              className={`p-2 ${
+                isFileInput ? " bg-slate-100 rounded-lg h-[50px]" : ""
+              }`}
+            />
+          </div>
+          {/* Button taking 2/12 of the width */}
+          <div className="flex items-end w-2/12">
+            <button
+              type="button"
+              className="w-full bg-blue-500 text-white py-2 px-4 rounded"
+              onClick={handleButtonClick}
+            >
+              Upload File
+            </button>
+          </div>
         </div>
+
         {/* category */}
         <div className="form-group col-lg-6 col-md-12">
           <label htmlFor="category">Category*</label>
@@ -474,7 +561,6 @@ const PostBoxForm = () => {
           )}
         </div>
         {/* annual sallary */}
-
         <div className="form-group col-lg-6 col-md-12">
           <label htmlFor="annual salary">Annual Salary *</label>
           <select
@@ -501,7 +587,6 @@ const PostBoxForm = () => {
             </p>
           )}
         </div>
-
         <div className="form-group col-lg-6 col-md-12">
           <label className="text-white">l</label>
 
@@ -524,12 +609,10 @@ const PostBoxForm = () => {
             </p>
           )}
         </div>
-
         <div className="form-group col-lg-12 col-md-12">
           <input type="checkbox" name="" placeholder="" />
           <label>Dont show to job seeker </label>
         </div>
-
         {/* gradutiuon */}
         <div className="form-group col-lg-6 col-md-12">
           <label htmlFor="graduation_year_min">Graduating Year *</label>
@@ -551,7 +634,6 @@ const PostBoxForm = () => {
             </p>
           )}
         </div>
-
         <div className="form-group col-lg-6 col-md-12">
           <label htmlFor="graduation_year_max">Graduating Year *</label>
           <select
@@ -572,7 +654,6 @@ const PostBoxForm = () => {
             </p>
           )}
         </div>
-
         <div className="form-group col-lg-12 col-md-12">
           <label htmlFor="tags">Tags</label>
           <MultiSelector
@@ -601,7 +682,6 @@ const PostBoxForm = () => {
             <p className="!text-red-500 text-sm">{errors.job_type.message}</p>
           )} */}
         </div>
-
         {/* tags */}
         {/* <div className="form-group col-lg-12 col-md-12">
 <label htmlFor="tags">Tags </label>
@@ -618,7 +698,6 @@ classNamePrefix="select"
 <p className="!text-red-500 text-sm">{errors.tags.message}</p>
 )}
 </div> */}
-
         {/* <div className="form-group col-lg-12 col-md-12">
           <label htmlFor="tags">Tags</label>
           <MultiSelector
@@ -651,7 +730,6 @@ classNamePrefix="select"
             <p className="!text-red-500 text-sm">{errors.job_type.message}</p>
           )}
         </div> */}
-
         <div className="form-group col-lg-12 col-md-12">
           <label htmlFor="job_type">Job Type</label>
           <select
@@ -670,7 +748,6 @@ classNamePrefix="select"
             <p className="!text-red-500 text-sm">{errors.job_type.message}</p>
           )}
         </div>
-
         {/* <!-- Input --> */}
         <div className="form-group col-lg-12 col-md-12">
           <label htmlFor="email">Email Address</label>
@@ -684,10 +761,31 @@ classNamePrefix="select"
             <p className="!text-red-500 text-sm">{errors.email.message}</p>
           )}
         </div>
-
         <div className="form-group col-lg-12 col-md-12">
           <label htmlFor="diversity_hiring">Diversity hiring !</label>
-          <select
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {Dhiring?.map((item, id) => (
+              <div
+                key={id}
+                className={`relative flex flex-col items-center justify-center border  p-2 text-center cursor-pointer ${
+                  selectedItem === id
+                    ? " border border-blue-500 border-4"
+                    : "border-gray-300"
+                }`}
+                onClick={() => handleSelect(id)}
+              >
+                {selectedItem === id && (
+                  <FaCheckCircle className="absolute top-0 right-0 text-blue-500 m-1" />
+                )}
+                <div className="text-xl mb-1 flex justify-center items-center">
+                  {item?.icon}
+                </div>
+                <p className="text-sm font-medium">{item?.label}</p>
+              </div>
+            ))}
+          </div>
+          {/* <select
             className="chosen-single form-select"
             name="diversity_hiring"
             {...register("diversity_hiring")}
@@ -701,7 +799,7 @@ classNamePrefix="select"
               Differently abled candidates
             </option>
             <option value="work from home">work from home</option>
-          </select>
+          </select> */}
 
           {errors.diversity_hiring && (
             <p className="!text-red-500 text-sm">
@@ -761,11 +859,29 @@ classNamePrefix="select"
             />
           )}
         </div>
-        {/* <!-- Input --> */}
-        {/* <div className="form-group col-lg-6 col-md-12">
-<label>Username</label>
-<input type="text" name="name" placeholder="" />
-</div> */}
+        {/* diversity hiring */}
+        {/* <div className="form-group col-lg-12 col-md-12">
+          <label htmlFor="diversity_hiring">Diversity hiring!</label>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {Dhiring?.map((item, id) => (
+              <div
+                className="flex flex-col items-center justify-center border border-4 p-2 text-center h-auto"
+                key={id}
+                {...register("diversity_hiring")}
+              >
+                <div className="text-xl mb-1 flex justify-center items-center">
+                  {item?.icon}
+                </div>
+                <p className="text-sm font-medium">{item?.label}</p>
+              </div>
+            ))}
+            {errors.diversity_hiring && (
+              <p className="!text-red-500 text-sm">
+                {errors.diversity_hiring.message}
+              </p>
+            )}
+          </div>
+        </div> */}
 
         {/* <!-- Search Select --> */}
         {/* <div className="form-group col-lg-6 col-md-12">
@@ -779,7 +895,6 @@ className="basic-multi-select"
 classNamePrefix="select"
 />
 </div> */}
-
         {/* <!-- Input --> */}
         {/* <div className="form-group col-lg-6 col-md-12">
 <label>Offered Salary</label>
@@ -793,7 +908,6 @@ classNamePrefix="select"
 <option>$5000</option>
 </select>
 </div> */}
-
         {/* <div className="form-group col-lg-6 col-md-12">
 <label>Career Level</label>
 <select className="chosen-single form-select">
@@ -805,7 +919,6 @@ classNamePrefix="select"
 <option>Management</option>
 </select>
 </div> */}
-
         {/* <div className="form-group col-lg-6 col-md-12">
 <label>Experience</label>
 <select className="chosen-single form-select">
@@ -817,7 +930,6 @@ classNamePrefix="select"
 <option>Management</option>
 </select>
 </div> */}
-
         {/* <div className="form-group col-lg-6 col-md-12">
 <label>Gender</label>
 <select className="chosen-single form-select">
@@ -827,7 +939,6 @@ classNamePrefix="select"
 <option>Other</option>
 </select>
 </div> */}
-
         {/* <div className="form-group col-lg-6 col-md-12">
 <label>Industry</label>
 <select className="chosen-single form-select">
@@ -839,7 +950,6 @@ classNamePrefix="select"
 <option>Management</option>
 </select>
 </div> */}
-
         {/* <div className="form-group col-lg-6 col-md-12">
 <label>Qualification</label>
 <select className="chosen-single form-select">
@@ -851,13 +961,11 @@ classNamePrefix="select"
 <option>Management</option>
 </select>
 </div> */}
-
         {/* <!-- Input --> */}
         {/* <div className="form-group col-lg-12 col-md-12">
 <label>Application Deadline Date</label>
 <input type="text" name="name" placeholder="06.04.2020" />
 </div> */}
-
         {/* <!-- Input --> */}
         {/* <div className="form-group col-lg-6 col-md-12">
 <label>Country</label>
@@ -869,7 +977,6 @@ classNamePrefix="select"
 <option>India</option>
 </select>
 </div> */}
-
         {/* <!-- Input --> */}
         {/* <div className="form-group col-lg-6 col-md-12">
 <label>City</label>
@@ -881,7 +988,6 @@ classNamePrefix="select"
 <option>India</option>
 </select>
 </div> */}
-
         {/* <!-- Input --> */}
         {/* <div className="form-group col-lg-12 col-md-12">
 <label>Complete Address</label>
@@ -891,7 +997,6 @@ name="name"
 placeholder="329 Queensberry Street, North Melbourne VIC 3051, Australia."
 />
 </div> */}
-
         {/* <!-- Input --> */}
         {/* <div className="form-group col-lg-6 col-md-12">
 <label>Find On Map</label>
@@ -901,24 +1006,20 @@ name="name"
 placeholder="329 Queensberry Street, North Melbourne VIC 3051, Australia."
 />
 </div> */}
-
         {/* <!-- Input --> */}
         {/* <div className="form-group col-lg-3 col-md-12">
 <label>Latitude</label>
 <input type="text" name="name" placeholder="Melbourne" />
 </div> */}
-
         {/* <!-- Input --> */}
         {/* <div className="form-group col-lg-3 col-md-12">
 <label>Longitude</label>
 <input type="text" name="name" placeholder="Melbourne" />
 </div> */}
-
         {/* <!-- Input --> */}
         {/* <div className="form-group col-lg-12 col-md-12">
 <button className="theme-btn btn-style-three">Search Location</button>
 </div> */}
-
         <div className="form-group col-lg-12 col-md-12">
           <div className="map-outer">
             <div style={{ height: "420px", width: "100%" }}>
@@ -926,7 +1027,6 @@ placeholder="329 Queensberry Street, North Melbourne VIC 3051, Australia."
             </div>
           </div>
         </div>
-
         {/* <!-- Input --> */}
         <div className="form-group col-lg-12 col-md-12 text-right">
           <button className="theme-btn btn-style-one" type="submit">

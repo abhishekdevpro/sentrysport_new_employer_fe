@@ -80,6 +80,14 @@ export const Service = createApi({
         headers: { "Content-Type": "application/json" },
       }),
     }),
+    GetState: builder.query({
+      query: () => ({
+        url: `${EndpointSlug.GET_STATE}`,
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }),
+    }),
+
     GetPost: builder.query({
       query: () => ({
         url: `${EndpointSlug.GET_POST}`,
@@ -117,4 +125,5 @@ export const {
   useGetFunctionalAreaQuery,
   useGetYearQuery,
   useGetPostByIdQuery,
+  useGetStateQuery,
 } = Service;
