@@ -149,12 +149,12 @@ const PostBoxForm = () => {
     isError: isYearError,
     error: yearError,
   } = useGetYearQuery();
-  const {
-    data: stateData,
-    isLoading: isstateLoading,
-    isError: isstateError,
-    error: stateError,
-  } = useGetStateQuery();
+  // const {
+  //   data: stateData,
+  //   isLoading: isstateLoading,
+  //   isError: isstateError,
+  //   error: stateError,
+  // } = useGetStateQuery();
 
   const [openScreeningQuestionDialog, setOpenScreeningQuestionDialog] =
     useState(false);
