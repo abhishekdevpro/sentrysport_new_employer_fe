@@ -168,7 +168,7 @@ const HeaderNavContent = () => {
               </li>
               <li
                 className={
-                  pathname?.includes("/employers-d  ashboard") ? "current" : ""
+                  pathname?.includes("/employers-dashboard") ? "current" : ""
                 }
               >
                 <Link to="/employers-list-v2">Employers List</Link>
