@@ -63,7 +63,7 @@ export const AuthSlice = createSlice({
         state.userInfo = payload?.data;
         state.success = true;
         state.error = false;
-        // window.location.href = "/";
+        window.location.href = "/employers-dashboard/dashboard";
       })
       .addCase(userLogin.rejected, (state, { payload }) => {
         state.loading = false;

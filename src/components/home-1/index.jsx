@@ -28,6 +28,7 @@ import { logout, toggleSignupDialog } from "@/store/slices/auth";
 import { IoLogOutOutline } from "react-icons/io5";
 import Login from "../auth/Login";
 import ResetPassword from "../auth/ResetPassword";
+import { TypeAnimation } from "react-type-animation";
 import { useState } from "react";
 const index = () => {
   const dispatch = useDispatch();
@@ -302,14 +303,31 @@ const index = () => {
             <div className="b-text">
               <div className="b-head">
                 <p>Setryspot, your personal HR partner</p>
-                <h1 className="font-bold mt-4">
-                  Signup to AI-Enabled platform to{" "}
-                </h1>
+                <h2 className="font-bold text-[28px]  mt-4">
+                  Signup to AI-Enabled platform to
+                  <TypeAnimation
+                    sequence={[
+                      " Hire Talent",
+                      1000,
+                      " Post Jobs",
+                      1000,
+                      " Send Skill Test",
+                      1000,
+                      " Video JD",
+                      1000,
+                    ]}
+                    wrapper="span"
+                    speed={50}
+                    repeat={Infinity}
+                  />
+                </h2>
                 <h1>
-                  <div className="typing-demo font-bold">
+                  {/* <div className="typing-demo font-bold">
                     {" "}
-                    Hire Talent/Post Jobs/Send Skill Test/Video JD{" "}
-                  </div>
+                    Hire Talent/Post Jobs/Send Skill Test/Video JD
+                  </div> */}
+
+                  <h2></h2>
                 </h1>
                 <div className="b-para">
                   <p>
@@ -411,7 +429,9 @@ const index = () => {
             </div>
           </div>
           <div className="people-btn">
-            <button type="button">Create Account</button>
+            <button type="button" className="py-[6px] px-[25px]">
+              Create Account
+            </button>
           </div>
         </div>
       </div>
