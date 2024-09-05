@@ -19,7 +19,7 @@ const PostJobSchema = zod.object({
   //   tags: zod.string(),
   job_type: zod.string().min(1, "Job type is required"),
   email: zod.string().min(1, "Email is required").email("Email is invalid"),
-  diversity_hiring: zod.string().min(1, "Diversity hiring are required"),
+  // diversity_hiring: zod.string().min(1, "Diversity hiring are required"),
 
   //   qualifications: zod.string().min(1, "Qualifications are required"),
   //   benefits: zod.string().min(1, "Benefits are required"),

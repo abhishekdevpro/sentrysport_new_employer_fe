@@ -9,9 +9,9 @@ body {
   color: #545353;
   letter-spacing: 1px;
 }
-button {
+/* button {
   padding: 6px 25px;
-}
+} */
 button:hover {
   background: #003479;
 }
@@ -228,7 +228,7 @@ button.register-btn:hover {
   width: 100%;
   text-align: center;
 }
-.fomr-btn button {
+/* .fomr-btn button  {
   width: 100%;
   line-height: 40px;
   background: #003479;
@@ -239,7 +239,7 @@ button.register-btn:hover {
   letter-spacing: 1px;
   cursor: pointer;
   border: none;
-}
+} */
 .fomr-btn button:hover {
   background: #e60278;
 }
@@ -262,7 +262,7 @@ button.register-btn:hover {
 .people-card {
   display: flex;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: space-between;
 }
 .card-one {
   width: 25%;

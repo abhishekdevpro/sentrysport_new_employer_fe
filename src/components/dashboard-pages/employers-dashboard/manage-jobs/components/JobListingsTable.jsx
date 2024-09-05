@@ -2,10 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import jobs from "../../../../../data/job-featured.js";
 import { useGetPostQuery } from "@/store/slices/service/index.js";
-import FilterDialog from "./common/FilterDialog.jsx";
 import toast from "react-hot-toast";
 import moment from "moment";
-import { Button } from "@/components/ui/button.jsx";
 const JobListingsTable = () => {
   const navigate = useNavigate();
   const { isLoading, data, isError, error } = useGetPostQuery();
@@ -23,11 +21,8 @@ const JobListingsTable = () => {
         <h4>My Job Listings</h4>
 
         <div className="chosen-outer">
+          {/* <FilterDialog /> */}
           {/* <!--Tabs Box--> */}
-
-          {/* <Button>Filter  </Button> */}
-          <FilterDialog />
-
           <select className="chosen-single form-select">
             <option>Last 6 Months</option>
             <option>Last 12 Months</option>
@@ -35,7 +30,7 @@ const JobListingsTable = () => {
             <option>Last 24 Months</option>
             <option>Last 5 year</option>
           </select>
-          {/*  category */}
+
           <select className="ml-2 chosen-single form-select">
             <option>Sort by: Select</option>
             <option>Magic Sort (Relevance)</option>

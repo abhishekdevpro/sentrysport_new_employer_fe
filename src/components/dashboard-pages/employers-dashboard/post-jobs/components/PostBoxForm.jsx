@@ -801,11 +801,11 @@ classNamePrefix="select"
             <option value="work from home">work from home</option>
           </select> */}
 
-          {errors.diversity_hiring && (
+          {/* {errors.diversity_hiring && (
             <p className="!text-red-500 text-sm">
               {errors.diversity_hiring.message}
             </p>
-          )}
+          )} */}
         </div>
         <div className="mb-4">
           <div className="mb-3">

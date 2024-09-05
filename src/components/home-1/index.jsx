@@ -301,10 +301,10 @@ const index = () => {
           <div className="banner-text">
             <div className="b-text">
               <div className="b-head">
-                <p>
-                  Setryspot <i className="fa-solid fa-handshake"></i> Recruiting
-                </p>
-                <h1 className="font-bold">Signup to AI-Enabled platform to </h1>
+                <p>Setryspot, your personal HR partner</p>
+                <h1 className="font-bold mt-4">
+                  Signup to AI-Enabled platform to{" "}
+                </h1>
                 <h1>
                   <div className="typing-demo font-bold">
                     {" "}
@@ -386,14 +386,14 @@ const index = () => {
       <div className="people">
         <div className="auto-container">
           <div className="people-card">
-            <div className="card-one">
+            <div className="card-one  hover:shadow-xl" data-aos="fade">
               <img src="img/people-1.webp" />
               <h2>UK’s one of the most trusted Employment site</h2>
               <p>
                 Reach candidates where they actively search for opportunities
               </p>
             </div>
-            <div className="card-one">
+            <div className="card-one hover:shadow-xl" data-aos="fade">
               <img src="img/people-2.webp" />
               <h2>Pick from a pool of AI-verified skilled professionals</h2>
               <p>
@@ -401,7 +401,7 @@ const index = () => {
                 business forward
               </p>
             </div>
-            <div className="card-one">
+            <div className="card-one hover:shadow-xl" data-aos="fade">
               <img src="img/people-3.webp" />
               <h2>Made by Experts on latest Technologies</h2>
               <p>

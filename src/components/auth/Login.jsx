@@ -48,7 +48,9 @@ const Login = ({ setIsLogin }) => {
   return (
     <Card className="w-[350px] sm:w-[400px] m-auto shadow-lg">
       <CardHeader>
-        <CardTitle className="text-3xl">Post a job for free</CardTitle>
+        <CardTitle className="text-3xl text-left">
+          Get started for Free
+        </CardTitle>
         {/* <CardDescription>Deploy your new project in one-click.</CardDescription> */}
       </CardHeader>
       <CardContent>
@@ -57,7 +59,7 @@ const Login = ({ setIsLogin }) => {
           onSubmit={handleSubmit(submitHandler)}
         >
           <div className="flex flex-col w-full  gap-2">
-            <Label htmlFor="email" className="">
+            <Label htmlFor="email" className="text-left">
               Email
             </Label>
             <Input
@@ -72,7 +74,7 @@ const Login = ({ setIsLogin }) => {
             )}
           </div>
           <div className="flex flex-col w-full  gap-2  ">
-            <Label htmlFor="password" className="">
+            <Label htmlFor="password" className="text-left">
               Password
             </Label>
             <Input
@@ -96,7 +98,11 @@ const Login = ({ setIsLogin }) => {
               </span>
             </div>
           </div>
-          <Button type="submit" size="sm" className="px-3 py-4 w-full">
+          <Button
+            type="submit"
+            size="sm"
+            className="px-3 py-4 w-full duration-300 bg-[#003479] hover:bg-[#e60278]"
+          >
             {loading ? <ActionLoader /> : "Login"}
           </Button>
         </form>
