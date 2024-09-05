@@ -201,7 +201,7 @@ const PostBoxForm = () => {
   const submitHandler = (e) => {
     const {
       job_title,
-      // job_description,
+      job_description,
       job_type,
       email,
       // location,
@@ -219,7 +219,7 @@ const PostBoxForm = () => {
       selectedLocations,
       code
     );
-    return;
+    // return;
     // Create a jobData object with all necessary fields
     const jobData = {
       job_title: job_title,
