@@ -762,7 +762,7 @@ const index = () => {
           <div className="menu-section">
             <div className="footer-one">
               <div className="logo">
-                <img src="img/company_logo.webp" />
+                <img src={logo} />
                 <div className="social-mdeai">
                   <a href="">
                     <i className="fa-brands fa-linkedin-in"></i>
