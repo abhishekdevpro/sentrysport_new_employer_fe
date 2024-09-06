@@ -1,36 +1,36 @@
-Chivo Variable Font
+Ubuntu Variable Font
 ===================
 
-This download contains Chivo as both variable fonts and static fonts.
+This download contains Ubuntu as both variable fonts and static fonts.
 
-Chivo is a variable font with this axis:
+Ubuntu is a variable font with this axis:
   wght
 
 This means all the styles are contained in these files:
-  Chivo-VariableFont_wght.ttf
-  Chivo-Italic-VariableFont_wght.ttf
+  Ubuntu-VariableFont_wght.ttf
+  Ubuntu-Italic-VariableFont_wght.ttf
 
 If your app fully supports variable fonts, you can now pick intermediate styles
 that aren’t available as static fonts. Not all apps support variable fonts, and
-in those cases you can use the static font files for Chivo:
-  static/Chivo-Thin.ttf
-  static/Chivo-ExtraLight.ttf
-  static/Chivo-Light.ttf
-  static/Chivo-Regular.ttf
-  static/Chivo-Medium.ttf
-  static/Chivo-SemiBold.ttf
-  static/Chivo-Bold.ttf
-  static/Chivo-ExtraBold.ttf
-  static/Chivo-Black.ttf
-  static/Chivo-ThinItalic.ttf
-  static/Chivo-ExtraLightItalic.ttf
-  static/Chivo-LightItalic.ttf
-  static/Chivo-Italic.ttf
-  static/Chivo-MediumItalic.ttf
-  static/Chivo-SemiBoldItalic.ttf
-  static/Chivo-BoldItalic.ttf
-  static/Chivo-ExtraBoldItalic.ttf
-  static/Chivo-BlackItalic.ttf
+in those cases you can use the static font files for Ubuntu:
+  static/Ubuntu-Thin.ttf
+  static/Ubuntu-ExtraLight.ttf
+  static/Ubuntu-Light.ttf
+  static/Ubuntu-Regular.ttf
+  static/Ubuntu-Medium.ttf
+  static/Ubuntu-SemiBold.ttf
+  static/Ubuntu-Bold.ttf
+  static/Ubuntu-ExtraBold.ttf
+  static/Ubuntu-Black.ttf
+  static/Ubuntu-ThinItalic.ttf
+  static/Ubuntu-ExtraLightItalic.ttf
+  static/Ubuntu-LightItalic.ttf
+  static/Ubuntu-Italic.ttf
+  static/Ubuntu-MediumItalic.ttf
+  static/Ubuntu-SemiBoldItalic.ttf
+  static/Ubuntu-BoldItalic.ttf
+  static/Ubuntu-ExtraBoldItalic.ttf
+  static/Ubuntu-BlackItalic.ttf
 
 Get started
 -----------

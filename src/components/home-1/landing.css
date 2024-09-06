@@ -1,11 +1,12 @@
 @font-face {
   font-family: myFirstFont;
-  src: url(chivo/Chivo-VariableFont_wght.ttf);
+  src: url(Ubuntu/Ubuntu-VariableFont_wght.ttf);
 }
 body {
   margin: 0;
   padding: 0;
-  font-family: myFirstFont !important;
+  /* font-family: myFirstFont !important; */
+  font-family: Ubuntu !important;
   color: #545353;
   letter-spacing: 1px;
 }

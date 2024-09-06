@@ -116,7 +116,7 @@ const JobListingsTable = () => {
                     <td>
                       <div className="option-box">
                         <ul className="option-list">
-                          <li>
+                          {/* <li>
                             <button
                               data-text="View Aplication"
                               onClick={() => {
@@ -128,12 +128,18 @@ const JobListingsTable = () => {
                             >
                               <span className="la la-eye"></span>
                             </button>
-                          </li>
+                          </li> */}
                           <li>
-                            <button data-text="Reject Aplication">
+                            <button data-text="Edit Aplication">
                               <span className="la la-pencil"></span>
                             </button>
                           </li>
+                          <li>
+                            <button data-text="refresh">
+                              <span className="la la-refresh"></span>
+                            </button>
+                          </li>
+
                           <li>
                             <button data-text="Delete Aplication">
                               <span className="la la-trash"></span>

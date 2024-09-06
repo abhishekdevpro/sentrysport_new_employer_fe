@@ -48,7 +48,7 @@ const Login = ({ setIsLogin }) => {
   return (
     <Card className="w-[350px] sm:w-[400px] m-auto shadow-lg">
       <CardHeader>
-        <CardTitle className="text-3xl text-left">
+        <CardTitle className="text-3xl text-left font-ubuntu">
           Get started for Free
         </CardTitle>
         {/* <CardDescription>Deploy your new project in one-click.</CardDescription> */}
