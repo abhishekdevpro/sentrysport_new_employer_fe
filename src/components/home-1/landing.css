@@ -14,7 +14,7 @@ body {
   padding: 6px 25px;
 } */
 button:hover {
-  background: #003479;
+  background: #4c0269;
 }
 
 .container {
@@ -28,24 +28,24 @@ button:hover {
   letter-spacing: 1px;
 }
 .main-menu a {
-  color: #003479;
+  color: #ffffff;
   text-decoration: none;
 }
 .main-menu a:hover {
-  color: #e60278;
+  color: #ee2c3c;
 }
 .side-menu a {
   margin-right: 20px;
-  color: #003479;
+  color:  #4C3957;
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
 }
 .side-menu a:hover {
-  color: #e60278;
+  color: #ee2c3c;
 }
 .side-menu button {
-  background-color: #003479;
+  background-color:  #4C3957;
   border-radius: 10px;
   color: #fff;
   font-size: 14px;
@@ -55,17 +55,17 @@ button:hover {
   cursor: pointer;
 }
 .side-menu button:hover {
-  background-color: #e60278;
+  background-color: #ee2c3c;
 }
 button.register-btn {
   background: transparent;
-  border: 1px solid #003479;
-  color: #003479;
+  border: 1px solid #ffffff;
+  color: #ffffff;
 }
 button.register-btn:hover {
-  border: 1px solid #e60278;
+  border: 1px solid #ee2c3c;
   background: transparent;
-  color: #e60278;
+  color: #ee2c3c;
 }
 .dropdown:hover .dropdown-content {
   display: block;
@@ -114,7 +114,7 @@ button.register-btn:hover {
   letter-spacing: 1px;
 }
 .b-head i {
-  color: #003479;
+  color:  #4C3957;
 }
 .b-head h1 {
   font-size: 45px;
@@ -129,7 +129,7 @@ button.register-btn:hover {
   white-space: nowrap;
   overflow: hidden;
   border-right: 3px solid;
-  color: #003479;
+  color:  #4C3957;
   font-size: 25px;
 }
 
@@ -162,7 +162,7 @@ button.register-btn:hover {
   align-items: flex-start;
 }
 .icon-txt i {
-  color: #003479;
+  color:  #4C3957;
   font-size: 40px;
   margin-right: 20px;
 }
@@ -171,7 +171,7 @@ button.register-btn:hover {
   margin: 0;
   margin-bottom: 10px;
   letter-spacing: 1px;
-  color: #003479;
+  color:  #4C3957;
 }
 .icon-txt p {
   margin: 0;
@@ -232,7 +232,7 @@ button.register-btn:hover {
 /* .fomr-btn button  {
   width: 100%;
   line-height: 40px;
-  background: #003479;
+  background:  #4C3957;
   color: #fff;
   border-radius: 14px;
   font-size: 16px;
@@ -242,18 +242,18 @@ button.register-btn:hover {
   border: none;
 } */
 .fomr-btn button:hover {
-  background: #e60278;
+  background: #ee2c3c;
 }
 .fomr-btn p {
   font-size: 14px;
   margin: 10px 0;
 }
 .fomr-btn a {
-  color: #003479;
+  color:  #4C3957;
   text-decoration: none;
 }
 .fomr-btn a:hover {
-  color: #e60278;
+  color: #ee2c3c;
 }
 .people {
   width: 100%;
@@ -277,7 +277,7 @@ button.register-btn:hover {
   margin: 0;
   font-size: 20px;
   font-weight: 500;
-  color: #003479;
+  color:  #4C3957;
   margin-bottom: 10px;
   letter-spacing: 1px;
 }
@@ -291,7 +291,7 @@ button.register-btn:hover {
   margin: 20px;
 }
 .people-btn button {
-  background: #003479;
+  background:  #4C3957;
   border: none;
   height: 40px;
   border-radius: 14px;
@@ -301,7 +301,7 @@ button.register-btn:hover {
   cursor: pointer;
 }
 .people-btn button:hover {
-  background-color: #e60278;
+  background-color: #ee2c3c;
 }
 .steps {
   width: 100%;
@@ -315,7 +315,7 @@ button.register-btn:hover {
 .steps-section h2 {
   font-size: 38px;
   font-weight: 600;
-  color: #003479;
+  color:  #4C3957;
   letter-spacing: 1px;
 }
 .step-one {
@@ -330,8 +330,8 @@ button.register-btn:hover {
 }
 .step-text i {
   font-size: 40px;
-  border: 5px solid #e60278;
-  color: #e60278;
+  border: 5px solid #ee2c3c;
+  color: #ee2c3c;
   padding: 35px;
   border-radius: 100%;
   display: flex;
@@ -343,7 +343,7 @@ button.register-btn:hover {
 .step-text h3 {
   font-size: 28px;
   font-weight: 600;
-  color: #003479;
+  color:  #4C3957;
   letter-spacing: 1px;
   width: 70%;
 }
@@ -363,7 +363,7 @@ button.register-btn:hover {
 .category h2 {
   font-size: 38px;
   font-weight: 600;
-  color: #003479;
+  color:  #4C3957;
   letter-spacing: 1px;
 }
 .category-box {
@@ -384,7 +384,7 @@ button.register-btn:hover {
 .box-one i {
   font-size: 60px;
   padding: 20px;
-  color: #e60278;
+  color: #ee2c3c;
 }
 .box-one h2 {
   font-size: 16px;
@@ -439,7 +439,7 @@ button.register-btn:hover {
   width: 100%;
   margin-top: 50px;
   padding: 40px 0;
-  background: #003479;
+  background:  #4C3957;
   text-align: -webkit-center;
 }
 .menu-section {

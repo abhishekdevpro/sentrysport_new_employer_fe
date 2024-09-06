@@ -16,7 +16,7 @@ import Testimonial from "../testimonial/Testimonial";
 import CookieConsent from "react-cookie-consent";
 // import logo from "../../Images/logo.png"
 import "./landing.css";
-
+import logo from "../../Images/logo.png"
 // import "./style.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -131,7 +131,7 @@ const index = () => {
           our users’ needs. Full details on our privacy policy can be found at:{" "}
         </span>
         <span style={{ fontSize: "20px" }}>
-          https://sentryspotfe.vercel.app/
+          https://Abrodiumfe.vercel.app/
         </span>
       </CookieConsent>
       <section className="job-categories ui-job-categories">
@@ -236,12 +236,12 @@ const index = () => {
 
       {/* new */}
 
-      <div className="header">
+      <div className="header" style={{backgroundColor:" #4C3957"}}>
         <div className="auto-container">
           <div className="header-menu">
             <div className="header-logo">
-              <img src="img/company_logo.png" />
-              <div className="main-menu ml-10">
+              <img src={logo} />
+              <div className="main-menu ml-10 font-medium text-white">
                 <ul>
                   <li>
                     <Link href="">Home</Link>
@@ -274,7 +274,7 @@ const index = () => {
                 </button>
               ) : (
                 <button
-                  className="theme-btn btn-style-three call-modal p-2 text-lg px-3 bg-transparent !text-[#003479]"
+                  className="theme-btn btn-style-three call-modal p-2 text-lg px-3 bg-transparent !text-[#ffffff]"
                   onClick={() => {
                     dispatch(toggleSignupDialog());
                   }}
@@ -302,7 +302,7 @@ const index = () => {
           <div className="banner-text">
             <div className="b-text">
               <div className="b-head">
-                <p>Setryspot, your personal HR partner</p>
+                <p>Abrodium, your personal HR partner</p>
                 <h2 className="font-bold text-[28px]  mt-4">
                   Signup to AI-Enabled platform to
                   <TypeAnimation
@@ -331,7 +331,7 @@ const index = () => {
                 </h1>
                 <div className="b-para">
                   <p>
-                    SentrySpot is the UK’s premier AI-driven security services
+                    Abrodium is the UK’s premier AI-driven security services
                     job portal. Post your job listings for free and connect with
                     top candidates across security domains such as
                     cybersecurity, physical security, security management, data
@@ -447,7 +447,7 @@ const index = () => {
                 <i className="fa-solid fa-1 "></i>
                 <h3 className="my-3">
                   Gain access to top-tier, AI-verified talent through
-                  SentrySpot.
+                  Abrodium.
                 </h3>
                 <p>
                   Post a job in minutes with AI and swiftly connect with the
@@ -531,7 +531,7 @@ const index = () => {
       </div>
       <div className="category">
         <div className="auto-container">
-          <h2>Why SentrySpot for Employers</h2>
+          <h2>Why Abrodium for Employers</h2>
           <div className="testimonials">
             <Slider {...sliderSettings} className="testimonial-reel">
               <div>
@@ -548,7 +548,7 @@ const index = () => {
                     </article>
                     <article className="test-content">
                       <p>
-                        SentrySpot utilizes advanced AI algorithms to match your
+                        Abrodium utilizes advanced AI algorithms to match your
                         job postings with the most relevant candidates. Our AI
                         system evaluates skills, experience, and job fit to
                         ensure you connect with top-quality talent quickly and
@@ -572,7 +572,7 @@ const index = () => {
                     </article>
                     <article className="test-content">
                       <p>
-                        Posting a job on SentrySpot is fast and easy. With a
+                        Posting a job on Abrodium is fast and easy. With a
                         user-friendly interface, you can create and publish job
                         listings in minutes. Our platform ensures your job
                         openings are visible to a broad and diverse pool of
@@ -596,7 +596,7 @@ const index = () => {
                     </article>
                     <article className="test-content">
                       <p>
-                        All candidates on SentrySpot undergo rigorous AI-powered
+                        All candidates on Abrodium undergo rigorous AI-powered
                         skill verification, so you can be confident that you're
                         considering only the best-qualified professionals. This
                         saves you time and effort in screening, as we provide a
@@ -620,7 +620,7 @@ const index = () => {
                     </article>
                     <article className="test-content">
                       <p>
-                        SentrySpot’s AI tools automate the initial screening
+                        Abrodium’s AI tools automate the initial screening
                         process, filtering candidates based on your specific
                         criteria. This reduces the workload for your HR team,
                         allowing them to focus on more critical tasks and making
@@ -646,7 +646,7 @@ const index = () => {
                     <article className="test-content">
                       <p>
                         Our platform offers integrated scheduling tools that
-                        make arranging interviews a breeze. SentrySpot syncs
+                        make arranging interviews a breeze. Abrodium syncs
                         with your calendar, allowing you to easily coordinate
                         interviews with candidates, ensuring a smooth and
                         organized recruitment process.
@@ -670,7 +670,7 @@ const index = () => {
                     <article className="test-content">
                       <p>
                         As a platform dedicated to the security industry,
-                        SentrySpot understands the unique requirements of
+                        Abrodium understands the unique requirements of
                         security roles. Whether you're hiring for cybersecurity,
                         physical security, or security management, we provide
                         access to a specialized talent pool tailored to your
@@ -694,7 +694,7 @@ const index = () => {
                     </article>
                     <article className="test-content">
                       <p>
-                        SentrySpot provides detailed analytics and reports to
+                        Abrodium provides detailed analytics and reports to
                         help you track the success of your job postings,
                         understand candidate engagement, and optimize your
                         hiring strategy. This data-driven approach ensures you
@@ -719,7 +719,7 @@ const index = () => {
                     </article>
                     <article className="test-content">
                       <p>
-                        With SentrySpot, you can post jobs and access top-tier
+                        With Abrodium, you can post jobs and access top-tier
                         talent without breaking the bank. Our platform offers
                         competitive pricing, ensuring you get maximum value for
                         your recruitment budget.
@@ -745,7 +745,7 @@ const index = () => {
                         Our dedicated support team is always ready to assist
                         you. Whether you need help with posting a job,
                         navigating the platform, or optimizing your hiring
-                        process, SentrySpot’s customer support is just a call or
+                        process, Abrodium’s customer support is just a call or
                         click away.
                       </p>
                     </article>
@@ -784,7 +784,7 @@ const index = () => {
                 <h2>Our services</h2>
                 <ul>
                   <li>
-                    <a href="">Why sentryspot?</a>
+                    <a href="">Why Abrodium?</a>
                   </li>
                   <li>
                     <a href="">Recruiter Advice</a>
@@ -852,10 +852,10 @@ const index = () => {
                     <a href="">Advertise a course</a>
                   </li>
                   <li>
-                    <a href="">Sentryspot Global</a>
+                    <a href="">Abrodium Global</a>
                   </li>
                   <li>
-                    <a href="">Sentryspot Screening</a>
+                    <a href="">Abrodium Screening</a>
                   </li>
                 </ul>
               </div>

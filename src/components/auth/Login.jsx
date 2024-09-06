@@ -101,7 +101,7 @@ const Login = ({ setIsLogin }) => {
           <Button
             type="submit"
             size="sm"
-            className="px-3 py-4 w-full duration-300 bg-[#003479] hover:bg-[#e60278]"
+            className="px-3 py-4 w-full duration-300 bg-[#51366c] hover:bg-[#e60278]"
           >
             {loading ? <ActionLoader /> : "Login"}
           </Button>
@@ -110,7 +110,7 @@ const Login = ({ setIsLogin }) => {
           <p className="text-center">
             Don't have an account?{" "}
             <span
-              className="cursor-pointer text-blue-900"
+              className="cursor-pointer text-violet-500"
               onClick={() => {
                 dispatch(toggleSignupDialog());
               }}

@@ -30,7 +30,7 @@ const index = () => {
       {/* <!-- End Candidates Sidebar Menu --> */}
 
       {/* <!-- Dashboard --> */}
-      <section className="user-dashboard">
+      <section className="user-dashboard bg-violet-50 ">
         <div className="dashboard-outer">
           <BreadCrumb title="My Profile!" />
           {/* breadCrumb */}

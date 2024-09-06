@@ -24,7 +24,7 @@ const DashboardHeader = () => {
 
   return (
     // <!-- Main Header-->
-    <header
+    <header style={{backgroundColor:"#4C3957"}}
       className={`main-header header-shaddow z-10 ${
         navbar ? "fixed-header " : ""
       }`}
@@ -40,7 +40,7 @@ const DashboardHeader = () => {
                   <img
                     alt="brand"
                     src={logo}
-                    className="h-20 w-28 object-cover"
+                    className="h-16 p-2"
                   />
                 </Link>
               </div>
@@ -77,14 +77,14 @@ const DashboardHeader = () => {
                   className="thumb"
                   src="/images/resource/company-6.png"
                 />
-                <span className="name">My Account</span>
+                <span className="name text-white">My Account</span>
               </a>
 
               <ul className="dropdown-menu">
                 {employerMenuData.map((item) => (
                   <li
                     className={`${
-                      isActiveLink(item.routePath, pathname) ? "active" : ""
+                      isActiveLink(item.routePath, pathname) ? "active bg-violet-300 rounded-lg" : ""
                     } mb-1`}
                     key={item.id}
                   >

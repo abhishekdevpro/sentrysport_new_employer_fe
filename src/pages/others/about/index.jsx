@@ -5,9 +5,9 @@ import About from "@/components/pages-menu/about";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: 'About || sentryspot - Job Borad ReactJs Template',
+  title: 'About || Abrodium - Job Borad ReactJs Template',
   description:
-    'sentryspot - Job Borad ReactJs Template',
+    'Abrodium - Job Borad ReactJs Template',
   
 }
 

@@ -12,7 +12,7 @@ import MenuToggler from "../../MenuToggler";
 
 const Index = () => {
   return (
-    <div className="page-wrapper dashboard">
+    <div className="page-wrapper dashboard bg-violet-50">
       <span className="header-span"></span>
       {/* <!-- Header Span for hight --> */}
 
@@ -29,7 +29,7 @@ const Index = () => {
       {/* <!-- End User Sidebar Menu --> */}
 
       {/* <!-- Dashboard --> */}
-      <section className="user-dashboard">
+      <section className="user-dashboard bg-violet-50 " >
         <div className="dashboard-outer">
           <BreadCrumb title="Dashboard Home!" />
           {/* breadCrumb */}

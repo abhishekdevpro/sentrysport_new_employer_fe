@@ -5,8 +5,8 @@ import Home from "@/components/home-17";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Home-17 || sentryspot - Job Borad ReactJs Template",
-  description: "sentryspot - Job Borad ReactJs Template",
+  title: "Home-17 || Abrodium - Job Borad ReactJs Template",
+  description: "Abrodium - Job Borad ReactJs Template",
 };
 
 const HomePage17 = () => {

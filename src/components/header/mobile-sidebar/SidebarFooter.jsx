@@ -26,8 +26,8 @@ const SidebarFooter = () => {
             329 Queensberry Street, North Melbourne VIC <br />
             3051, Australia.
           </span>
-          <a href="mailto:support@sentryspot.com" className="email">
-            support@sentryspot.com
+          <a href="mailto:support@Abrodium.com" className="email">
+            support@Abrodium.com
           </a>
         </div>
         {/* End .contact-info */}

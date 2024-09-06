@@ -294,7 +294,7 @@ const SignUpDialog = () => {
             )}
           </div>
 
-          <Button type="submit" size="sm" className="px-3 py-4 w-full">
+          <Button type="submit" size="sm" className="px-3 py-4 w-full bg-orange-500">
             Register
           </Button>
         </form>

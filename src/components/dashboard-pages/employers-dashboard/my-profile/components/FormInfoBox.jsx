@@ -55,7 +55,7 @@ const FormInfoBox = () => {
           <input
             type="email"
             name="email"
-            placeholder="sentryspot"
+            placeholder="Abrodium"
             {...register("email")}
             // required
           />

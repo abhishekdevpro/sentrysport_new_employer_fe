@@ -21,7 +21,7 @@ const DashboardEmployerSidebar = () => {
   };
 
   return (
-    <div className={`user-sidebar ${menu ? "sidebar_open" : ""}`}>
+    <div className={`user-sidebar ${menu ? "sidebar_open" : ""}`} >
       {/* Start sidebar close icon */}
       <div className="pro-header text-end pb-0 mb-0 show-1023">
         <div className="fix-icon" onClick={menuToggleHandler}>
@@ -34,8 +34,8 @@ const DashboardEmployerSidebar = () => {
         <ul className="navigation">
           {employerMenuData.map((item) => (
             <li
-              className={`${
-                isActiveLink(item.routePath, pathname) ? "active" : ""
+              className={`${ 
+                isActiveLink(item.routePath, pathname) ? "active bg-purple-200 text-white rounded-lg" : ""
               } mb-1`}
               key={item.id}
               onClick={menuToggleHandler}

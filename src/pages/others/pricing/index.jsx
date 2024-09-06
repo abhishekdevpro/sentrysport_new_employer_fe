@@ -5,9 +5,9 @@ import Pricing from "@/components/pages-menu/pricing";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: 'Pricing || sentryspot - Job Borad ReactJs Template',
+  title: 'Pricing || Abrodium - Job Borad ReactJs Template',
   description:
-    'sentryspot - Job Borad ReactJs Template',
+    'Abrodium - Job Borad ReactJs Template',
   
 }
 

@@ -5,9 +5,9 @@ import RegisterForm from "@/components/pages-menu/register";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: 'Register || sentryspot - Job Borad ReactJs Template',
+  title: 'Register || Abrodium - Job Borad ReactJs Template',
   description:
-    'sentryspot - Job Borad ReactJs Template',
+    'Abrodium - Job Borad ReactJs Template',
   
 }
 
