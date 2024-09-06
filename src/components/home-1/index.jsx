@@ -33,6 +33,7 @@ import { useState } from "react";
 const index = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const { loading, userInfo, userToken, error, success, message } = useSelector(
     (state) => state.auth
@@ -76,331 +77,211 @@ const index = () => {
     }
   };
 
-  // useEffect(() => {
-  //   //Slick Carousel Controllers
-  //   $(".testimonial-reel").slick({
-  //     centerMode: true,
-  //     centerPadding: "40px",
-  //     dots: true,
-  //     slidesToShow: 3,
-  //     infinite: true,
-  //     arrows: false,
-  //     lazyLoad: "ondemand",
-  //     responsive: [
-  //       {
-  //         breakpoint: 1024,
-  //         settings: {
-  //           slidesToShow: 2,
-  //           centerMode: false,
-  //         },
-  //       },
-  //       {
-  //         breakpoint: 767,
-  //         settings: {
-  //           slidesToShow: 1,
-  //         },
-  //       },
-  //     ],
-  //   });
-  // }, []);
+  
   return (
     <>
-      {/* <LoginPopup />
+      
+      <nav className="header" style={{ backgroundColor: "#4C3957" }}>
+  <div className="auto-container mx-auto px-4">
+    <div className="header-menu flex  items-center py-">
+      {/* Logo Section */}
+      <div className="header-logo flex items-center">
+        <img src={logo} alt="Logo" />
+      </div>
 
-      <DefaulHeader2 />
-
-      <MobileMenu />
-
-      <Hero1 />
-      <CookieConsent
-        location="bottom"
-        buttonText="Accept"
-        cookieName="myAwesomeCookieConsent"
-        style={{ background: "#2B373B" }}
-        buttonStyle={{
-          color: "white",
-          fontSize: "23px",
-          backgroundColor: "#1A3071",
-        }}
-        expires={150}
-      >
-        <span>
-          {" "}
-          We use cookies to analyze our traffic, learn more about our users,
-          using this information to help us design our website to better suit
-          our users’ needs. Full details on our privacy policy can be found at:{" "}
-        </span>
-        <span style={{ fontSize: "20px" }}>
-          https://Abrodiumfe.vercel.app/
-        </span>
-      </CookieConsent>
-      <section className="job-categories ui-job-categories">
-        <div className="auto-container">
-          <div className="sec-title text-center">
-            <h2>Popular Job Categories</h2>
-            <div className="text">2020 jobs live - 293 added today.</div>
-          </div>
-
-          <div
-            className="row "
-            data-aos="fade-up"
-            data-aos-anchor-placement="top-bottom"
-          >
-            <JobCategorie1 />
-          </div>
-        </div>
-      </section>
-
-      <section className="job-section">
-        <div className="auto-container">
-          <div className="sec-title text-center">
-            <h2>Featured Jobs</h2>
-            <div className="text">
-              Know your worth and find the job that qualify your life
-            </div>
-          </div>
-
-          <div className="row " data-aos="fade-up">
-            <JobFeatured1 />
-          </div>
-
-          <div className="btn-box">
-            <Link to="/job-list-v1" className="theme-btn btn-style-one bg-blue">
-              <span className="btn-title">Load More Listing</span>
+      {/* Desktop Menu */}
+      <div className="main-menu hidden lg:flex  font-medium text-white">
+        <ul className="flex ">
+          <li>
+            <Link href="" className="hover:text-gray-300">
+              Home
             </Link>
+          </li>
+          <li>
+            <Link href="" className="hover:text-gray-300">
+              Jobs
+            </Link>
+          </li>
+          <li>
+            <Link href="" className="hover:text-gray-300">
+              Products
+            </Link>
+          </li>
+          <li>
+            <Link href="" className="hover:text-gray-300">
+              Hiring Advice
+            </Link>
+          </li>
+          <li>
+            <Link href="" className="hover:text-gray-300">
+              Market Insights
+            </Link>
+          </li>
+        </ul>
+      </div>
+
+      {/* Mobile Hamburger Icon */}
+      <div className="lg:hidden">
+        <button
+          className="text-white"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4 6h16M4 12h16m-7 6h7"
+            ></path>
+          </svg>
+        </button>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="side-menu flex items-center gap-3">
+        {userToken ? (
+          <button
+            className="bg-gray-500 duration-500 p-2 text-white"
+            title="logout"
+            onClick={() => {
+              dispatch(logout());
+            }}
+          >
+            <IoLogOutOutline size={24} />
+          </button>
+        ) : (
+          <button
+            className="theme-btn btn-style-three call-modal p-2 text-lg px-3 bg-transparent !text-[#ffffff]"
+            onClick={() => {
+              dispatch(toggleSignupDialog());
+            }}
+          >
+            Register
+          </button>
+        )}
+        <button
+          type="button"
+          className="register-btn bg-transparent text-white p-2 border border-white"
+          onClick={() => {
+            handleCheck("job-post");
+          }}
+        >
+          Create a job ad
+        </button>
+      </div>
+    </div>
+
+    {/* Mobile Menu */}
+    {isMobileMenuOpen && (
+      <div className="main-menu lg:hidden mt-4">
+        <ul className="flex flex-col gap-2 text-center text-white">
+          <li>
+            <Link href="" className="hover:text-gray-300">
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link href="" className="hover:text-gray-300">
+              Jobs
+            </Link>
+          </li>
+          <li>
+            <Link href="" className="hover:text-gray-300">
+              Products
+            </Link>
+          </li>
+          <li>
+            <Link href="" className="hover:text-gray-300">
+              Hiring Advice
+            </Link>
+          </li>
+          <li>
+            <Link href="" className="hover:text-gray-300">
+              Market Insights
+            </Link>
+          </li>
+        </ul>
+      </div>
+    )}
+  </div>
+</nav>
+
+
+      
+<div className="banner bg-gray-100 py-10">
+  <div className="auto-container mx-auto px-4">
+    <div className="banner-text flex flex-col lg:flex-row justify-between items-center">
+      <div className="b-text lg:w-1/2 mb-8 lg:mb-0">
+        <div className="b-head  lg:text-left">
+          <p className="text-xl font-medium text-gray-700">Abrodium, your personal HR partner</p>
+          <h2 className="font-bold text-2xl lg:text-3xl mt-4">
+            Signup to AI-Enabled platform to{" "}
+            <TypeAnimation
+              sequence={[
+                " Hire Talent",
+                1000,
+                " Post Jobs",
+                1000,
+                " Send Skill Test",
+                1000,
+                " Video JD",
+                1000,
+              ]}
+              wrapper="span"
+              speed={50}
+              repeat={Infinity}
+            />
+          </h2>
+          <div className="b-para mt-4 text-gray-600">
+            <p>
+              Abrodium is the UK’s premier AI-driven security services job portal. Post
+              your job listings for free and connect with top candidates across security
+              domains such as cybersecurity, physical security, security management,
+              data protection, and more.
+            </p>
           </div>
         </div>
-      </section>
-
-      <section className="testimonial-section">
-        <div className="container-fluid">
-          <div className="sec-title text-center">
-            <h2>Testimonials From Our Customers</h2>
-            <div className="text">
-              Lorem ipsum dolor sit amet elit, sed do eiusmod tempor
+        <div className="banner-icon-txt mt-8 flex flex-col lg:flex-row gap-6">
+          <div className="icon-txt flex items-start">
+            <i className="fa-regular fa-building text-4xl text-gray-500"></i>
+            <div className="txt ml-4">
+              <h2 className="font-bold text-xl">50+ organizations</h2>
+              <p className="text-gray-600">
+                Choose to use our AI-Enabled services for smoother HR processes.
+              </p>
             </div>
           </div>
-        </div>
-        <div className="carousel-outer" data-aos="fade-up">
-          <div className="testimonial-carousel gap-x25 center-item-active slick-list-visible">
-            <Testimonial />
-          </div>
-        </div>
-      </section>
-
-      <section className="clients-section">
-        <div className="sponsors-outer" data-aos="fade">
-          <ul className="sponsors-carousel">
-            <Partner />
-          </ul>
-        </div>
-      </section>
-
-      <section className="about-section">
-        <div className="auto-container">
-          <div className="row">
-            <About />
-          </div>
-
-          <div className="fun-fact-section">
-            <div className="row">
-              <Funfact />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="news-section">
-        <div className="auto-container">
-          <div className="sec-title text-center">
-            <h2>Recent News Articles</h2>
-            <div className="text">
-              Fresh job related news content posted each day.
-            </div>
-          </div>
-          <div className="row" data-aos="fade-up">
-            <Blog />
-          </div>
-        </div>
-      </section>
-
-      <section className="app-section">
-        <div className="auto-container">
-          <AppSection />
-        </div>
-      </section>
-
-      <CallToAction />
-
-      <FooterDefault /> */}
-
-      {/* new */}
-
-      <div className="header" style={{backgroundColor:" #4C3957"}}>
-        <div className="auto-container">
-          <div className="header-menu">
-            <div className="header-logo">
-              <img src={logo} />
-              <div className="main-menu ml-10 font-medium text-white">
-                <ul>
-                  <li>
-                    <Link href="">Home</Link>
-                  </li>
-                  <li>
-                    <Link href="">Jobs</Link>
-                  </li>
-                  <li>
-                    <Link href="">Products</Link>
-                  </li>
-                  <li>
-                    <Link href="">Hiring Advice</Link>
-                  </li>
-                  <li>
-                    <Link href="">Market Insights</Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="side-menu flex gap-3">
-              {userToken ? (
-                <button
-                  className="bg-gray-500 duration-500"
-                  title="logout"
-                  onClick={() => {
-                    dispatch(logout());
-                  }}
-                >
-                  <IoLogOutOutline size={24} className="" />
-                </button>
-              ) : (
-                <button
-                  className="theme-btn btn-style-three call-modal p-2 text-lg px-3 bg-transparent !text-[#ffffff]"
-                  onClick={() => {
-                    dispatch(toggleSignupDialog());
-                  }}
-                >
-                  Register
-                </button>
-              )}
-              {/* <a href="">Sign in</a>
-              <a href="">Register</a> */}
-              <button
-                type="button"
-                className="register-btn"
-                onClick={() => {
-                  handleCheck("job-post");
-                }}
-              >
-                Create a job ad
-              </button>
+          <div className="icon-txt flex items-start">
+            <i className="fa-solid fa-user-group text-4xl text-gray-500"></i>
+            <div className="txt ml-4">
+              <h2 className="font-bold text-xl">Huge number</h2>
+              <p className="text-gray-600">
+                Of Jobseekers already choosing to use our services.
+              </p>
             </div>
           </div>
         </div>
       </div>
-      <div className="banner">
-        <div className="auto-container">
-          <div className="banner-text">
-            <div className="b-text">
-              <div className="b-head">
-                <p>Abrodium, your personal HR partner</p>
-                <h2 className="font-bold text-[28px]  mt-4">
-                  Signup to AI-Enabled platform to
-                  <TypeAnimation
-                    sequence={[
-                      " Hire Talent",
-                      1000,
-                      " Post Jobs",
-                      1000,
-                      " Send Skill Test",
-                      1000,
-                      " Video JD",
-                      1000,
-                    ]}
-                    wrapper="span"
-                    speed={50}
-                    repeat={Infinity}
-                  />
-                </h2>
-                <h1>
-                  {/* <div className="typing-demo font-bold">
-                    {" "}
-                    Hire Talent/Post Jobs/Send Skill Test/Video JD
-                  </div> */}
 
-                  <h2></h2>
-                </h1>
-                <div className="b-para">
-                  <p>
-                    Abrodium is the UK’s premier AI-driven security services
-                    job portal. Post your job listings for free and connect with
-                    top candidates across security domains such as
-                    cybersecurity, physical security, security management, data
-                    protection, and more.
-                  </p>
-                </div>
-              </div>
-              <div className="banner-icon-txt">
-                <div className="icon-txt">
-                  <i className="fa-regular fa-building"></i>
-                  <div className="txt">
-                    <h2 className="font-bold">50+ organizations</h2>
-                    <p>
-                      Choose to use our AI-Enabled services for smoother HR
-                      processes.
-                    </p>
-                  </div>
-                </div>
-                <div className="icon-txt">
-                  <i className="fa-solid fa-user-group"></i>
-                  <div className="txt">
-                    <h2 className="font-bold">Huge number</h2>
-                    <p>Of Jobseeker already choosing to use our services.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="">
-              <div className="">
-                {/* <form method="" action="">
-                  <div className="form-section">
-                    <h2 className="font-bold">Get started for Free</h2>
-                    <div className="form-group1">
-                      <label>Email id</label>
-                      <input
-                        type="email"
-                        name=""
-                        placeholder="ex.johnsmith@gmail.com"
-                      />
-                    </div>
-                    <div className="form-group1">
-                      <div className="pass-head">
-                        <label>Password</label>
-                        <p>Forgot Password?</p>
-                      </div>
-                      <input
-                        type="password"
-                        name=""
-                        placeholder="password here"
-                      />{" "}
-                      <span>
-                        <i className="fa-solid fa-lock"></i>
-                      </span>
-                    </div>
-                    <div className="fomr-btn">
-                      <button type="button">Login</button>
-                    </div>
-                  </div>
-                </form> */}
-                {isLogin ? (
-                  <Login setIsLogin={() => setIsLogin(false)} />
-                ) : (
-                  <ResetPassword setIsLogin={() => setIsLogin(true)} />
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* Login/ResetPassword Section */}
+      <div className="">
+        {isLogin ? (
+          <Login setIsLogin={() => setIsLogin(false)} />
+        ) : (
+          <ResetPassword setIsLogin={() => setIsLogin(true)} />
+        )}
       </div>
+    </div>
+  </div>
+</div>
+
+
       <div className="people">
         <div className="auto-container">
           <div className="people-card">
@@ -435,6 +316,8 @@ const index = () => {
           </div>
         </div>
       </div>
+
+
       <div className="steps">
         <div className="auto-container">
           <div className="steps-section ">
@@ -487,6 +370,8 @@ const index = () => {
           </div>
         </div>
       </div>
+
+
       <div className="category">
         <div className="auto-container">
           <h2>
@@ -496,39 +381,40 @@ const index = () => {
           <div className="category-box mt-4">
             <div className="box-one py-4">
               <i className="fa-solid fa-camera"></i>
-              <h2>Physical Security</h2>
+              <h2 className="break-all">Physical Security</h2>
             </div>
             <div className="box-one py-4">
               <i className="fa-solid fa-user-lock"></i>
-              <h2>Security Management</h2>
+              <h2 className="break-all">Security Management</h2>
             </div>
             <div className="box-one py-4">
               <i className="fa-solid fa-eye"></i>
-              <h2>Surveillance and Monitoring</h2>
+              <h2 className="break-all"> Surveillance and Monitoring</h2>
             </div>
             <div className="box-one py-4">
               <i className="fa-solid fa-tower-broadcast"></i>
-              <h2>Emergency and Incident Response</h2>
+              <h2 className="break-all">Emergency and Incident Response</h2>
             </div>
             <div className="box-one py-4">
               <i className="fa-solid fa-bullhorn"></i>
-              <h2>Security Training and Awareness</h2>
+              <h2 className="break-all">Security Training and Awareness</h2>
             </div>
             <div className="box-one py-4">
               <i className="fa-solid fa-masks-theater"></i>
-              <h2>Intelligence and Threat Analysis</h2>
+              <h2 className="break-all">Intelligence and Threat Analysis</h2>
             </div>
             <div className="box-one py-4">
               <i className="fa-solid fa-business-time"></i>
-              <h2>Security Sales and Business Development</h2>
+              <h2 className="break-all">Security Sales and Business Development</h2>
             </div>
             <div className="box-one py-4">
               <i className="fa-solid fa-plane-lock"></i>
-              <h2>Maritime and Aviation Security</h2>
+              <h2 className="break-all">Maritime and Aviation Security</h2>
             </div>
           </div>
         </div>
       </div>
+      
       <div className="category">
         <div className="auto-container">
           <h2>Why Abrodium for Employers</h2>

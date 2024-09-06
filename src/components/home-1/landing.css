@@ -271,8 +271,21 @@ button.register-btn:hover {
   margin-bottom: 20px;
 }
 .card-one img {
-  width: 200px;
+  width: 200px; /* Default for large screens */
 }
+
+@media (max-width: 1024px) { /* Tablet and smaller */
+  .card-one  {
+    width: 350px; /* Smaller width for tablets */
+  }
+}
+
+@media (max-width: 768px) { /* Mobile devices */
+  .card-one img {
+    width: 120px; /* Even smaller width for mobile */
+  }
+}
+
 .card-one h2 {
   margin: 0;
   font-size: 20px;
@@ -308,26 +321,32 @@ button.register-btn:hover {
   text-align: -webkit-center;
   margin: 20px 0;
 }
+
 .steps-section {
   width: 100%;
   margin-bottom: 20px;
 }
+
 .steps-section h2 {
   font-size: 38px;
   font-weight: 600;
-  color:  #4C3957;
+  color: #4C3957;
   letter-spacing: 1px;
 }
+
 .step-one {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap; /* Allow items to wrap in smaller screens */
 }
+
 .step-one .step-text {
   width: 50%;
   padding: 10px;
 }
+
 .step-text i {
   font-size: 40px;
   border: 5px solid #ee2c3c;
@@ -340,21 +359,71 @@ button.register-btn:hover {
   width: 50px;
   height: 50px;
 }
+
 .step-text h3 {
   font-size: 28px;
   font-weight: 600;
-  color:  #4C3957;
+  color: #4C3957;
   letter-spacing: 1px;
   width: 70%;
 }
+
 .step-text p {
   font-size: 16px;
   letter-spacing: 1px;
   width: 70%;
 }
+
 .step-img {
   width: 50%;
 }
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .steps-section h2 {
+    font-size: 32px; /* Adjust heading size for tablets */
+  }
+
+  .step-one {
+    flex-direction: column; /* Stack elements vertically */
+  }
+
+  .step-one .step-text,
+  .step-img {
+    width: 100%; /* Make text and image take full width */
+    text-align: center; /* Center text */
+  }
+
+  .step-text h3, 
+  .step-text p {
+    width: 100%; /* Make text block take full width */
+  }
+}
+
+@media (max-width: 768px) {
+  .steps-section h2 {
+    font-size: 28px; /* Smaller font for mobile */
+  }
+
+  .step-text i {
+    font-size: 30px; /* Smaller icon size */
+    padding: 25px; /* Reduce padding */
+  }
+
+  .step-text h3 {
+    font-size: 24px; /* Adjust heading size for mobile */
+  }
+
+  .step-text p {
+    font-size: 14px; /* Smaller font size for mobile */
+  }
+
+  .step-img {
+    width: 80%; /* Make image smaller for mobile */
+  }
+}
+
+
 .category {
   width: 100%;
   text-align: -webkit-center;
@@ -382,10 +451,25 @@ button.register-btn:hover {
   border-radius: 10px;
 }
 .box-one i {
-  font-size: 60px;
+  font-size: 60px; /* Default for large screens */
   padding: 20px;
   color: #ee2c3c;
 }
+
+@media (max-width: 1024px) { /* Tablet and smaller */
+  .box-one i {
+    font-size: 48px; /* Smaller icons for tablets */
+    padding: 15px;
+  }
+}
+
+@media (max-width: 768px) { /* Mobile devices */
+  .box-one i {
+    font-size: 30px; /* Even smaller icons for mobile */
+  
+  }
+}
+
 .box-one h2 {
   font-size: 16px;
 }
