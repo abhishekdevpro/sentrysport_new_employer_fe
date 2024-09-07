@@ -59,7 +59,7 @@ const DefaulHeader2 = () => {
                 <img
                   alt="brand"
                   src={logo}
-                  className="h-20 w-28 object-cover "
+                  className="h-16 p-2 "
                 />
               </Link>
             </div>

@@ -93,6 +93,12 @@ const HeaderNavContent = () => {
           </li> */}
           {/* End homepage menu items */}
           <li
+                className="text-white"
+              >
+                <Link to="/employers-dashboard/dashboard "   className="text-white">Dashbaord </Link>
+              </li>
+        
+          <li
             className={`${
               isActiveParent(employerItems, pathname) ||
               pathname?.split("/")[1] === "employers-dashboard"
@@ -107,15 +113,30 @@ const HeaderNavContent = () => {
                   pathname?.includes("/employers-dashboard") ? "current " : ""
                 }
               >
-                <Link to="/employers-dashboard/post-jobs ">Job Post</Link>
+                <Link to="/employers-list-v2 ">My Job </Link>
               </li>
-              {/* <li
+              <li
                 className={
-                  pathname?.includes("/job-dashboard") ? "current" : ""
+                  pathname?.includes("/employers-dashboard") ? "current " : ""
                 }
               >
-                <Link to="/job-list-v7">Recent Jobs</Link>
-              </li> */}
+                <Link to="/employers-dashboard/post-jobs ">Post Job </Link>
+              </li>
+              <li
+                className={
+                  pathname?.includes("/employers-dashboard") ? "current " : ""
+                }
+              >
+                <Link to="/employers-dashboard/post-jobs ">Tagged Candidates</Link>
+              </li>
+              <li
+                className={
+                  pathname?.includes("/employers-dashboard") ? "current " : ""
+                }
+              >
+                <Link to="/employers-dashboard/post-jobs ">Shortlisted/Saved Candidates</Link>
+              </li>
+              
               {/* <Link to="/job-single-v1/1">Recent Jobs</Link> */}
             </ul>
           </li>

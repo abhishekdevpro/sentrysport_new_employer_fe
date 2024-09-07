@@ -1,5 +1,6 @@
 import Map from "../../../Map";
 import { CiEdit } from "react-icons/ci";
+import axios from "axios";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -16,7 +17,7 @@ import {
   useGetStateQuery,
 } from "@/store/slices/service/index";
 import ActionLoader from "@/components/loader/ActionLoader";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import toast from "react-hot-toast";
 import AddScreeningQuestion from "./AddScreeningQuestion";
 import { Button } from "@/components/ui/button";
@@ -114,6 +115,16 @@ const PostBoxForm = () => {
 
   const [createpost, { data, isSuccess, isError, isLoading, error }] =
     useCreatePostMutation();
+
+   
+
+    const [jobTitles, setJobTitles] = useState([]);
+    const [locations, setLocations] = useState([]);
+    const [searchKeyword, setSearchKeyword] = useState("");  // For job titles
+    const [locationKeyword, setLocationKeyword] = useState("");  // For locations
+    const [showJobDropdown, setShowJobDropdown] = useState(false);
+    const [showLocationDropdown, setShowLocationDropdown] = useState(false);
+  const inputRef = useRef(null);
 
   const Dhiring = [
     { icon: <IoFemale size={30} color="gray" />, label: "female Candidate" },
@@ -305,79 +316,138 @@ const PostBoxForm = () => {
     setCode(content);
   };
 
+
+  useEffect(() => {
+    if (searchKeyword.length > 1) {
+      const fetchJobTitles = async () => {
+        try {
+          const response = await axios.get(
+            `https://api.sentryspot.co.uk/api/jobseeker/job-title?job_title_keyword=${searchKeyword}`
+          );
+          setJobTitles(response.data.data || []);  
+          setShowJobDropdown(true);  
+        } catch (error) {
+          console.error("Error fetching job titles:", error);
+        }
+      };
+
+      fetchJobTitles();
+    } else {
+      setShowJobDropdown(false);  
+    }
+  }, [searchKeyword]);
+
+  useEffect(() => {
+    if (locationKeyword.length > 1) {
+      const fetchLocations = async () => {
+        try {
+          const response = await axios.get(
+            `https://api.sentryspot.co.uk/api/jobseeker/locations?locations=${locationKeyword}`
+          );
+          const countries = response.data.data.countries || [];
+          const states = countries.flatMap(country => country.states) || [];
+          const cities = states.flatMap(state => state.cities) || [];
+          const locationsData = cities.map(city => {
+            const state = states.find(state => state.cities.some(c => c.id === city.id));
+            const country = countries.find(country => country.states.some(s => s.id === state.id));
+            return {
+              city: city.name,
+              state: state ? state.name : '',
+              country: country ? country.name : '',
+            };
+          });
+          setLocations(locationsData);  
+          setShowLocationDropdown(true);  
+        } catch (error) {
+          console.error("Error fetching locations:", error);
+        }
+      };
+
+      fetchLocations();
+    } else {
+      setShowLocationDropdown(false);  
+    }
+  }, [locationKeyword]);
+
+  const handleJobInputChange = (e) => {
+    setSearchKeyword(e.target.value); 
+  };
+
+  const handleLocationInputChange = (e) => {
+    setLocationKeyword(e.target.value);  
+  };
+
+  const handleSelectJobTitle = (title) => {
+    setSearchKeyword(title);  
+    setShowJobDropdown(false);  
+  };
+
+  const handleSelectLocation = (location) => {
+    setLocationKeyword(`${location.country}, ${location.state}, ${location.city}`);  
+    setShowLocationDropdown(false);   
+  };
+
+
   return (
-    <form className="default-form" onSubmit={handleSubmit(submitHandler)}>
+    <form className="default-form">
       <div className="row">
-        {/* <!-- Input --> */}
-        <div className="form-group col-lg-12 col-md-12">
-          <label htmlFor="job_title">Job Title</label>
+        {/* Job Title Input */}
+        <div className="form-group col-lg-12 col-md-12 relative">
+          <label htmlFor="job_title" className="block text-sm font-medium text-gray-700">Job Title</label>
           <input
             type="text"
             name="job_title"
-            placeholder="Title"
-            {...register("job_title")}
+            placeholder="Type job title"
+            onChange={handleJobInputChange}  // Handle user input for job titles
+            value={searchKeyword}  // Controlled input value for job titles
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
-          {errors.job_title && (
-            <p className="!text-red-500 text-sm">{errors.job_title.message}</p>
+
+          {/* Show job title dropdown when applicable */}
+          {showJobDropdown && jobTitles.length > 0 && (
+            <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg">
+              {jobTitles.map((job) => (
+                <li
+                  key={job.id}
+                  onClick={() => handleSelectJobTitle(job.name)}
+                  className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+                >
+                  {job.name}
+                </li>
+              ))}
+            </ul>
           )}
         </div>
-        {/* location */}
-        <div className="form-group col-lg-12 col-md-12">
-          <label htmlFor="location">Location</label>
-          {/* <input
+
+        {/* Location Input */}
+        <div className="form-group col-lg-12 col-md-12 relative mt-4">
+          <label htmlFor="location" className="block text-sm font-medium text-gray-700">Location</label>
+          <input
             type="text"
             name="location"
-            placeholder="location"
-            {...register("location")}
+            placeholder="Type location"
+            onChange={handleLocationInputChange}  // Handle user input for locations
+            value={locationKeyword}  // Controlled input value for locations
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
-          {errors.location && (
-            <p className="!text-red-500 text-sm">{errors.location.message}</p>
-          )} */}
-          <div className="flex p-1n gap-2 mb-2">
-            {selectedLocations?.map((item) => (
-              <div className="flex items-center justify-between gap-2 bg-[#4fa995] text-white p-1 rounded-lg">
-                <span className="">{item}</span>
-                <span>
-                  <CircleX
-                    size={18}
-                    className="cursor-pointer"
-                    onClick={() => handleRemoveLocation(item)}
-                  />
-                </span>
-              </div>
-            ))}
-          </div>
-          <Select
-            className="border w-full"
-            value=""
-            onValueChange={(e) =>
-              setSelectedLocations((prev) => [...new Set([...prev, e])])
-            }
-            name="location"
-          >
-            <SelectTrigger className="w-full justify-start">
-              <SelectValue placeholder="Select a location" />
-            </SelectTrigger>
-            <SelectContent>
-              {locationOption?.map((item, i) => (
-                <SelectGroup key={i}>
-                  <SelectLabel>{item?.label}</SelectLabel>
-                  {item?.arr.map(
-                    (opt, i) =>
-                      !selectedLocations?.includes(opt) && (
-                        <SelectItem value={opt} key={i}>
-                          {opt}
-                        </SelectItem>
-                      )
-                  )}
-                </SelectGroup>
+
+          {/* Show location dropdown when applicable */}
+          {showLocationDropdown && locations.length > 0 && (
+            <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg">
+              {locations.map((location, index) => (
+                <li
+                  key={index}
+                  onClick={() => handleSelectLocation(location)}
+                  className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+                >
+                  {`${location.country}, ${location.state}, ${location.city}`}
+                </li>
               ))}
-            </SelectContent>
-          </Select>
-          {/* {errors.location && (
-            <p className="!text-red-500 text-sm">{errors.location.message}</p>
-          )} */}
+            </ul>
+          )}
         </div>
+
+
         {/* experience */}
         <div className="form-group col-lg-6 col-md-12">
           <label htmlFor="min_year_of_experience">Year of Experience*</label>

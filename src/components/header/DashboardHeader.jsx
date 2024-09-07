@@ -63,7 +63,7 @@ const DashboardHeader = () => {
                     className="thumb"
                     src="/images/resource/company-6.png"
                   />
-                  <span className="name text-white">My Account</span>
+                  <span className="name text-white"></span>
                 </a>
 
                 <ul className="dropdown-menu">

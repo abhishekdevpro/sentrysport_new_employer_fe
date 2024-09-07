@@ -5,7 +5,7 @@ import logo from "../../../Images/logo.png"
 import { Link } from "react-router-dom";
 const index = ({ footerStyle = "" }) => {
   return (
-    <footer className={`main-footer ${footerStyle}`}>
+    <footer className={`main-footer ${footerStyle}`} style={{backgroundColor:"#4C3957"}}>
       <div className="auto-container">
         {/* <!--Widgets Section--> */}
         <div className="widgets-section" data-aos="fade-up">
@@ -17,18 +17,18 @@ const index = ({ footerStyle = "" }) => {
               <img
                                         alt="brand"
                                         src={logo}
-                                       className="h-28 w-28"
+                                       className="h-20 "
                                     />
               </Link>
             </div>
-                <p className="phone-num">
+                <p className="phone-num text-white">
                   <span>Call us </span>
-                  <a href="thebeehost@support.com">123 456 7890</a>
+                  <a href="thebeehost@support.com" className="text-white">123 456 7890</a>
                 </p>
-                <p className="address">
+                <p className="address text-white">
                   329 Queensberry Street, North Melbourne VIC
                   <br /> 3051, Australia. <br />
-                  <a href="mailto:support@Abrodium.com" className="email">
+                  <a href="mailto:support@Abrodium.com" className="email text-white">
                     support@Abrodium.com
                   </a>
                 </p>

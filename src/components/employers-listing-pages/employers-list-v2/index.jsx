@@ -37,14 +37,14 @@ const index = () => {
                 <FilterSidebar />
               </div>
             </div>
-            {/* End filter column for tablet and mobile devices */}
+            {/* End filter column for tablet and mobile devices 
 
             <div className="filters-column hidden-1023 col-lg-4 col-md-12 col-sm-12">
-              <FilterSidebar />
+             <FilterSidebar />
             </div>
-            {/* <!-- End Filters Column for destop and laptop --> */}
+             <!-- End Filters Column for destop and laptop --> */}
 
-            <div className="content-column col-lg-8 col-md-12 col-sm-12">
+            <div className="content-column col-lg-12 col-md-12 col-sm-12">
               <div className="ls-outer">
                 <FilterTopBox />
                 {/* <!-- ls Switcher --> */}

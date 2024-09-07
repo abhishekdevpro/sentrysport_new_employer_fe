@@ -47,7 +47,7 @@ const ShopHeader = () => {
               <img
                                         alt="brand"
                                         src={logo}
-                                       className="h-28 w-28"
+                                       className="h-28 "
                                     />
               </Link>
             </div>
