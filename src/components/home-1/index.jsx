@@ -240,7 +240,7 @@ const index = () => {
           </h2>
           <div className="b-para mt-4 text-gray-600">
             <p>
-              Abroadium is the Canadapremier AI-driven security services job portal. Post
+              Abroadium is the Canada premier AI-driven security services job portal. Post
               your job listings for free and connect with top candidates across security
               domains such as cybersecurity, physical security, security management,
               data protection, and more.
