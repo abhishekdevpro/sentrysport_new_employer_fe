@@ -4,8 +4,8 @@ import ManageJobs from "@/components/dashboard-pages/employers-dashboard/manage-
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Manage Jobs || Abrodium - Job Borad ReactJs Template",
-  description: "Abrodium - Job Borad ReactJs Template",
+  title: "Manage Jobs || Abroadium - Job Borad ReactJs Template",
+  description: "Abroadium - Job Borad ReactJs Template",
 };
 
 const ManageJobsEmploeeDBPage = () => {

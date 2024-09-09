@@ -4,8 +4,8 @@ import MyProfile from "@/components/dashboard-pages/candidates-dashboard/my-prof
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "My Profile || Abrodium - Job Borad ReactJs Template",
-  description: "Abrodium - Job Borad ReactJs Template",
+  title: "My Profile || Abroadium - Job Borad ReactJs Template",
+  description: "Abroadium - Job Borad ReactJs Template",
 };
 
 const MyProfilePage = () => {

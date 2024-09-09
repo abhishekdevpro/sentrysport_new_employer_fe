@@ -4,8 +4,8 @@ import JobList from "@/components/job-listing-pages/job-list-v2";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Job List V2 || Abrodium - Job Borad ReactJs Template",
-  description: "Abrodium - Job Borad ReactJs Template",
+  title: "Job List V2 || Abroadium - Job Borad ReactJs Template",
+  description: "Abroadium - Job Borad ReactJs Template",
 };
 
 const JobListPage2 = () => {

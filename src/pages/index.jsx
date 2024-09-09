@@ -4,8 +4,8 @@ import HomeComponent from "@/components/home-1";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Abrodium",
-  description: "Abrodium",
+  title: "Abroadium",
+  description: "Abroadium",
 };
 
 export default function Home() {

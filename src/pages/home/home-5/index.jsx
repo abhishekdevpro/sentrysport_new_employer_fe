@@ -5,8 +5,8 @@ import Home from "@/components/home-5";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Home-5 || Abrodium - Job Borad ReactJs Template",
-  description: "Abrodium - Job Borad ReactJs Template",
+  title: "Home-5 || Abroadium - Job Borad ReactJs Template",
+  description: "Abroadium - Job Borad ReactJs Template",
 };
 
 const HomePage5 = () => {

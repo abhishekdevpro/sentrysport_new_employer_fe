@@ -95,7 +95,7 @@ const HeaderNavContent = () => {
           <li
                 className="text-white"
               >
-                <Link to="/employers-dashboard/dashboard "   className="text-white">Dashbaord </Link>
+                <Link to="/employers-dashboard/dashboard "   className="text-white">Dashboard </Link>
               </li>
         
           <li
@@ -127,7 +127,7 @@ const HeaderNavContent = () => {
                   pathname?.includes("/employers-dashboard") ? "current " : ""
                 }
               >
-                <Link to="/employers-list-v3 ">Tagged Candidates</Link>
+                <Link to="/employers-list-v3Abroadium ">Tagged Candidates</Link>
               </li>
               <li
                 className={
@@ -155,7 +155,7 @@ const HeaderNavContent = () => {
                 : ""
             } dropdown`}
           >
-            <span>Abrodium ID</span>
+            <span>Abroadium ID</span>
             <ul>
               {employerItems.map((item) => (
                 <li className="dropdown" key={item.id}>
@@ -187,7 +187,7 @@ const HeaderNavContent = () => {
               <li
                 className={pathname?.includes("/sentry-spot") ? "current" : ""}
               >
-                <Link to="/sentry-spot">Abrodium id </Link>
+                <Link to="/sentry-spot">Abroadium id </Link>
                 <Link to="/candidates-dashboard/my-profile">
                   Candidate profile{" "}
                 </Link>
@@ -291,7 +291,7 @@ const HeaderNavContent = () => {
               isActiveParentChaild(blogItems, pathname) ? "current" : ""
             } dropdown`}
           > */}
-          {/* <Link to={"https://blog.Abrodium.co.uk/"}> Resources</Link> */}
+          {/* <Link to={"https://blog.Abroadium.co.uk/"}> Resources</Link> */}
           {/* <ul>
               {blogItems.map((item, i) => (
                 <li

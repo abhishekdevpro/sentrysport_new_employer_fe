@@ -5,9 +5,9 @@ import Contact from "@/components/pages-menu/contact";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: 'Contact || Abrodium - Job Borad ReactJs Template',
+  title: 'Contact || Abroadium - Job Borad ReactJs Template',
   description:
-    'Abrodium - Job Borad ReactJs Template',
+    'Abroadium - Job Borad ReactJs Template',
   
 }
 

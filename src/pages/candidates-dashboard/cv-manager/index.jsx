@@ -4,8 +4,8 @@ import CvManager from "@/components/dashboard-pages/candidates-dashboard/cv-mana
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "CV Manager || Abrodium - Job Borad ReactJs Template",
-  description: "Abrodium - Job Borad ReactJs Template",
+  title: "CV Manager || Abroadium - Job Borad ReactJs Template",
+  description: "Abroadium - Job Borad ReactJs Template",
 };
 
 const CVMannagerPage = () => {

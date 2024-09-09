@@ -6,10 +6,10 @@ const HeroSection = () => {
           <div className="flex items-center basis-full md:basis-1/2 py-2 md:py-4">
             <div className="sec-title ">
               <h3 className="text-white  text-2xl font-bold">
-                Enhance Your Career Prospects with a Abrodium ID Profile
+                Enhance Your Career Prospects with a Abroadium ID Profile
               </h3>
               <div className="text text-white ">
-                With a Abrodium ID profile, you'll enjoy a customized job
+                With a Abroadium ID profile, you'll enjoy a customized job
                 search experience and receive job recommendations that match
                 your skills, making your job hunt quicker and more efficient.
               </div>
@@ -19,7 +19,7 @@ const HeroSection = () => {
                 data-bs-toggle="modal"
                 data-bs-target="#loginPopupModal"
               >
-                <span className="btn-title">Get Your Abrodium ID now</span>
+                <span className="btn-title">Get Your Abroadium ID now</span>
               </a>
             </div>
           </div>

@@ -7,7 +7,7 @@ const Seo = ({ pageTitle }) => (
     {/* <Head>
       <title>
         {pageTitle &&
-          `${pageTitle} || Abrodium - Job Borad ReactJs Template}`}
+          `${pageTitle} || Abroadium - Job Borad ReactJs Template}`}
       </title>
       <meta
         name="viewport"

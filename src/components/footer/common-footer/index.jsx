@@ -28,8 +28,8 @@ const index = ({ footerStyle = "" }) => {
                 <p className="address text-white">
                   329 Queensberry Street, North Melbourne VIC
                   <br /> 3051, Australia. <br />
-                  <a href="mailto:support@Abrodium.com" className="email text-white">
-                    support@Abrodium.com
+                  <a href="mailto:support@Abroadium.com" className="email text-white">
+                    support@Abroadium.com
                   </a>
                 </p>
               </div>

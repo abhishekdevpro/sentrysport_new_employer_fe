@@ -2,8 +2,8 @@ import CompanyProfile from "@/components/dashboard-pages/employers-dashboard/com
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Company Profile || Abrodium - Job Borad ReactJs Template",
-  description: "Abrodium - Job Borad ReactJs Template",
+  title: "Company Profile || Abroadium - Job Borad ReactJs Template",
+  description: "Abroadium - Job Borad ReactJs Template",
 };
 
 const CompanyProfileEmploeeDBPage = () => {

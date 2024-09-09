@@ -4,8 +4,8 @@ import ShortListedJobs from "@/components/dashboard-pages/candidates-dashboard/s
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Short ListedJobs || Abrodium - Job Borad ReactJs Template",
-  description: "Abrodium - Job Borad ReactJs Template",
+  title: "Short ListedJobs || Abroadium - Job Borad ReactJs Template",
+  description: "Abroadium - Job Borad ReactJs Template",
 };
 
 const ShortListedJobsPage = () => {

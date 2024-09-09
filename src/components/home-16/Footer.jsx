@@ -28,8 +28,8 @@ const Footer = () => {
                 <p className="address">
                   329 Queensberry Street, North Melbourne VIC
                   <br /> 3051, Australia. <br />
-                  <a href="mailto:support@Abrodium.com" className="email">
-                    support@Abrodium.com
+                  <a href="mailto:support@Abroadium.com" className="email">
+                    support@Abroadium.com
                   </a>
                 </p>
               </div>

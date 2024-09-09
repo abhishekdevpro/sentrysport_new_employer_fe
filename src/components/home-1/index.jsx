@@ -219,7 +219,7 @@ const index = () => {
     <div className="banner-text flex flex-col lg:flex-row justify-between items-center">
       <div className="b-text lg:w-1/2 mb-8 lg:mb-0">
         <div className="b-head  lg:text-left">
-          <p className="text-xl font-medium text-gray-700">Abrodium, your personal HR partner</p>
+          <p className="text-xl font-medium text-gray-700">Abroadium, your personal HR partner</p>
           <h2 className="font-bold text-2xl lg:text-3xl mt-4">
             Signup to AI-Enabled platform to{" "}
             <TypeAnimation
@@ -240,25 +240,25 @@ const index = () => {
           </h2>
           <div className="b-para mt-4 text-gray-600">
             <p>
-              Abrodium is the UK’s premier AI-driven security services job portal. Post
+              Abroadium is the Canadapremier AI-driven security services job portal. Post
               your job listings for free and connect with top candidates across security
               domains such as cybersecurity, physical security, security management,
               data protection, and more.
             </p>
           </div>
         </div>
-        <div className="banner-icon-txt mt-8 flex flex-col lg:flex-row gap-6">
-          <div className="icon-txt flex items-start">
-            <i className="fa-regular fa-building text-4xl text-gray-500"></i>
-            <div className="txt ml-4">
+        <div className="banntxt mt-8 flex flex-col lg:flex-row gap-6">
+          <div className="icon flex items-start">
+            <i className="fading text-4xl text-gray-500"></i>
+            <div className=" -4">
               <h2 className="font-bold text-xl">50+ organizations</h2>
               <p className="text-gray-600">
                 Choose to use our AI-Enabled services for smoother HR processes.
               </p>
             </div>
           </div>
-          <div className="icon-txt flex items-start">
-            <i className="fa-solid fa-user-group text-4xl text-gray-500"></i>
+          <div className="icoxt flex items-start">
+            <i className="fa=ext-4xl text-gray-500"></i>
             <div className="txt ml-4">
               <h2 className="font-bold text-xl">Huge number</h2>
               <p className="text-gray-600">
@@ -287,7 +287,7 @@ const index = () => {
           <div className="people-card">
             <div className="card-one  hover:shadow-xl" data-aos="fade">
               <img src="img/people-1.webp" />
-              <h2>UK’s one of the most trusted Employment site</h2>
+              <h2>Canada one of the most trusted Employment site</h2>
               <p>
                 Reach candidates where they actively search for opportunities
               </p>
@@ -322,15 +322,14 @@ const index = () => {
         <div className="auto-container">
           <div className="steps-section ">
             <h2 className="">
-              Spot new Hire with our easy to use platform <br /> instead of
-              “Hiring is now simple”
+              Spot new Hire with our easy to use platform
             </h2>
             <div className="step-one">
               <div className="step-text">
                 <i className="fa-solid fa-1 "></i>
                 <h3 className="my-3">
                   Gain access to top-tier, AI-verified talent through
-                  Abrodium.
+                  Abroadium.
                 </h3>
                 <p>
                   Post a job in minutes with AI and swiftly connect with the
@@ -417,7 +416,7 @@ const index = () => {
       
       <div className="category">
         <div className="auto-container">
-          <h2>Why Abrodium for Employers</h2>
+          <h2>Why Abroadium for Employers</h2>
           <div className="testimonials">
             <Slider {...sliderSettings} className="testimonial-reel">
               <div>
@@ -434,7 +433,7 @@ const index = () => {
                     </article>
                     <article className="test-content">
                       <p>
-                        Abrodium utilizes advanced AI algorithms to match your
+                        Abroadium utilizes advanced AI algorithms to match your
                         job postings with the most relevant candidates. Our AI
                         system evaluates skills, experience, and job fit to
                         ensure you connect with top-quality talent quickly and
@@ -458,7 +457,7 @@ const index = () => {
                     </article>
                     <article className="test-content">
                       <p>
-                        Posting a job on Abrodium is fast and easy. With a
+                        Posting a job on Abroadium is fast and easy. With a
                         user-friendly interface, you can create and publish job
                         listings in minutes. Our platform ensures your job
                         openings are visible to a broad and diverse pool of
@@ -482,7 +481,7 @@ const index = () => {
                     </article>
                     <article className="test-content">
                       <p>
-                        All candidates on Abrodium undergo rigorous AI-powered
+                        All candidates on Abroadium undergo rigorous AI-powered
                         skill verification, so you can be confident that you're
                         considering only the best-qualified professionals. This
                         saves you time and effort in screening, as we provide a
@@ -506,7 +505,7 @@ const index = () => {
                     </article>
                     <article className="test-content">
                       <p>
-                        Abrodium’s AI tools automate the initial screening
+                        Abroadium’s AI tools automate the initial screening
                         process, filtering candidates based on your specific
                         criteria. This reduces the workload for your HR team,
                         allowing them to focus on more critical tasks and making
@@ -532,7 +531,7 @@ const index = () => {
                     <article className="test-content">
                       <p>
                         Our platform offers integrated scheduling tools that
-                        make arranging interviews a breeze. Abrodium syncs
+                        make arranging interviews a breeze. Abroadium syncs
                         with your calendar, allowing you to easily coordinate
                         interviews with candidates, ensuring a smooth and
                         organized recruitment process.
@@ -556,7 +555,7 @@ const index = () => {
                     <article className="test-content">
                       <p>
                         As a platform dedicated to the security industry,
-                        Abrodium understands the unique requirements of
+                        Abroadium understands the unique requirements of
                         security roles. Whether you're hiring for cybersecurity,
                         physical security, or security management, we provide
                         access to a specialized talent pool tailored to your
@@ -580,7 +579,7 @@ const index = () => {
                     </article>
                     <article className="test-content">
                       <p>
-                        Abrodium provides detailed analytics and reports to
+                        Abroadium provides detailed analytics and reports to
                         help you track the success of your job postings,
                         understand candidate engagement, and optimize your
                         hiring strategy. This data-driven approach ensures you
@@ -605,7 +604,7 @@ const index = () => {
                     </article>
                     <article className="test-content">
                       <p>
-                        With Abrodium, you can post jobs and access top-tier
+                        With Abroadium, you can post jobs and access top-tier
                         talent without breaking the bank. Our platform offers
                         competitive pricing, ensuring you get maximum value for
                         your recruitment budget.
@@ -631,7 +630,7 @@ const index = () => {
                         Our dedicated support team is always ready to assist
                         you. Whether you need help with posting a job,
                         navigating the platform, or optimizing your hiring
-                        process, Abrodium’s customer support is just a call or
+                        process, Abroadium’s customer support is just a call or
                         click away.
                       </p>
                     </article>
@@ -670,7 +669,7 @@ const index = () => {
                 <h2>Our services</h2>
                 <ul>
                   <li>
-                    <a href="">Why Abrodium?</a>
+                    <a href="">Why Abroadium?</a>
                   </li>
                   <li>
                     <a href="">Recruiter Advice</a>
@@ -738,10 +737,10 @@ const index = () => {
                     <a href="">Advertise a course</a>
                   </li>
                   <li>
-                    <a href="">Abrodium Global</a>
+                    <a href="">Abroadium Global</a>
                   </li>
                   <li>
-                    <a href="">Abrodium Screening</a>
+                    <a href="">Abroadium Screening</a>
                   </li>
                 </ul>
               </div>

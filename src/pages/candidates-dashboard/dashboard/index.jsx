@@ -4,8 +4,8 @@ import DashboadHome from "@/components/dashboard-pages/candidates-dashboard/dash
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Candidates Dashboard || Abrodium - Job Borad ReactJs Template",
-  description: "Abrodium - Job Borad ReactJs Template",
+  title: "Candidates Dashboard || Abroadium - Job Borad ReactJs Template",
+  description: "Abroadium - Job Borad ReactJs Template",
 };
 
 const DashboardPage = () => {
