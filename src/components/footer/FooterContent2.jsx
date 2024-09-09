@@ -5,7 +5,7 @@ const FooterContent2 = () => {
   const footerMenu1 = [
     { id: 1, name: "US Jobs", routeLink: "/" },
     { id: 2, name: "Canada Jobs", routeLink: "/" },
-    { id: 3, name: "UK Jobs", routeLink: "/" },
+    { id: 3, name: "Canada Jobs", routeLink: "/" },
     { id: 4, name: "Emplois en France", routeLink: "/" },
     { id: 5, name: "Jobs in Deutschland", routeLink: "/" },
     { id: 6, name: "Vacatures China", routeLink: "/" },

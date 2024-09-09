@@ -133,91 +133,13 @@ const FilterTopBox = () => {
   };
   return (
     <>
-      <div className="ls-switcher">
-        <div className="showing-result">
-          <div className="text">
-            <strong>{content?.length}</strong> jobs
-          </div>
-        </div>
-        {/* End showing-result */}
-        <div className="sort-by">
-          {keyword !== "" ||
-          location !== "" ||
-          destination.min !== 0 ||
-          destination.max !== 100 ||
-          category !== "" ||
-          foundationDate.min !== 1900 ||
-          foundationDate.max !== 2028 ||
-          sort !== "" ||
-          perPage.start !== 0 ||
-          perPage.end !== 0 ? (
-            <button
-              onClick={clearAll}
-              className="btn btn-danger text-nowrap me-2"
-              style={{
-                minHeight: "45px",
-                marginBottom: "15px",
-              }}
-            >
-              Clear All
-            </button>
-          ) : undefined}
-
-          <select
-            value={sort}
-            className="chosen-single form-select"
-            onChange={sortHandler}
-          >
-            <option value="">Sort by (default)</option>
-            <option value="asc">Newest</option>
-            <option value="des">Oldest</option>
-          </select>
-          {/* End select */}
-
-          <select
-            onChange={perPageHandler}
-            className="chosen-single form-select ms-3 "
-            value={JSON.stringify(perPage)}
-          >
-            <option
-              value={JSON.stringify({
-                start: 0,
-                end: 0,
-              })}
-            >
-              All
-            </option>
-            <option
-              value={JSON.stringify({
-                start: 0,
-                end: 10,
-              })}
-            >
-              10 per page
-            </option>
-            <option
-              value={JSON.stringify({
-                start: 0,
-                end: 20,
-              })}
-            >
-              20 per page
-            </option>
-            <option
-              value={JSON.stringify({
-                start: 0,
-                end: 24,
-              })}
-            >
-              24 per page
-            </option>
-          </select>
-          {/* End select */}
-        </div>
+      <div className="ls-switcher text-xl font-semibold">
+      Tagged Candidates - All Tags
       </div>
       {/* End top filter bar box */}
 
-      <div className="row">{content}</div>
+      <div className=" border h-2/5 rounded-sm shadow-lg text-center py-40 my-3">You have not tagged any candidates yet
+      Tag a candidate to find a list here</div>
       {/* End .row */}
 
       <Pagination />

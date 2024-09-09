@@ -127,93 +127,25 @@ const HeaderNavContent = () => {
                   pathname?.includes("/employers-dashboard") ? "current " : ""
                 }
               >
-                <Link to="/employers-dashboard/post-jobs ">Tagged Candidates</Link>
+                <Link to="/employers-list-v3 ">Tagged Candidates</Link>
               </li>
               <li
                 className={
                   pathname?.includes("/employers-dashboard") ? "current " : ""
                 }
               >
-                <Link to="/employers-dashboard/post-jobs ">Shortlisted/Saved Candidates</Link>
+                <Link to="/employers-list-v1">Shortlisted/Saved Candidates</Link>
               </li>
               
               {/* <Link to="/job-single-v1/1">Recent Jobs</Link> */}
             </ul>
           </li>
-          {/* End findjobs menu items */}
-
           <li
-            className={`${
-              isActiveParent(employerItems, pathname) ||
-              pathname?.split("/")[1] === "employers-dashboard"
-                ? "current"
-                : ""
-            } dropdown`}
-          >
-            <span className="text-white">Abrodium ID</span>
-            <ul>
-              {/*{employerItems.map((item) => (
-                <li className="dropdown" key={item.id}>
-                  <span
-                    className={
-                      isActiveParentChaild(item.items, pathname)
-                        ? "current"
-                        : ""
-                    }
-                  >
-                    {item.title}
-                  </span>
-                  <ul>
-                    {item.items.map((menu, i) => (
-                      <li
-                        className={
-                          isActiveLink(menu.routePath, pathname)
-                            ? "current"
-                            : ""
-                        }
-                        key={i}
-                      >
-                        <Link to={menu.routePath}>{menu.name}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              ))} */}
-              <li
-                className={pathname?.includes("/sentry-spot") ? "current" : ""}
+                className="text-white"
               >
-                <Link to="/sentry-spot">Abrodium id </Link>
-                <Link to="/candidates-dashboard/my-profile">
-                  Candidate profile{" "}
-                </Link>
+                <Link to=""   className="text-white">Search Resume </Link>
               </li>
-              <li
-                className={
-                  pathname?.includes("/employers-dashboard") ? "current" : ""
-                }
-              >
-                <Link to="/employers-list-v2">Employers List</Link>
-              </li>
-              <li
-                className={
-                  pathname?.includes("/employers-dashboard") ? "current" : ""
-                }
-              >
-                <Link to="/employers-single-v1/1">
-                  Employers Listing detail page
-                </Link>
-              </li>
-              <li
-                className={
-                  pathname?.includes("/employers-dashboard") ? "current" : ""
-                }
-              >
-                <Link to="/employers-dashboard/dashboard">
-                  Employers Dashboard
-                </Link>
-              </li>
-            </ul>
-          </li>
+          
           {/* End Employers menu items */}
           {/* <li
             className={`${

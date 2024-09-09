@@ -181,16 +181,16 @@ function App() {
                   element={<JobSingleDynamicV5 />}
                 />
 
-                {/* <Route
+                 <Route
                   path="employers-list-v1"
                   element={<EmployerListPage1 />}
-                /> */}
+                /> 
                 <Route
                   path="employers-list-v2"
                   element={<EmployerListPage2 />}
                 />
-                {/*   <Route path="employers-list-v3" element={<EmployerListPage3 />} />
-                  <Route path="employers-list-v4" element={<EmployerListPage4 />} /> */}
+                  <Route path="employers-list-v3" element={<EmployerListPage3 />} />
+                  <Route path="employers-list-v4" element={<EmployerListPage4 />} /> 
 
                 <Route
                   path="employers-single-v1/:id"

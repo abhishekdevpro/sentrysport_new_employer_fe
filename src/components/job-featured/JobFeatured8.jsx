@@ -25,7 +25,7 @@ const JobFeatured8 = () => {
                 <ul className="job-other-info">
                   <li className="privacy">
                     <span className="icon fa fa-map-marker-alt pe-1"></span>
-                    London, UK
+                    Canada
                   </li>
                   <li className="time">Full Time</li>
                 </ul>

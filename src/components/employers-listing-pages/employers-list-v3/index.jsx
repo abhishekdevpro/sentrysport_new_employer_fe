@@ -20,13 +20,13 @@ const index = () => {
             <MobileMenu />
             {/* End MobileMenu */}
 
-            <section className="page-title">
+           {/* <section className="page-title">
                 <div className="auto-container">
                     <JobSearchForm />
-                    {/* <!-- Job Search Form --> */}
+                    {/* <!-- Job Search Form -->
                 </div>
             </section>
-            {/* <!--End Page Title--> */}
+             <!--End Page Title--> */}
 
             <section className="ls-section">
                 <div className="auto-container">
