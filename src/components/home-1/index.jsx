@@ -287,7 +287,7 @@ const index = () => {
           <div className="people-card">
             <div className="card-one  hover:shadow-xl" data-aos="fade">
               <img src="img/people-1.webp" />
-              <h2>Canada one of the most trusted Employment site</h2>
+              <h2>Canada's one of the most trusted Employment site</h2>
               <p>
                 Reach candidates where they actively search for opportunities
               </p>
