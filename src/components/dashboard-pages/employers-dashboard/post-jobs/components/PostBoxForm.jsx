@@ -532,7 +532,7 @@ const PostBoxForm = () => {
         </div>
         {/* <!-- About Company --> */}
         <div className="form-group col-lg-12 col-md-12">
-          <label htmlFor="job_description">Job Description *</label>
+          <label htmlFor="job_description">Job Description *</label> <button className="border-1 border-violet-700 rounded-md py-2 px-0 m-2 font-semibold">AI Assist +</button>
           {/* <textarea
             id="job_description"
             name="job_description"
@@ -603,7 +603,7 @@ const PostBoxForm = () => {
           <div className="flex items-end w-2/12">
             <button
               type="button"
-              className="w-full bg-blue-500 text-white py-2 px-4 rounded"
+              className="w-full bg-blue-500 text-white py-3 mb-1 px-4 rounded"
               onClick={handleButtonClick}
             >
               Upload File
@@ -672,7 +672,7 @@ const PostBoxForm = () => {
             {...register("annual_salary")}
           >
             <option value="" >
-              Min salary (in lakhs)
+              Min salary ($)
             </option>
             {/* {Array.from({ length: 101 }, (_, i) => i).map((x, i) => (
 <option value={x}>{x}</option>
@@ -699,7 +699,7 @@ const PostBoxForm = () => {
             {...register("annual_salary_max")}
           >
             <option value="" >
-              Max salary (in lakhs)
+              Max salary ($)
             </option>
             {Array.from({ length: 101 }, (_, i) => i).map((x, i) => (
               <option value={x}>{x}</option>
@@ -757,7 +757,9 @@ const PostBoxForm = () => {
           )}
         </div>
         <div className="form-group col-lg-12 col-md-12">
-          <label htmlFor="tags">Tags</label>
+        <div className="flex justify-between">  <label htmlFor="tags" className="pt-4 font-semibold">Skills</label>
+        <button className="border-1 border-violet-700 rounded-md py-2  px-2  m-2 font-semibold">AI Assist +</button>
+        </div>
           <MultiSelector
             values={selectedTags || []}
             onValuesChange={(e) =>
