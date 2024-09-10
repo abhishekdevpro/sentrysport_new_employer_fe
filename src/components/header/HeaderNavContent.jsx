@@ -127,7 +127,7 @@ const HeaderNavContent = () => {
                   pathname?.includes("/employers-dashboard") ? "current " : ""
                 }
               >
-                <Link to="/employers-list-v3Abroadium ">Tagged Candidates</Link>
+                <Link to="/employers-list-v3">Tagged Candidates</Link>
               </li>
               <li
                 className={

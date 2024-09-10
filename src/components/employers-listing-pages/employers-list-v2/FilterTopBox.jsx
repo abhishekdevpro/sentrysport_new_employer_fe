@@ -1,20 +1,26 @@
 import React from 'react';
 import { Button } from '@/components/ui/button'; // Adjust import path as needed
 import { LayoutGridIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { FaDoorClosed, FaFacebook, FaFolder, FaLinkedinIn, FaPen } from 'react-icons/fa';
+import { FaBookBookmark } from 'react-icons/fa6';
 
 export default function FilterTopBox() {
   return (
     <div className="min-h-screen bg-white">
       
       <div className="flex">
-        <main className="flex-1 p-6">
+        <main className="flex-1 pe-2">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-2xl font-bold">All Jobs</h1>
+            <Link to={"/employers-dashboard/post-jobs"}>
             <Button className="bg-violet-900 text-white">Post Job</Button>
+            </Link>
+          
           </div>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto border">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-100">
+              <thead className="bg-violet-100">
                 <tr>
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase ">CREATED ON</th>
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">JOB TITLE</th>
@@ -40,12 +46,12 @@ export default function FilterTopBox() {
                   </td>
                   <td className="px-6 py-4 text-sm font-medium">
                     <div className="flex space-x-2">
-                      <FilePenIcon className="w-4 h-4 text-gray-500" />
-                      <BookmarkIcon className="w-4 h-4 text-gray-500" />
-                      <FolderSyncIcon className="w-4 h-4 text-gray-500" />
-                      <DoorClosedIcon className="w-4 h-4 text-gray-500" />
-                      <LinkedinIcon className="w-4 h-4 text-gray-500" />
-                      <FacebookIcon className="w-4 h-4 text-gray-500" />
+                      <FaPen className="w-4 h-4 text-gray-500" />
+                      <FaBookBookmark className="w-4 h-4 text-gray-500" />
+                      <FaFolder className="w-4 h-4 text-gray-500" />
+                      <FaDoorClosed className="w-4 h-4 text-gray-500" />
+                      <FaLinkedinIn className="w-4 h-4 text-gray-500" />
+                      <FaFacebook className="w-4 h-4 text-gray-500" />
                     </div>
                   </td>
                 </tr>

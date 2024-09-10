@@ -31,7 +31,7 @@ const employerMenu = [
     id: 5,
     name: "Community",
     icon: "la-safari",
-    routePath: "https://Abroadiumnew.vercel.app/community",
+    routePath: "https://abrodiumnew.vercel.app/community",
     active: "",
   },
   {

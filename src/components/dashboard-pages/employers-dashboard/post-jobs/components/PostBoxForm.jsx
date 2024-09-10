@@ -46,7 +46,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CircleX } from "lucide-react";
+import { CircleX, HandIcon } from "lucide-react";
+
+
+import { AcademicCapIcon, BriefcaseIcon, CheckIcon, ClockIcon, DocumentIcon, UserGroupIcon, UserIcon } from '@heroicons/react/24/solid';
+
 
 const tags = [
   { value: "Banking", label: "Banking" },
@@ -387,6 +391,37 @@ const PostBoxForm = () => {
     setShowLocationDropdown(false);   
   };
 
+  const [selectedTypes, setSelectedTypes] = useState([]);
+
+  const handleTypeClick = (id) => {
+    if (selectedTypes.includes(id)) {
+      setSelectedTypes(selectedTypes.filter((typeId) => typeId !== id));
+    } else {
+      setSelectedTypes([...selectedTypes, id]);
+    }
+  };
+
+  // Icons for specific job types
+  const getIcon = (jobTypeName) => {
+    switch (jobTypeName.toLowerCase()) {
+      case 'full-time':
+        return <BriefcaseIcon className="w-8 h-8" />;
+      case 'part-time':
+        return <ClockIcon className="w-8 h-8" />;
+      case 'contract':
+        return <DocumentIcon className="w-8 h-8" />;
+      case 'temporary':
+        return <ClockIcon className="w-8 h-8 text-yellow-500" />;
+      case 'other':
+        return <AcademicCapIcon className="w-8 h-8" />;
+      case 'volunteer':
+        return <HandIcon className="w-8 h-8" />;
+      case 'internship':
+        return <UserGroupIcon className="w-8 h-8" />;
+      default:
+        return <UserIcon className="w-8 h-8" />;
+    }
+  };
 
   return (
     <form className="default-form">
@@ -457,8 +492,8 @@ const PostBoxForm = () => {
             name="min_year_of_experience"
             {...register("min_year_of_experience")}
           >
-            <option value="" disabled>
-              select Min
+            <option value="" >
+              Select Min
             </option>
             {Array.from({ length: 30 }, (_, i) => i).map((x, i) => (
               <option value={x}>{x}</option>
@@ -476,14 +511,14 @@ const PostBoxForm = () => {
           )}
         </div>
         <div className="form-group col-lg-6 col-md-12">
-          <label className="text-white">l</label>
+          <label className="text-white" htmlFor="max_year_of_experience">  select Max</label>
           <select
             className="chosen-single form-select "
             name="max_year_of_experience"
             {...register("max_year_of_experience")}
           >
-            <option value="" disabled>
-              select Max
+            <option value="" >
+              Select Max
             </option>
             {Array.from({ length: 30 }, (_, i) => i).map((x, i) => (
               <option value={x}>{x}</option>
@@ -511,8 +546,11 @@ const PostBoxForm = () => {
             formats={formats}
             value={code}
             onChange={handleProcedureContentChange}
-            placeholder="Job Description"
+            placeholder=" Describe the role and responsiblities, skills required for the job and help the candidates understand the role better"
+            className="h-40 mb-5 text-lg " 
           />
+          <p>Note: You can access the editor toolbar (boldand list) by selecting the text</p>
+
 
           {/* {errors.job_description && (
             <p className="!text-red-500 text-sm">
@@ -550,19 +588,13 @@ const PostBoxForm = () => {
             <label htmlFor="videojd" className="text-md  font-medium">
               Video JD
             </label>
-            {/* <input
-              type={isFileInput ? "file" : "url"}
-              name="videoJD"
-              placeholder="Paste the URL"
-              {...register("video_jd")}
-              className={isFileInput ? "uploadButton" : ""}
-            /> */}
+            Add a video to tell your brand's story
             <input
               type={isFileInput ? "file" : "url"}
               name="videoJD"
-              placeholder="Paste the URL"
+              placeholder="Paste a Youtube link here "
               {...register("video_jd")}
-              className={`p-2 ${
+              className={`p-2 mt-1 ${
                 isFileInput ? " bg-slate-100 rounded-lg h-[50px]" : ""
               }`}
             />
@@ -639,8 +671,8 @@ const PostBoxForm = () => {
             className="chosen-single form-select"
             {...register("annual_salary")}
           >
-            <option value="" disabled>
-              min salary (in lakhs)
+            <option value="" >
+              Min salary (in lakhs)
             </option>
             {/* {Array.from({ length: 101 }, (_, i) => i).map((x, i) => (
 <option value={x}>{x}</option>
@@ -666,8 +698,8 @@ const PostBoxForm = () => {
             className="chosen-single form-select"
             {...register("annual_salary_max")}
           >
-            <option value="" disabled>
-              max salary (in lakhs)
+            <option value="" >
+              Max salary (in lakhs)
             </option>
             {Array.from({ length: 101 }, (_, i) => i).map((x, i) => (
               <option value={x}>{x}</option>
@@ -691,7 +723,7 @@ const PostBoxForm = () => {
             name="graduation_year_min"
             {...register("graduation_year_min")}
           >
-            <option value="">min Batch</option>
+            <option value="">Min Batch</option>
             {yearData?.data?.map((year) => (
               <option key={year?.id} value={year?.id}>
                 {year?.name}
@@ -711,7 +743,7 @@ const PostBoxForm = () => {
             name="graduation_year_max"
             {...register("graduation_year_max")}
           >
-            <option value="">max Batch</option>
+            <option value="">Max Batch</option>
             {yearData?.data?.map((year) => (
               <option key={year?.id} value={year?.id}>
                 {year?.name}
@@ -731,17 +763,17 @@ const PostBoxForm = () => {
             onValuesChange={(e) =>
               setSelectedTags(JSON.parse(JSON.stringify(e)))
             }
-            className="w-full relative !border-none"
+            className="w-full relative "
             name="tags"
             {...register("tags")}
           >
-            <MultiSelectorTrigger>
-              <MultiSelectorInput placeholder="Select tags" />
+            <MultiSelectorTrigger className="bg-violet-200">
+              <MultiSelectorInput placeholder="Select tags"  className="bg-violet-500"/>
             </MultiSelectorTrigger>
-            <MultiSelectorContent>
-              <MultiSelectorList className="bg-white absolute z-10">
+            <MultiSelectorContent >
+              <MultiSelectorList className="bg-white absolute z-10 ">
                 {tags?.map((item) => (
-                  <MultiSelectorItem value={item?.value} key={item}>
+                  <MultiSelectorItem value={item?.value} key={item} >
                     {item?.label}
                   </MultiSelectorItem>
                 ))}
@@ -800,36 +832,39 @@ classNamePrefix="select"
             <p className="!text-red-500 text-sm">{errors.job_type.message}</p>
           )}
         </div> */}
-        <div className="form-group col-lg-12 col-md-12">
-          <label htmlFor="job_type">Job Type</label>
-          <select
-            name="job_type"
-            className="chosen-single form-select"
-            {...register("job_type")}
+              <div className="form-group col-lg-12 col-md-12">
+      <label htmlFor="job_type">Course Type</label>
+      <div className="flex flex-wrap gap-4 mt-2">
+        {jobTypeData?.data?.map((jobType) => (
+          <div
+            key={jobType?.id}
+            className={`relative cursor-pointer p-2 rounded-lg flex flex-col items-center justify-center w-40 h-36 text-center 
+              ${selectedTypes.includes(jobType?.id) ? "shadow-inner shadow-indigo-700 border-2 border-violet-700" : "border "}`}
+            onClick={() => handleTypeClick(jobType?.id)}
           >
-            <option value="">Select type</option>
-            {jobTypeData?.data?.map((jobType) => (
-              <option key={jobType?.id} value={jobType?.id}>
-                {jobType?.name}
-              </option>
-            ))}
-          </select>
-          {errors.job_type && (
-            <p className="!text-red-500 text-sm">{errors.job_type.message}</p>
-          )}
-        </div>
+            <div className="text-center">
+              <div> {getIcon(jobType?.name)} </div>
+            </div>
+            <p className="text-sm mt-2 ">{jobType?.name}</p>
+
+            {/* Checkmark */}
+            {selectedTypes.includes(jobType?.id) && (
+              <CheckIcon className="absolute -top-2 -right-1 rounded-full border-2 border-violet-700 w-7 h-7 text-violet-700 bg-white" />
+            )}
+          </div>
+        ))}
+      </div>
+      {errors.job_type && (
+        <p className="!text-red-500 text-sm">{errors.job_type.message}</p>
+      )}
+    </div>
         {/* <!-- Input --> */}
-        <div className="form-group col-lg-12 col-md-12">
-          <label htmlFor="email">Email Address</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="enter your email"
-            {...register("email")}
-          />
-          {errors.email && (
-            <p className="!text-red-500 text-sm">{errors.email.message}</p>
-          )}
+        <div className="form-group col-lg-12 col-md-12 my-3">
+          
+          <label htmlFor="email">Add Screening Questions
+          </label> <br/>
+          Candidates will be asked to answer these question before they submit their application. You can add up to 10 questions.
+          <br/><button className="border-1 rounded-md py-2 my-5 border-violet-500">Add Question</button>
         </div>
         <div className="form-group col-lg-12 col-md-12">
           <label htmlFor="diversity_hiring">Diversity hiring !</label>
@@ -840,7 +875,7 @@ classNamePrefix="select"
                 key={id}
                 className={`relative flex flex-col items-center justify-center border  p-2 text-center cursor-pointer ${
                   selectedItem === id
-                    ? " border border-blue-500 border-4"
+                    ? "  border-blue-500 border-4"
                     : "border-gray-300"
                 }`}
                 onClick={() => handleSelect(id)}
@@ -877,7 +912,7 @@ classNamePrefix="select"
             </p>
           )} */}
         </div>
-        <div className="mb-4">
+       {/*} <div className="mb-4">
           <div className="mb-3">
             <p className="m-0 !text-lg text-black">Add Screening Questions</p>
             <p className="m-0">
@@ -1089,7 +1124,7 @@ placeholder="329 Queensberry Street, North Melbourne VIC 3051, Australia."
         {/* <!-- Input --> */}
         {/* <div className="form-group col-lg-12 col-md-12">
 <button className="theme-btn btn-style-three">Search Location</button>
-</div> */}
+</div> ]
         <div className="form-group col-lg-12 col-md-12">
           <div className="map-outer">
             <div style={{ height: "420px", width: "100%" }}>
@@ -1097,7 +1132,7 @@ placeholder="329 Queensberry Street, North Melbourne VIC 3051, Australia."
             </div>
           </div>
         </div>
-        {/* <!-- Input --> */}
+       <!-- Input --> */}
         <div className="form-group col-lg-12 col-md-12 text-right">
           <button className="theme-btn btn-style-one" type="submit">
             {isLoading ? <ActionLoader /> : "job post"}
