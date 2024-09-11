@@ -6,6 +6,7 @@ import { MdOutlineHealthAndSafety, MdPhoto, MdLocalCafe } from "react-icons/md";
 import { FaHospital, FaHeart, FaCalendarAlt } from "react-icons/fa";
 import { TbTargetArrow } from "react-icons/tb";
 import { FaCarBurst } from "react-icons/fa6";
+import { MdEdit } from "react-icons/md";
 
 // import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -25,16 +26,65 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import ImageGalleryComponent from "./ImageGallery";
+import InsideCognizant from "./InsideCognizant ";
 // import { Button } from "bootstrap";
 
 const ShowcaseComponent = () => {
   const [openImageGallery, setOpenImageGallery] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    title: "Passion for making difference",
+    description: "We innovate to find a better way—for the clients who depend on us, the customers who rely on them and the communities who count on us al",
+    image: "https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
+  });
+  const [title, setTitle] = useState("Why Cognizant?");
+  const [description1, setDescription1] = useState(
+    "Cognizant (Nasdaq: CTSH) is one of the world's leading professional services companies, transforming clients' business, operating and technology models for the digital era. Our unique industry-based, consultative approach helps clients envision, build and run more innovative and efficient businesses. Headquartered in the U.S., Cognizant is ranked 194 on the Fortune 500 and"
+  );
+  const [description2, setDescription2] = useState(
+    ""
+  );
+  
+  // State to control modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Function to handle form submission and close modal
+  const handleSave = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleEditClick = () => {
+    setIsPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleImageChange = (e) => {
+    setFormData((prevState) => ({ ...prevState, image: URL.createObjectURL(e.target.files[0]) }));
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Replace with your API endpoint
+      const response = await axios.post("https://yourapi.com/update", formData);
+      console.log("Update Successful", response.data);
+      setIsPopupOpen(false); // Close the popup after successful update
+    } catch (error) {
+      console.error("Error updating data", error);
+    }
+  };
   return (
     <>
       <ImageGalleryComponent
@@ -43,276 +93,137 @@ const ShowcaseComponent = () => {
           setOpenImageGallery(false);
         }}
       />
-      <section className="about-section">
-        <div className="auto-container">
-          <div className="row">
-            <div className="content-column col-lg-4 col-md-12 col-sm-12 order-2 relative">
-              <div className=" lg:absolute top-[28%] left-[-15%] !bg-white shadow-2xl rounded-3xl p-4 flex flex-col gap-8">
-                <span className="inline-block border-2 !border-red-700 min-w-36 max-w-36"></span>
-                <p className="title text-xl sm:text-3xl text-black font-bold w-[70%]">
-                  Passion for making difference
-                </p>
-                <p>
-                  We innovate to find a better way—for the clients who depend on
-                  us, the customers who rely on them and the communities who
-                  count on us al
-                </p>
-              </div>
-            </div>
-            <div className="image-column col-lg-8 col-md-12 col-sm-12">
-              <figure
-                className="image relative"
-                data-aos="fade-right"
-                onClick={() => setOpenImageGallery(true)}
-              >
-                <img
-                  src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
-                  alt="about"
-                  className="object-cover w-full"
-                />
-                <button className="absolute bottom-3 right-3 flex items-center gap-3 rounded-md p-2 px-3 bg-slate-800 text-white">
-                  <MdPhoto size={24} />
-                  <span>View All Photos</span>
-                </button>
-              </figure>
+       <section className="about-section">
+      <div className="auto-container">
+        <div className="row">
+          <div className="content-column col-lg-4 col-md-12 col-sm-12 order-2 relative">
+            <div className="lg:absolute top-[28%] left-[-15%] !bg-white shadow-2xl rounded-3xl p-4 flex flex-col gap-8">
+              <span className="inline-block border-2 !border-red-700 min-w-36 max-w-36"></span>
+              <p className="title text-xl sm:text-3xl text-black font-bold w-[70%]">{formData.title}</p>
+              <p>{formData.description}</p>
+              <button className="text-white bg-violet-950 border p-2 rounded-lg px-4 flex gap-2 justify-center" onClick={handleEditClick}>
+                <MdEdit size={20} /> Edit
+              </button>
             </div>
           </div>
+          <div className="image-column col-lg-8 col-md-12 col-sm-12">
+            <figure className="image relative" data-aos="fade-right">
+              <img src={formData.image} alt="about" className="object-cover w-full" />
+              <button className="absolute bottom-3 right-3 flex items-center gap-3 rounded-md p-2 px-3 bg-slate-800 text-white">
+                <MdPhoto size={24} />
+                <span>View All Photos</span>
+              </button>
+              
+            </figure>
+          </div>
         </div>
-      </section>
+      </div>
+
+      {isPopupOpen && (
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-violet-50 p-6 mx-20 rounded-lg shadow-lg w-full">
+            <h2 className="text-xl mb-4 font-semibold">Edit About Section</h2>
+            <form onSubmit={handleFormSubmit}>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-semibold">Title</label>
+                <input
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  className="w-full p-2 border rounded"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-semibold">Description</label>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  className="w-full p-2 h-36 border rounded"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-semibold">Image</label>
+                <input type="file" onChange={handleImageChange} className="w-full p-2 border rounded" />
+              </div>
+              <button type="submit" className="bg-violet-900 text-white p-2 px-3 rounded font-semibold">Save</button>
+              <button type="button" onClick={handleClosePopup} className="bg-red-500 text-white p-2 ml-2 rounded">Cancel</button>
+            </form>
+          </div>
+        </div>
+      )}
+    </section>
+
+      
       {/*  Why Cognizant? */}
       <section className="about-section mb-10">
-        <div className="auto-container  flex flex-col md:felx-row gap-2 w-[90%]">
-          <div className="flex items-center">
-            <p className="title text-xl sm:text-3xl text-black font-bold w-full sm:w-[80%] md:w-[55%] px-0 sm:px-7 md:px-16">
-              Why Cognizant?
-            </p>
-          </div>
-          <span className="border hidden md:inline-block"></span>
-          <div className="px-0 sm:px-7 md:px-16">
-            <p className="text-lg sm:text-xl">
-              Cognizant (Nasdaq: CTSH) is one of the world's leading
-              professional services companies, transforming clients' business,
-              operating and technology models for the digital era. Our unique
-              industry-based, consultative approach helps clients envision,
-              build and run more innovative and efficient businesses.
-            </p>
-            <p className="text-lg sm:text-xl">
-              Headquartered in the U.S., Cognizant is ranked 194 on the Fortune
-              500 and
-            </p>
-            <button className="text-amber-800 py-2 text-md mt-3">
-              Read More
-            </button>
-          </div>
+      <div className="auto-container   md:flex-row gap-4 w-[90%] mx-auto h-80">
+        <div className="flex items-center">
+          <p className="title text-xl sm:text-3xl text-black font-bold w-full sm:w-[80%] md:w-[55%] px-0 sm:px-7 md:px-16">
+            {title}
+          </p>
         </div>
-      </section>
-
-      {/* Inside Cognizant */}
-      {/* <section className="inside-cognizant">
-        <div className="auto-container w-[90%]">
-          <div className="sec-title text-center">
-            <p className="font-bold text-xl sm:text-3xl text-black">
-              Inside Cognizant
-            </p>
-          </div>
-          <Tabs
-            defaultValue="account"
-            className=" w-full flex flex-col  justify-center align-middle   border "
+        <span className="border hidden md:inline-block"></span>
+        <div className="px-0 sm:px-7 md:px-16">
+          <p className="text-lg sm:text-xl">{description1}</p>
+         
+          <button
+            className="text-white bg-violet-950 border p-2 rounded-lg px-4"
+            onClick={() => setIsModalOpen(true)}
           >
-            <div className="w-full border justify-center  ">
-              <TabsList className="grid w-[600px]  grid-cols-3 border border-2 border-red-700">
-                {" "}
-                <TabsTrigger value="culture">Culture</TabsTrigger>
-                <TabsTrigger value="people">People</TabsTrigger>
-                <TabsTrigger value="workplace">Workplace</TabsTrigger>
-              </TabsList>
-            </div>
-            <TabsContent value="culture">
-              <Card className="w-full  flex gap-2  border border-slate-950 border-4   ">
-                <div className="w-[800px] h-[70vh] ">
-                  <img
-                    src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
-                    alt="about"
-                    className="object-cover w-full"
-                  />{" "}
-                </div>
-                <div className=" w-[500px] border border-slate-400 flex flex-col">
-                  <div className="h-[35vh]">
-                    <img
-                      src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
-                      alt="about"
-                      className="object-cover w-full"
-                    />{" "}
-                  </div>
-                  <div className="h-[35vh]">
-                    <img
-                      src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
-                      alt="about"
-                      className="object-cover w-full"
-                    />{" "}
-                  </div>
-                </div>
-              </Card>
-            </TabsContent>
-            <TabsContent value="people">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Password</CardTitle>
-                  <CardDescription>
-                    Change your password here. After saving, you'll be logged
-                    out.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <div className="space-y-1">
-                    <Label htmlFor="current">Current password</Label>
-                    <Input id="current" type="password" />
-                  </div>
-                  <div className="space-y-1">
-                    <Label htmlFor="new">New password</Label>
-                    <Input id="new" type="password" />
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button>Save password</Button>
-                </CardFooter>
-              </Card>
-            </TabsContent>
-            <TabsContent value="workplace">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Password</CardTitle>
-                  <CardDescription>
-                    Change your password here. After saving, you'll be logged
-                    out.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <div className="space-y-1">
-                    <Label htmlFor="current">Current password</Label>
-                    <Input id="current" type="password" />
-                  </div>
-                  <div className="space-y-1">
-                    <Label htmlFor="new">New password</Label>
-                    <Input id="new" type="password" />
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button>Save password</Button>
-                </CardFooter>
-              </Card>
-            </TabsContent>
-          </Tabs>
+            Edit
+          </button>
         </div>
-      </section> */}
+      </div>
 
-      <section className="inside-cognizant">
-        <div className="auto-container w-[90%]">
-          <div className="sec-title text-center">
-            <p className="font-bold text-xl sm:text-3xl text-black">
-              Inside Cognizant
-            </p>
-          </div>
-          <Tabs
-            defaultValue="culture"
-            className="w-full flex flex-col justify-center align-middle"
-          >
-            <div className="w-full flex justify-center">
-              <TabsList className="grid w-[600px] grid-cols-3 bg-none ">
-                <TabsTrigger value="culture" className="">
-                  Culture
-                </TabsTrigger>
-                <TabsTrigger value="people">People</TabsTrigger>
-                <TabsTrigger value="workplace">Workplace</TabsTrigger>
-              </TabsList>
+      {/* Modal for editing content */}
+      {isModalOpen && (
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center h-full">
+          <div className="bg-white p-6 rounded-lg w-[90%] sm:w-[60%] md:w-[40%]">
+            <h3 className="text-xl font-bold mb-4">Edit Content</h3>
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-2">Title</label>
+              <input
+                type="text"
+                className="w-full border p-2 rounded"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
             </div>
-            <TabsContent
-              value="culture"
-              className="transition-opacity duration-300 ease-in-out"
-            >
-              <Card className="w-full flex gap-2 ">
-                <div className="w-[800px] h-[71vh]">
-                  <img
-                    src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
-                    alt="about"
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-                <div className="w-[500px]  flex flex-col gap-2">
-                  <div className="h-[35vh]">
-                    <img
-                      src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
-                      alt="about"
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                  <div className="h-[35vh]">
-                    <img
-                      src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
-                      alt="about"
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                </div>
-              </Card>
-            </TabsContent>
-            <TabsContent value="people">
-              <Card className="w-full flex gap-2 ">
-                <div className="w-[800px] h-[71vh]">
-                  <img
-                    src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
-                    alt="about"
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-                <div className="w-[500px]  flex flex-col gap-2">
-                  <div className="h-[35vh]">
-                    <img
-                      src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
-                      alt="about"
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                  <div className="h-[35vh]">
-                    <img
-                      src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
-                      alt="about"
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                </div>
-              </Card>
-            </TabsContent>
-            <TabsContent value="workplace">
-              <Card className="w-full flex gap-2 ">
-                <div className="w-[800px] h-[71vh]">
-                  <img
-                    src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
-                    alt="about"
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-                <div className="w-[500px]  flex flex-col gap-2">
-                  <div className="h-[35vh]">
-                    <img
-                      src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
-                      alt="about"
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                  <div className="h-[35vh]">
-                    <img
-                      src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
-                      alt="about"
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                </div>
-              </Card>
-            </TabsContent>
-          </Tabs>
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-2">
+                Description 1
+              </label>
+              <textarea
+                className="w-full border p-2 rounded"
+                value={description1}
+                onChange={(e) => setDescription1(e.target.value)}
+              />
+            </div>
+          
+            <div className="flex justify-end">
+              <button
+                className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+                onClick={() => setIsModalOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="text-white bg-violet-950 border p-2 rounded-lg px-4"
+                onClick={handleSave}
+              >
+                Save
+              </button>
+            </div>
+          </div>
         </div>
-      </section>
+      )}
+    </section>
+
+     
+
+     <InsideCognizant/>
 
       {/* Watch what we have to say*/}
       <section className="job-categories ui-job-categories border-none">
@@ -366,32 +277,7 @@ const ShowcaseComponent = () => {
               <CarouselNext />
             </Carousel>
 
-            {/* {["", ""].map((item, i) => (
-              <div
-                className="flex basis-full sm:basis-[60%] md:basis-[40%]"
-                key={i}
-              >
-                <span className={`relative`}>
-                  <img
-                    src="https://picsum.photos/200/300"
-                    alt=""
-                    className="h-[220px] min-w-[200px] w-full object-cover"
-                  />
-                  <span className="flex justify-center items-center bg-pink-500 h-12 w-12 rounded-full pl-1 absolute bottom-3 right-3">
-                    <IoPlay size={28} color="white" />
-                  </span>
-                </span>
-                <div className="flex flex-col gap-3 border p-2">
-                  <p className=" text-gray-700 text-xl font-semibold">
-                    Welcome to Cognizant Pune
-                  </p>
-                  <p className=" w-[80%]">
-                    Choose from a variety of medical, vision and dental plans
-                    for you and your loved ones.
-                  </p>
-                </div>
-              </div>
-            ))} */}
+          
           </div>
         </div>
       </section>
@@ -580,3 +466,104 @@ const ShowcaseComponent = () => {
 };
 
 export default ShowcaseComponent;
+
+
+
+ {/* Inside Cognizant */}
+      {/* <section className="inside-cognizant">
+        <div className="auto-container w-[90%]">
+          <div className="sec-title text-center">
+            <p className="font-bold text-xl sm:text-3xl text-black">
+              Inside Cognizant
+            </p>
+          </div>
+          <Tabs
+            defaultValue="account"
+            className=" w-full flex flex-col  justify-center align-middle   border "
+          >
+            <div className="w-full border justify-center  ">
+              <TabsList className="grid w-[600px]  grid-cols-3 border border-2 border-red-700">
+                {" "}
+                <TabsTrigger value="culture">Culture</TabsTrigger>
+                <TabsTrigger value="people">People</TabsTrigger>
+                <TabsTrigger value="workplace">Workplace</TabsTrigger>
+              </TabsList>
+            </div>
+            <TabsContent value="culture">
+              <Card className="w-full  flex gap-2  border border-slate-950 border-4   ">
+                <div className="w-[800px] h-[70vh] ">
+                  <img
+                    src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
+                    alt="about"
+                    className="object-cover w-full"
+                  />{" "}
+                </div>
+                <div className=" w-[500px] border border-slate-400 flex flex-col">
+                  <div className="h-[35vh]">
+                    <img
+                      src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
+                      alt="about"
+                      className="object-cover w-full"
+                    />{" "}
+                  </div>
+                  <div className="h-[35vh]">
+                    <img
+                      src="https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
+                      alt="about"
+                      className="object-cover w-full"
+                    />{" "}
+                  </div>
+                </div>
+              </Card>
+            </TabsContent>
+            <TabsContent value="people">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Password</CardTitle>
+                  <CardDescription>
+                    Change your password here. After saving, you'll be logged
+                    out.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <div className="space-y-1">
+                    <Label htmlFor="current">Current password</Label>
+                    <Input id="current" type="password" />
+                  </div>
+                  <div className="space-y-1">
+                    <Label htmlFor="new">New password</Label>
+                    <Input id="new" type="password" />
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Button>Save password</Button>
+                </CardFooter>
+              </Card>
+            </TabsContent>
+            <TabsContent value="workplace">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Password</CardTitle>
+                  <CardDescription>
+                    Change your password here. After saving, you'll be logged
+                    out.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <div className="space-y-1">
+                    <Label htmlFor="current">Current password</Label>
+                    <Input id="current" type="password" />
+                  </div>
+                  <div className="space-y-1">
+                    <Label htmlFor="new">New password</Label>
+                    <Input id="new" type="password" />
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Button>Save password</Button>
+                </CardFooter>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </section> */}

@@ -41,7 +41,7 @@ export default function FilterTopBox() {
                   <td className="px-6 py-4 text-sm text-gray-500">Published</td>
                   <td className="px-6 py-4 text-sm text-gray-500">
                     <div>4571 Views</div>
-                    <div>2143 Applied</div>
+                   <Link to={"/employers-list"}> <button className='underline text-blue-600'>2143 Applied</button></Link>
                     <div>69 Follow Up</div>
                   </td>
                   <td className="px-6 py-4 text-sm font-medium">

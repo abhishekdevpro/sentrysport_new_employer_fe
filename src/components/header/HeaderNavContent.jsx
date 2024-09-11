@@ -1,4 +1,7 @@
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import SearchResumePopup from "./SearchResumePopup";
+import { Link, useLocation } from "react-router-dom";
+import { isActiveParent } from "../../utils/linkActiveChecker";
 import {
   blogItems,
   candidateItems,
@@ -8,218 +11,57 @@ import {
   pageItems,
   shopItems,
 } from "../../data/mainMenuData";
-import {
-  isActiveParent,
-  isActiveLink,
-  isActiveParentChaild,
-} from "../../utils/linkActiveChecker";
 
-import { useLocation } from "react-router-dom";
 const HeaderNavContent = () => {
   const { pathname } = useLocation();
+  const [isPopupOpen, setPopupOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const handleDropdownToggle = () => {
+    setDropdownOpen((prev) => !prev);
+  };
+  const handleSearchClick = () => {
+    setPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setPopupOpen(false);
+  };
+
   return (
     <>
-      <nav className="nav main-menu " >
-        <ul className="navigation" id="navbar" >
-          {/* current dropdown */}
-          {/* <li
-            className={`${
-              isActiveParent(homeItems, pathname) ? "" : ""
-            } dropdown`}
-          >
-             <Link to={"/"}>Home</Link> 
-            {/* <div className="mega-menu">
-              <div className="mega-menu-bar row pt-0">
-                {homeItems.map((item) => (
-                  <div
-                    className="column col-lg-3 col-md-3 col-sm-12"
-                    key={item.id}
-                  >
-                    <ul>
-                      {item.items.map((menu, i) => (
-                        <li
-                          className={
-                            isActiveLink(menu.routePath, pathname)
-                              ? ""
-                              : ""
-                          }
-                          key={i}
-                        >
-                          <Link to={menu.routePath}>{menu.name}</Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div> 
-          </li> */}
-          {/* <li
-            className={`${
-              isActiveParent(homeItems, pathname) ? "text-blue-950" : ""
-            } dropdown`}
-          >
-            <span>AI Resume</span>
-            <ul>
-              <li
-                className={
-                  pathname?.includes("/employers-dashboard") ? "current" : ""
-                }
-              >
-                <Link to="/">Resume Buider</Link>
-              </li>
-              <li
-                className={
-                  pathname?.includes("/employers-dashboard") ? "current" : ""
-                }
-              >
-                <Link to="/">Resume Score</Link>
-              </li>
-              <li
-                className={
-                  pathname?.includes("/employers-dashboard") ? "current" : ""
-                }
-              >
-                <Link to="/">Resume Enhancer</Link>
-              </li>
-              <li
-                className={
-                  pathname?.includes("/employers-dashboard") ? "current" : ""
-                }
-              >
-                <Link to="/">Match & Apply</Link>
-              </li>
-            </ul>
-          </li> */}
-          {/* End homepage menu items */}
-          <li
-                className="text-white"
-              >
-                <Link to="/employers-dashboard/dashboard "   className="text-white">Dashboard </Link>
-              </li>
-        
-          <li
-            className={`${
-              isActiveParent(employerItems, pathname) ||
-              pathname?.split("/")[1] === "employers-dashboard"
-                ? "current"
-                : ""
-            } dropdown`}
-          >
-            <span className="text-white"> Jobs</span>
-            <ul>
-              <li
-                className={
-                  pathname?.includes("/employers-dashboard") ? "current " : ""
-                }
-              >
-                <Link to="/employers-list-v2 ">My Job </Link>
-              </li>
-              <li
-                className={
-                  pathname?.includes("/employers-dashboard") ? "current " : ""
-                }
-              >
-                <Link to="/employers-dashboard/post-jobs ">Post Job </Link>
-              </li>
-              <li
-                className={
-                  pathname?.includes("/employers-dashboard") ? "current " : ""
-                }
-              >
-                <Link to="/employers-list-v3">Tagged Candidates</Link>
-              </li>
-              <li
-                className={
-                  pathname?.includes("/employers-dashboard") ? "current " : ""
-                }
-              >
-                <Link to="/employers-list-v1">Shortlisted/Saved Candidates</Link>
-              </li>
-              
-              {/* <Link to="/job-single-v1/1">Recent Jobs</Link> */}
-            </ul>
+      <nav className="nav main-menu">
+        <ul className="navigation" id="navbar">
+          <li className="text-white">
+            <Link to="/employers-dashboard/dashboard" className="text-white p-0">Dashboard</Link>
           </li>
           <li
-                className="text-white"
-              >
-                <Link to=""   className="text-white">Search Resume </Link>
-              </li>
-          
-          {/* End Employers menu items */}
-          {/* <li
             className={`${
-              isActiveParent(employerItems, pathname) ||
-              pathname?.split("/")[1] === "employers-dashboard"
+              isActiveParent(employerItems, pathname) || pathname?.split("/")[1] === "employers-dashboard"
                 ? "current"
                 : ""
             } dropdown`}
           >
-            <span>Abroadium ID</span>
+            <span className="text-white">Jobs</span>
             <ul>
-              {employerItems.map((item) => (
-                <li className="dropdown" key={item.id}>
-                  <span
-                    className={
-                      isActiveParentChaild(item.items, pathname)
-                        ? "current"
-                        : ""
-                    }
-                  >
-                    {item.title}
-                  </span>
-                  <ul>
-                    {item.items.map((menu, i) => (
-                      <li
-                        className={
-                          isActiveLink(menu.routePath, pathname)
-                            ? "current"
-                            : ""
-                        }
-                        key={i}
-                      >
-                        <Link to={menu.routePath}>{menu.name}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              ))}
-              <li
-                className={pathname?.includes("/sentry-spot") ? "current" : ""}
-              >
-                <Link to="/sentry-spot">Abroadium id </Link>
-                <Link to="/candidates-dashboard/my-profile">
-                  Candidate profile{" "}
-                </Link>
+              <li className={pathname?.includes("/employers-dashboard") ? "current" : ""}>
+                <Link to="/employers-list-v2">My Job</Link>
               </li>
-              <li
-                className={
-                  pathname?.includes("/employers-d  ashboard") ? "current" : ""
-                }
-              >
-                <Link to="/employers-list-v2">Employers List</Link>
+              <li className={pathname?.includes("/employers-dashboard") ? "current" : ""}>
+                <Link to="/employers-dashboard/post-jobs">Post Job</Link>
               </li>
-              <li
-                className={
-                  pathname?.includes("/employers-dashboard") ? "current" : ""
-                }
-              >
-                <Link to="/employers-single-v1/1">
-                  Employers Listing detail page
-                </Link>
+              <li className={pathname?.includes("/employers-dashboard") ? "current" : ""}>
+                <Link to="/employers-list-v3">Tagged Candidates</Link>
               </li>
-              <li
-                className={
-                  pathname?.includes("/employers-dashboard") ? "current" : ""
-                }
-              >
-                <Link to="/employers-dashboard/dashboard">
-                  Employers Dashboard
-                </Link>
+              <li className={pathname?.includes("/employers-dashboard") ? "current" : ""}>
+                <Link to="/employers-list-v1">Shortlisted/Saved Candidates</Link>
               </li>
             </ul>
-          </li> */}
-
+          </li>
+          <li className="text-white">
+            <button onClick={handleSearchClick} className="text-white font-semibold">Search Resume</button>
+          </li>
+          
           <li
             className={`${
               isActiveParent(candidateItems, pathname) ||
@@ -231,151 +73,48 @@ const HeaderNavContent = () => {
             } dropdown`}
           >
             <Link className="text-white" to="/showcase/org">View</Link>
-            {/* <ul>
-              {candidateItems.map((item) => (
-                <li className="dropdown" key={item.id}>
-                  <span
-                    className={
-                      isActiveParentChaild(item.items, pathname)
-                        ? "current"
-                        : ""
-                    }
-                  >
-                    {item.title}
-                  </span>
-                  <ul>
-                    {item.items.map((menu, i) => (
-                      <li
-                        className={
-                          isActiveLink(menu.routePath, pathname)
-                            ? "current"
-                            : ""
-                        }
-                        key={i}
-                      >
-                        <Link to={menu.routePath}>{menu.name}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              ))}
-              <li
-                className={
-                  pathname?.includes("/candidates-dashboard/") ? "current" : ""
-                }
-              >
-                <Link to="/candidates-list-v2">Trending courses</Link>
-              </li>
-              <li
-                className={
-                  pathname?.includes("/candidates-dashboard/") ? "current" : ""
-                }
-              >
-                <Link to="/candidates-dashboard/">Security courses</Link>
-              </li>
-              <li
-                className={
-                  pathname?.includes("/candidates-dashboard/") ? "current" : ""
-                }
-              >
-                <Link to="/candidates-dashboard/dashboard">
-                  Candidates Dashboard
-                </Link>
-              </li>
-            </ul> */}
-          </li>
-          {/* End Candidates menu items */}
-
-          {/* <li
-            className={`${
-              isActiveParentChaild(blogItems, pathname) ? "current" : ""
-            } dropdown`}
-          > */}
-          {/* <Link to={"https://blog.Abroadium.co.uk/"}> Resources</Link> */}
-          {/* <ul>
-              {blogItems.map((item, i) => (
-                <li
-                  className={
-                    isActiveLink(item.routePath, pathname) ? "current" : ""
-                  }
-                  key={i}
-                >
-                  <Link to={item.routePath}>{item.name}</Link>
-                </li>
-              ))}
-            </ul> */}
-          {/* </li> */}
-          {/* End Blog menu items */}
-
-          {/* reposting btn */}
-          <li className="border h-[80%] p-0 m-0 "></li>
-          <li className=" hover:bg-slate-200 p-2 rounded-md ml-2">
+            </li>
+          <li className="border h-[80%] p-0 m-0"></li>
+          <li className="hover:bg-slate-200  rounded-md ml-2">
             <Link to="/" className="text-white">
-              {" "}
-              <span className="font-light text-white"> Recruiting</span>? Post a job{" "}
+              <span className="font-light text-white"> Recruiting</span>? Post a job
             </Link>
           </li>
-
-          {/*<li
-            className={`${
-              isActiveParentChaild(pageItems, pathname) ||
-              isActiveParentChaild(shopItems[0].items, pathname)
-                ? "current "
-                : ""
-            } dropdown`}
-          >
-            <span>Pages</span>
-            <ul>
-              {shopItems.map((item) => (
-                <li className="dropdown" key={item.id}>
-                  <span
-                    className={`${
-                      isActiveParentChaild(shopItems[0].items, pathname)
-                        ? "current "
-                        : ""
-                    }`}
-                  >
-                    {item.title}
-                  </span>
-                  <ul>
-                    {item.items.map((menu, i) => (
-                      <li
-                        className={
-                          isActiveLink(menu.routePath, pathname)
-                            ? "current"
-                            : ""
-                        }
-                        key={i}
-                      >
-                        <Link to={menu.routePath}>{menu.name}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              ))}
-              {pageItems.map((item, i) => (
-                <li
-                  className={
-                    isActiveLink(item.routePath, pathname) ? "current" : ""
-                  }
-                  key={i}
-                >
-                  <Link to={item.routePath}>{item.name}</Link>
-                </li>
-              ))}
-            </ul>
+          <li className="text-white">
+            <button onClick={handleDropdownToggle} className="text-white font-semibold">Contact Us</button>
           </li>
-          {/* End Pages menu items */}
         </ul>
       </nav>
+
+      {isPopupOpen && <SearchResumePopup onClose={closePopup} />}
+      {dropdownOpen && (
+                  <div className="absolute top-12 right-40 mt-2 w-62 bg-white shadow-lg rounded-lg  z-50">
+                    <div className="px-4 pb-2 pt-2 bg-purple-900 rounded-t-lg border-b border-gray-200">
+                      <p className="font-bold text-white">Connect with our Sales Team</p>
+                     
+                    </div>
+                    
+                    
+
+                    <div className="px-4 ">
+
+
+                      <p className="text-lg text-gray-700 mt-2 font-semibold">Sales Enquiries</p>
+                      <p className="text-sm text-gray-700 my-2">1000-100-7044
+                        </p>
+                      <p className="text-sm text-gray-700">sales@abroadium.tech</p>
+                    </div>
+
+                    <div className="px-4 py-3">
+
+
+<p className="text-lg text-gray-700 mt-2 font-semibold">Customer Support</p>
+<p className="text-sm text-gray-700 mt-2">sales@abroadium.tech</p>
+</div>
+                  </div>
+                )}
     </>
   );
 };
 
 export default HeaderNavContent;
-{
-  /* <Link to="/candidates-single-v1/1">Security courses</Link> */
-}
-{
-  (" ");
-}

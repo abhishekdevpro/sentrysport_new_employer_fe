@@ -44,7 +44,7 @@ const DashboardHeader = () => {
 
             <HeaderNavContent />
 
-            <div className="outer-box float-end ps-5">
+            <div className="outer-box float-end ">
               <button className="menu-btn">
                 <span className="count">1</span>
                 <span className="icon la la-heart-o"></span>

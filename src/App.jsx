@@ -111,6 +111,7 @@ import SentryPage from "@/pages/sentry-spot-id/index";
 import { Toaster } from "react-hot-toast";
 import SignUpDialog from "./components/auth/SignUp";
 import Showcase from "./pages/showcase/Index";
+import EmployerList from "./pages/employers-list/employers-list";
 
 function App() {
   useEffect(() => {
@@ -188,6 +189,10 @@ function App() {
                 <Route
                   path="employers-list-v2"
                   element={<EmployerListPage2 />}
+                />
+                 <Route
+                  path="employers-list"
+                  element={<EmployerList />}
                 />
                   <Route path="employers-list-v3" element={<EmployerListPage3 />} />
                   <Route path="employers-list-v4" element={<EmployerListPage4 />} /> 
