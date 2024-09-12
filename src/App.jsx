@@ -112,6 +112,7 @@ import { Toaster } from "react-hot-toast";
 import SignUpDialog from "./components/auth/SignUp";
 import Showcase from "./pages/showcase/Index";
 import EmployerList from "./pages/employers-list/employers-list";
+import Community from "./components/dashboard-pages/employers-dashboard/community/Community";
 
 function App() {
   useEffect(() => {
@@ -194,6 +195,10 @@ function App() {
                   path="employers-list"
                   element={<EmployerList />}
                 />
+                <Route 
+                path="community"
+                element={<Community/>}/>
+
                   <Route path="employers-list-v3" element={<EmployerListPage3 />} />
                   <Route path="employers-list-v4" element={<EmployerListPage4 />} /> 
 

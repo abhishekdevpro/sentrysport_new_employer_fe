@@ -1,6 +1,7 @@
 import { Switch } from "@/components/ui/switch";
 import LogoCoverUploader from "./LogoCoverUploader";
 import { useState } from "react";
+import ReactQuill from "react-quill";
 
 const SocialNetworkBox = () => {
   const [makesUsUnique, setMakesUsUnique] = useState([
@@ -55,12 +56,12 @@ const SocialNetworkBox = () => {
         {/* <!-- Input --> */}
         <div className="form-group col-lg-12 col-md-12">
           <label htmlFor="name">main paragraph</label>
-          <input
-            type="text"
-            name="name"
-            placeholder="detail of company"
-            // {...register("name")}
-            // required
+          <ReactQuill
+            theme="snow"
+            // modules={modules}
+           
+            placeholder=" Describe the role and responsiblities, skills required for the job and help the candidates understand the role better"
+            className="h-36 mb-5 text-lg " 
           />
           {/* {errors.name && (
             <p className="!text-red-500 text-sm">{errors.name.message}</p>
@@ -76,12 +77,12 @@ const SocialNetworkBox = () => {
 
         <div className="form-group col-lg-12 col-md-12">
           <label htmlFor="name">Info about Company</label>
-          <input
-            type="text"
-            name="name"
-            placeholder="Info about company"
-            // {...register("name")}
-            // required
+          <ReactQuill
+            theme="snow"
+            // modules={modules}
+           
+            placeholder=" Describe the role and responsiblities, skills required for the job and help the candidates understand the role better"
+            className="h-36 mb-5 text-lg " 
           />
           {/* {errors.name && (
             <p className="!text-red-500 text-sm">{errors.name.message}</p>
@@ -93,12 +94,12 @@ const SocialNetworkBox = () => {
         </h4>
         <div className="form-group col-lg-12 col-md-12">
           {/* <label htmlFor="name">main paragraph</label> */}
-          <input
-            type="text"
-            name="name"
-            placeholder="Info about events"
-            // {...register("name")}
-            // required
+          <ReactQuill
+            theme="snow"
+            // modules={modules}
+           
+            placeholder=" Describe the role and responsiblities, skills required for the job and help the candidates understand the role better"
+            className="h-36 mb-5 text-lg " 
           />
           {/* {errors.name && (
             <p className="!text-red-500 text-sm">{errors.name.message}</p>
@@ -119,12 +120,12 @@ const SocialNetworkBox = () => {
         <LogoCoverUploader text="upload multiple images" />
 
         <div className="form-group col-lg-12 col-md-12 ">
-          <input
-            type="text"
-            name="name"
-            placeholder="Info about Team"
-            // {...register("name")}
-            // required
+        <ReactQuill
+            theme="snow"
+            // modules={modules}
+           
+            placeholder=" Describe the role and responsiblities, skills required for the job and help the candidates understand the role better"
+            className="h-36 mb-5 text-lg " 
           />
           {/* {errors.name && (
             <p className="!text-red-500 text-sm">{errors.name.message}</p>
@@ -145,12 +146,12 @@ const SocialNetworkBox = () => {
           </div>
         </div>
         <div className="form-group col-lg-12 col-md-12 ">
-          <input
-            type="text"
-            name="name"
-            placeholder="Watch what we have to say"
-            // {...register("name")}
-            // required
+        <ReactQuill
+            theme="snow"
+            // modules={modules}
+           
+            placeholder=" Describe the role and responsiblities, skills required for the job and help the candidates understand the role better"
+            className="h-36 mb-5 text-lg " 
           />
           {/* {errors.name && (
             <p className="!text-red-500 text-sm">{errors.name.message}</p>
@@ -187,12 +188,12 @@ const SocialNetworkBox = () => {
         <h4 className="text-2xl text-black capitalize mb-2">Join Us</h4>
         <div className="form-group col-lg-12 col-md-12">
           <label htmlFor="name">Added a link to show new opportunity </label>
-          <input
-            type="text"
-            name="name"
-            placeholder="Info about company"
-            // {...register("name")}
-            // required
+          <ReactQuill
+            theme="snow"
+            // modules={modules}
+           
+            placeholder=" Describe the role and responsiblities, skills required for the job and help the candidates understand the role better"
+            className="h-36 mb-5 text-lg " 
           />
           {/* {errors.name && (
             <p className="!text-red-500 text-sm">{errors.name.message}</p>
@@ -226,7 +227,7 @@ const SocialNetworkBox = () => {
 
         {/* <!-- Input --> */}
         <div className="form-group col-lg-6 col-md-12">
-          <label>Google Plus</label>
+          <label>Twitter</label>
           <input type="text" name="name" placeholder="" />
         </div>
 

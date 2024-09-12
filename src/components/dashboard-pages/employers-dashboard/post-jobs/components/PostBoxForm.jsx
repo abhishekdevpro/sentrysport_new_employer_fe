@@ -50,6 +50,9 @@ import { CircleX, HandIcon } from "lucide-react";
 
 
 import { AcademicCapIcon, BriefcaseIcon, CheckIcon, ClockIcon, DocumentIcon, UserGroupIcon, UserIcon } from '@heroicons/react/24/solid';
+import { Switch } from "@/components/ui/switch";
+import { Description } from "@radix-ui/react-dialog";
+
 
 
 const tags = [
@@ -148,6 +151,8 @@ const PostBoxForm = () => {
   ];
   const [selectedItem, setSelectedItem] = useState(null);
 
+
+  
   const handleSelect = (id) => {
     setSelectedItem(id);
   };
@@ -423,6 +428,17 @@ const PostBoxForm = () => {
     }
   };
 
+  const [makesUsUnique, setMakesUsUnique] = useState([
+    {
+      title: "Save time to automating your hiring workflow",
+      Description_title:"Rejection email preview",
+      Description:"Applicant will recive this message",
+      key: "health_insurance",
+      toogle: true,
+      value: "",
+    },
+    
+  ]);
   return (
     <form className="default-form">
       <div className="row">
@@ -892,6 +908,9 @@ classNamePrefix="select"
               </div>
             ))}
           </div>
+
+
+          
           {/* <select
             className="chosen-single form-select"
             name="diversity_hiring"
@@ -914,6 +933,34 @@ classNamePrefix="select"
             </p>
           )} */}
         </div>
+
+        {makesUsUnique?.map((item, index) => (
+          <div className="form-group col-lg-12 col-md-12 " key={index}>
+            <div className="flex justify-between items-center mb-2">
+              <label className="text-[15px] font-semibold">{item?.title}</label>
+             
+              <Switch
+                className="rounded-xl data-[state=checked]:bg-[#0292e6]"
+                checked={item?.toogle}
+                onCheckedChange={(e) => {
+                  setMakesUsUnique((prev) => {
+                    return prev.map((val) => {
+                      if (val?.key === item?.key) {
+                        return { ...item, toogle: e };
+                      }
+                      return val;
+                    });
+                  });
+                }}
+              />
+             
+            </div>
+            <h3 className="my-4 mt-10 ">{item?.Description}</h3>
+            <h3 className="mb-2">{item?.Description_title}</h3>
+            {item?.toogle && <input type="text" className="h-40 " style={{height:"200px"}} placeholder={item?.title} />}
+          </div>
+        ))}
+
        {/*} <div className="mb-4">
           <div className="mb-3">
             <p className="m-0 !text-lg text-black">Add Screening Questions</p>
