@@ -195,9 +195,7 @@ function App() {
                   path="employers-list"
                   element={<EmployerList />}
                 />
-                <Route 
-                path="community"
-                element={<Community/>}/>
+               
 
                   <Route path="employers-list-v3" element={<EmployerListPage3 />} />
                   <Route path="employers-list-v4" element={<EmployerListPage4 />} /> 
@@ -276,6 +274,9 @@ function App() {
                     path="manage-jobs"
                     element={<ManageJobsEmploeeDBPage />}
                   />
+                   <Route 
+                path="community"
+                element={<Community/>}/>
                   <Route
                     path="all-applicants"
                     element={<AllApplicantsEmploeesPage />}

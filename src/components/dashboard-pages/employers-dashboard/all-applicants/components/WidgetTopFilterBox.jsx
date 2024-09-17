@@ -5,7 +5,7 @@ import ApplicantsFilter from "../../common/ApplicantsFilter";
 const WidgetTopFilterBox = () => {
   return (
     <div className="chosen-outer">
-      {/* <MakeJobPremiunDialog /> */}
+      {/* <MakeJobPremiunDialog /> 
       <ApplicantsFilter />
       <select className="chosen-single form-select chosen-container">
         <option>Select Jobs</option>
@@ -14,7 +14,7 @@ const WidgetTopFilterBox = () => {
         <option>Last 24 Months</option>
         <option>Last 5 year</option>
       </select>
-      {/* <!--Tabs Box--> */}
+     
 
       <select className="chosen-single form-select chosen-container">
         <option>All Status</option>
@@ -23,7 +23,7 @@ const WidgetTopFilterBox = () => {
         <option>Last 24 Months</option>
         <option>Last 5 year</option>
       </select>
-      {/* <!--Tabs Box--> */}
+     <!--Tabs Box--> */}
     </div>
   );
 };

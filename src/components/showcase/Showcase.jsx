@@ -7,7 +7,7 @@ import { FaHospital, FaHeart, FaCalendarAlt } from "react-icons/fa";
 import { TbTargetArrow } from "react-icons/tb";
 import { FaCarBurst } from "react-icons/fa6";
 import { MdEdit } from "react-icons/md";
-
+import axios from "axios";
 // import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
@@ -39,7 +39,11 @@ const ShowcaseComponent = () => {
   const [formData, setFormData] = useState({
     title: "Passion for making difference",
     description: "We innovate to find a better way—for the clients who depend on us, the customers who rely on them and the communities who count on us al",
-    image: "https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"
+    image:[
+      "https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg",
+      "https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg",
+      "https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg",
+    ],
   });
   const [title, setTitle] = useState("Why Cognizant?");
   const [description1, setDescription1] = useState(
@@ -134,7 +138,15 @@ const ShowcaseComponent = () => {
           </div>
           <div className="image-column col-lg-8 col-md-12 col-sm-12">
             <figure className="image relative" data-aos="fade-right">
-              <img src={formData.image} alt="about" className="object-cover w-full" />
+           <div className="flex">
+           <div>
+               <img src={formData.image[2]} alt="Culture 3" className="object-cover w-[700px] h-full p-2" />
+             </div>
+             <div className="grid grid-rows-2 gap-2">
+               <img src={formData.image[0]} alt="Culture 1" className=" w-full h-[250px] p-2 " />
+               <img src={formData.image[1]} alt="Culture 2" className=" w-full h-[250px] p-2"  />
+             </div>
+           </div>
               <button className="absolute bottom-3 right-3 flex items-center gap-3 rounded-md p-2 px-3 bg-slate-800 text-white">
                 <MdPhoto size={24} />
                 <span>View All Photos</span>

@@ -10,7 +10,7 @@ import MenuToggler from "../../MenuToggler";
 const index = () => {
   return (
     <div className="page-wrapper dashboard">
-      <span className="header-span"></span>
+      <span className="header"></span>
       {/* <!-- Header Span for hight --> */}
 
       <LoginPopup />
@@ -28,24 +28,23 @@ const index = () => {
       {/* <!-- Dashboard --> */}
       <section className="user-dashboard bg-violet-50 ">
         <div className="dashboard-outer">
-          <BreadCrumb title="Resume Alerts!" />
-          {/* breadCrumb */}
+        {/*  <BreadCrumb title="Resume Alerts!" />
+           breadCrumb */}
 
           <MenuToggler />
           {/* Collapsible sidebar button */}
 
           <div className="row">
-            <div className="col-lg-12">
+            <div className="col">
+            <AlertDataTable />
               <div className="ls-widget">
                 <div className="tabs-box">
-                  <div className="widget-title">
-                    <h4>My Packages</h4>
-                  </div>
+                  
                   {/* End widget-title */}
 
-                  <div className="widget-content">
-                    <div className="table-outer">
-                      <AlertDataTable />
+                  <div className="widget-ontent">
+                    <div className="table-">
+                     
                     </div>
                   </div>
                   {/* End widget-content */}

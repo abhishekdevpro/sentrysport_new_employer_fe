@@ -40,11 +40,11 @@ const index = () => {
               {/* <!-- Ls widget --> */}
               <div className="ls-widget">
                 <div className="tabs-box">
-                  <div className="widget-title">
+                  {/*<div className="widget-title">
                     <h4>Applicant</h4>
                     <WidgetTopFilterBox />
                   </div>
-                  {/* End top widget filter bar */}
+                   End top widget filter bar */}
 
                   <WidgetContentBox />
                   {/* End widget-content */}

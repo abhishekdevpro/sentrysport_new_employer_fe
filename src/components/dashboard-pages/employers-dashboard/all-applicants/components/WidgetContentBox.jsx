@@ -1,267 +1,319 @@
-
+{/*
+  
 
 import candidatesData from "../../../../../data/candidates";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import moment from "moment";
+import { Constant } from "@/utils/constant/constant";
 
+const WidgetContentBox = () => { 
+    const navigate = useNavigate();
+    const [data, setData] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isError, setIsError] = useState(false);
+    const token = localStorage.getItem(Constant.USER_TOKEN);
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await fetch("https://api.sentryspot.co.uk/api/employeer/job-seekers", {
+            headers: {
+              Authorization: token,
+            },
+          });
+  
+          if (!response.ok) {
+            throw new Error("Failed to fetch jobs");
+          }
+  
+          const result = await response.json();
+          setData(result.data); // Storing the job data
+          setIsLoading(false);
+        } catch (error) {
+          setIsError(true);
+          setIsLoading(false);
+          toast.error(error.message || "Something went wrong");
+        }
+      };
+  
+      fetchData();
+    }, []);
+  
+    return (
+      <div className="tabs-box">
+      
+      
+        <div className="widget-content">
+          <div className="table-outer">
+            <table className="default-table manage-job-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Location</th>
+                  <th>Created At</th>
+                </tr>
+              </thead>
+  
+              <tbody>
+                {isLoading ? (
+                  <tr>
+                    <td colSpan="5">Loading...</td>
+                  </tr>
+                ) : isError ? (
+                  <tr>
+                    <td colSpan="5">Error loading jobs</td>
+                  </tr>
+                ) : (
+                  data?.map((item, index) => (
+                    <tr key={index}>
+                      <td>
+                        {item?.jobskkers_detail?.first_name} {item?.jobskkers_detail?.last_name}
+                      </td>
+                      <td>{item?.jobskkers_detail?.email}</td>
+                      <td>{item?.jobskkers_detail?.phone}</td>
+                      <td>
+                        {item?.cities?.name}, {item?.states?.name}, {item?.countries?.name}
+                      </td>
+                      <td>{moment(item?.jobskkers_detail?.created_at).format("MMM Do YYYY")}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    );
+  };
+  
+ 
+  
+export default WidgetContentBox;
+  */}
+
+
+
+
+  
+import React, { useState } from 'react';
 
 const WidgetContentBox = () => {
-  return (
-    <div className="widget-content">
-      <div className="tabs-box">
-        <Tabs>
-          <div className="aplicants-upper-bar">
-            <h6>Senior Product Designer</h6>
+ const [activeTab, setActiveTab] = useState('applications'); // Set default tab
 
-            <TabList className="aplicantion-status tab-buttons clearfix">
-              <Tab className="tab-btn totals"> Total(s): 6</Tab>
-              <Tab className="tab-btn approved"> Approved: 2</Tab>
-              <Tab className="tab-btn rejected"> Rejected(s): 4</Tab>
-            </TabList>
-          </div>
 
-          <div className="tabs-content">
-            <TabPanel>
-              <div className="row">
-                {candidatesData.slice(17, 23).map((candidate) => (
-                  <div
-                    className="candidate-block-three col-lg-6 col-md-12 col-sm-12"
-                    key={candidate.id}
-                  >
-                    <div className="inner-box">
-                      <div className="content">
-                        <figure className="image">
-                          <img
-                            
-                            src={candidate.avatar}
-                            alt="candidates"
-                          />
-                        </figure>
-                        <h4 className="name">
-                          <Link to={`/candidates-single-v1/${candidate.id}`}>
-                            {candidate.name}
-                          </Link>
-                        </h4>
+ return (
+   <div className="p-2   bg-gray-100">
+     {/* Header Section */}
+     <div className="flex justify-between items-center mb-6">
+       <div>
+         <h1 className="text-2xl font-semibold">React JS Developer - Javascript/Redux</h1>
+         <p className="text-gray-600">Jaipur • 0 - 1 yrs • Job Code: 1377021</p>
+       </div>
+       <div className="flex space-x-4">
+         
+         <select className='bg-white border text-black border-black px-2 py-2 rounded-sm hover:bg-gray-100'>
+           <option> Default Calendar</option>
+         </select>
+         <select className='bg-white border text-black border-black px-2 py-2 rounded-sm hover:bg-gray-100'>
+           <option> Set Default Assessment</option>
+         </select>
+         <select className='bg-white border text-black border-black px-2 py-2 rounded-sm hover:bg-gray-100'>
+           <option>   Make Premium</option>
+         </select>
+        
+       </div>
+     </div>
 
-                        <ul className="candidate-info">
-                          <li className="designation">
-                            {candidate.designation}
-                          </li>
-                          <li>
-                            <span className="icon flaticon-map-locator"></span>{" "}
-                            {candidate.location}
-                          </li>
-                          <li>
-                            <span className="icon flaticon-money"></span> $
-                            {candidate.hourlyRate} / hour
-                          </li>
-                        </ul>
-                        {/* End candidate-info */}
+     {/* Auto Interview Scheduler */}
+     <div className="flex items-center mb-4 space-x-4">
+       <div className="text-violet-600">Auto Interview Scheduler: ✔️  Enabled</div>
+       <div>
+         <select className="bg-white border border-gray-300 rounded-md px-2 py-1">
+           <option>Face To Face</option>
+           <option>Online</option>
+           <option>Phone</option>
+         </select>
+       </div>
+       <button className="text-red-500">Disable</button>
+     </div>
 
-                        <ul className="post-tags">
-                          {candidate.tags.map((val, i) => (
-                            <li key={i}>
-                              <a href="#">{val}</a>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      {/* End content */}
+     <div className='border p-3 bg-white'>
+{/* Tabs for Recommended Candidates and Applications */}
+<div className="border-b border-gray-300  flex space-x-6 mb-6">
+       <button
+         onClick={() => setActiveTab('recommended')}
+         className={`text-lg font-medium pb-2 ${
+           activeTab === 'recommended' ? 'border-b-2 border-violet-500 text-violet-600' : 'text-gray-500'
+         }`}
+       >
+         Recommended Candidates (0)
+       </button>
+       <button
+         onClick={() => setActiveTab('applications')}
+         className={`text-lg font-medium pb-2 ${
+           activeTab === 'applications' ? 'border-b-2 border-violet-500 text-violet-600' : 'text-gray-500'
+         }`}
+       >
+         Applications (2)
+       </button>
+     </div>
 
-                      <div className="option-box">
-                        <ul className="option-list">
-                          <li>
-                            <button data-text="View Aplication">
-                              <span className="la la-eye"></span>
-                            </button>
-                          </li>
-                          <li>
-                            <button data-text="Approve Aplication">
-                              <span className="la la-check"></span>
-                            </button>
-                          </li>
-                          <li>
-                            <button data-text="Reject Aplication">
-                              <span className="la la-times-circle"></span>
-                            </button>
-                          </li>
-                          <li>
-                            <button data-text="Delete Aplication">
-                              <span className="la la-trash"></span>
-                            </button>
-                          </li>
-                        </ul>
-                      </div>
-                      {/* End admin options box */}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </TabPanel>
-            {/* End total applicants */}
+     {/* Content for Active Tab */}
+     {activeTab === 'recommended' ? (
+       <div>
+         {/* Recommended Candidates List */}
+         <p className="text-center text-gray-500">No recommended candidates available.</p>
+       </div>
+     ) : (
+       <div>
+         <div className="flex justify-between items-center mb-6">
+       <div className="flex space-x-4">
+         <input
+           type="text"
+           placeholder="Search keyword or candidates"
+           className="border border-black  px-4 py-2 w-80 "
+         />
+        
+         <button className="bg-white border text-black border-black px-4 py-1 rounded-sm hover:bg-gray-100">
+         Filter
+         </button>
+         <select className="bg-white border border-black text-black px-2 py-1 rounded-sm hover:bg-gray-100">
+           <option> Magic Sort (Relevance)</option>
+         </select>
+         
+         <select className="bg-white border border-black text-black px-2 py-2 rounded-sm hover:bg-gray-100">
+           <option> Diversity Candidates</option>
+         </select>
+         
+         <select className="bg-white border border-black text-black px-2 py-2 rounded-sm hover:bg-gray-100">
+           <option> All Candidates</option>
+         </select>
+        
+       </div>
+     </div>
 
-            <TabPanel>
-              <div className="row">
-                {candidatesData.slice(17, 19).map((candidate) => (
-                  <div
-                    className="candidate-block-three col-lg-6 col-md-12 col-sm-12"
-                    key={candidate.id}
-                  >
-                    <div className="inner-box">
-                      <div className="content">
-                        <figure className="image">
-                          <img
-                           
-                            src={candidate.avatar}
-                            alt="candidates"
-                          />
-                        </figure>
-                        <h4 className="name">
-                          <Link to={`/candidates-single-v1/${candidate.id}`}>
-                            {candidate.name}
-                          </Link>
-                        </h4>
+     {/* Tabs */}
+     <div className="border-b border-gray-300 flex space-x-6 mb-6">
+       <button className="text-gray-500 pb-2 border-b-2 border-green-500">All (2)</button>
+       <button className="text-gray-500 pb-2">Unread (2)</button>
+       <button className="text-gray-500 pb-2">Reviewed (20)</button>
+       <button className="text-gray-500 pb-2">Shortlisted (1)</button>
+       <button className="text-gray-500 pb-2">Rejected (5)</button>
+       <button className="text-gray-500 pb-2">Saved (1)</button>
+     </div>
 
-                        <ul className="candidate-info">
-                          <li className="designation">
-                            {candidate.designation}
-                          </li>
-                          <li>
-                            <span className="icon flaticon-map-locator"></span>{" "}
-                            {candidate.location}
-                          </li>
-                          <li>
-                            <span className="icon flaticon-money"></span> $
-                            {candidate.hourlyRate} / hour
-                          </li>
-                        </ul>
-                        {/* End candidate-info */}
+     {/* Candidate Card 1 */}
+     <div className="bg-white shadow-md rounded-md p-4  mb-4">
+       <div className="flex justify-between items-center px-10">
+         {/* Profile and Details */}
+         <div className="flex space-x-4 gap-16">
+           <img
+             src="https://via.placeholder.com/50"
+             alt="Profile"
+             className="rounded-full h-20 w-20"
+           />
+           <div>
+             <h3 className="font-semibold text-lg">abhinav</h3>
+             <p className="text-gray-500">Experience: 2y 9m <br/> Location: Delhi</p>
+             <p className="text-gray-500">Applied on: 01-05-2024  <br/> Notice Period: 1 month</p>
+             <p className="text-blue-500 cursor-pointer">Cover letter</p>
+           </div>
+        
+           <div className='w-44'>
+             <h3 className="font-semibold text-sm"> Redcliffe Life science pvt. Ltd</h3>
+             <p className="text-gray-500 text-xs">software developer May, 2022 to Present</p><br/>
+             <h3 className="font-semibold text-sm"> Mogli labs India Pvt. Ltd.</h3>
+             <p className="text-gray-500 text-xs">UI Developer Dec, 2021 to Present</p>
+           
+           </div>
+           <div className='w-44'>
+           <h3 className="font-semibold text-sm">Integral University, Lucknow</h3>
+           <p className="text-gray-500 text-xs">software developer May, 2022 to Present</p>
+             <p className="text-gray-500 text-xs">BCA (Full Time), 2018 to 2021</p>
+          
+           </div>
+         </div>
 
-                        <ul className="post-tags">
-                          {candidate.tags.map((val, i) => (
-                            <li key={i}>
-                              <a href="#">{val}</a>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      {/* End content */}
+         {/* Action Buttons */}
+         <div className="">
+          <div className='flex gap-2'>
+          <button className="bg-green-700 text-white px-4 py-1 rounded-md hover:bg-green-500">
+             Shortlist
+           </button>
+           <button className="bg-red-800 text-white px-4 py-1 rounded-md hover:bg-red-500">
+             Reject
+           </button>
+           </div>
+           <button className="bg-transparent my-3 border w-full border-green-500 text-green-500 px-4 py-1 rounded-md hover:bg-green-100">
+             Call
+           </button><br/>
+           <button className="bg-white border w-full border-gray-300 px-4 py-1 rounded-md hover:bg-gray-100">
+             Other Actions
+           </button>
+         </div>
+       </div>
+     </div>
 
-                      <div className="option-box">
-                        <ul className="option-list">
-                          <li>
-                            <button data-text="View Aplication">
-                              <span className="la la-eye"></span>
-                            </button>
-                          </li>
-                          <li>
-                            <button data-text="Approve Aplication">
-                              <span className="la la-check"></span>
-                            </button>
-                          </li>
-                          <li>
-                            <button data-text="Reject Aplication">
-                              <span className="la la-times-circle"></span>
-                            </button>
-                          </li>
-                          <li>
-                            <button data-text="Delete Aplication">
-                              <span className="la la-trash"></span>
-                            </button>
-                          </li>
-                        </ul>
-                      </div>
-                      {/* End admin options box */}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </TabPanel>
-            {/* End approved applicants */}
+     {/* Candidate Card 2 */}
+     <div className="bg-white shadow-md rounded-md p-4  mb-4">
+       <div className="flex justify-between items-center px-10">
+         {/* Profile and Details */}
+         <div className="flex space-x-4 gap-16">
+           <img
+             src="https://via.placeholder.com/50"
+             alt="Profile"
+             className="rounded-full h-20 w-20"
+           />
+           <div>
+             <h3 className="font-semibold text-lg">Suraj Barole</h3>
+             <p className="text-gray-500">Experience: 2y 9m <br/> Location: Delhi</p>
+             <p className="text-gray-500">Applied on: 01-05-2024  <br/> Notice Period: 1 month</p>
+             <p className="text-blue-500 cursor-pointer">Cover letter</p>
+           </div>
+        
+           <div className='w-44'>
+             <h3 className="font-semibold text-sm"> Redcliffe Life science pvt. Ltd</h3>
+             <p className="text-gray-500 text-xs">software developer May, 2022 to Present</p><br/>
+             <h3 className="font-semibold text-sm"> Mogli labs India Pvt. Ltd.</h3>
+             <p className="text-gray-500 text-xs">UI Developer Dec, 2021 to Present</p>
+           
+           </div>
+           <div className='w-44'>
+           <h3 className="font-semibold text-sm">Integral University, Lucknow</h3>
+           <p className="text-gray-500 text-xs">software developer May, 2022 to Present</p>
+             <p className="text-gray-500 text-xs">BCA (Full Time), 2018 to 2021</p>
+          
+           </div>
+         </div>
 
-            <TabPanel>
-              <div className="row">
-                {candidatesData.slice(17, 21).map((candidate) => (
-                  <div
-                    className="candidate-block-three col-lg-6 col-md-12 col-sm-12"
-                    key={candidate.id}
-                  >
-                    <div className="inner-box">
-                      <div className="content">
-                        <figure className="image">
-                          <img
-                           
-                            src={candidate.avatar}
-                            alt="candidates"
-                          />
-                        </figure>
-                        <h4 className="name">
-                          <Link to={`/candidates-single-v1/${candidate.id}`}>
-                            {candidate.name}
-                          </Link>
-                        </h4>
-
-                        <ul className="candidate-info">
-                          <li className="designation">
-                            {candidate.designation}
-                          </li>
-                          <li>
-                            <span className="icon flaticon-map-locator"></span>{" "}
-                            {candidate.location}
-                          </li>
-                          <li>
-                            <span className="icon flaticon-money"></span> $
-                            {candidate.hourlyRate} / hour
-                          </li>
-                        </ul>
-                        {/* End candidate-info */}
-
-                        <ul className="post-tags">
-                          {candidate.tags.map((val, i) => (
-                            <li key={i}>
-                              <a href="#">{val}</a>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      {/* End content */}
-
-                      <div className="option-box">
-                        <ul className="option-list">
-                          <li>
-                            <button data-text="View Aplication">
-                              <span className="la la-eye"></span>
-                            </button>
-                          </li>
-                          <li>
-                            <button data-text="Approve Aplication">
-                              <span className="la la-check"></span>
-                            </button>
-                          </li>
-                          <li>
-                            <button data-text="Reject Aplication">
-                              <span className="la la-times-circle"></span>
-                            </button>
-                          </li>
-                          <li>
-                            <button data-text="Delete Aplication">
-                              <span className="la la-trash"></span>
-                            </button>
-                          </li>
-                        </ul>
-                      </div>
-                      {/* End admin options box */}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </TabPanel>
-            {/* End rejected applicants */}
-          </div>
-        </Tabs>
-      </div>
-    </div>
-  );
+         {/* Action Buttons */}
+         <div className="">
+          <div className='flex gap-2'>
+          <button className="bg-green-700 text-white px-4 py-1 rounded-md hover:bg-green-500">
+             Shortlist
+           </button>
+           <button className="bg-red-800 text-white px-4 py-1 rounded-md hover:bg-red-500">
+             Reject
+           </button>
+           </div>
+           <button className="bg-transparent my-3 border w-full border-green-500 text-green-500 px-4 py-1 rounded-md hover:bg-green-100">
+             Call
+           </button><br/>
+           <button className="bg-white border w-full border-gray-300 px-4 py-1 rounded-md hover:bg-gray-100">
+             Other Actions
+           </button>
+         </div>
+       </div>
+     </div>
+       </div>
+     )}
+     </div>
+   </div>
+ );
 };
 
-export default WidgetContentBox;
+export default WidgetContentBox
