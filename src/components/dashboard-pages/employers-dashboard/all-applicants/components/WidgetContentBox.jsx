@@ -100,13 +100,63 @@ export default WidgetContentBox;
 
   
 import React, { useState } from 'react';
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import {  useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import moment from "moment";
+import { Constant } from "@/utils/constant/constant";
 
 const WidgetContentBox = () => {
  const [activeTab, setActiveTab] = useState('applications'); // Set default tab
 
+ const navigate = useNavigate();
+    const [data, setData] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isError, setIsError] = useState(false);
+    const token = localStorage.getItem(Constant.USER_TOKEN);
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await fetch("https://api.sentryspot.co.uk/api/employeer/job-seekers", {
+            headers: {
+              Authorization: token,
+            },
+          });
+  
+          if (!response.ok) {
+            throw new Error("Failed to fetch jobs");
+          }
+  
+          const result = await response.json();
+          setData(result.data); // Storing the job data
+          setIsLoading(false);
+        } catch (error) {
+          setIsError(true);
+          setIsLoading(false);
+          toast.error(error.message || "Something went wrong");
+        }
+      };
+  
+      fetchData();
+    }, []);
+
+
 
  return (
    <div className="p-2   bg-gray-100">
+
+
+
+
+         
+             
+  
+             
+        
+
+
+
      {/* Header Section */}
      <div className="flex justify-between items-center mb-6">
        <div>
@@ -207,23 +257,36 @@ const WidgetContentBox = () => {
      </div>
 
      {/* Candidate Card 1 */}
-     <div className="bg-white shadow-md rounded-md p-4  mb-4">
-       <div className="flex justify-between items-center px-10">
+     <div>
+                {isLoading ? (
+                  <tr>
+                    <td colSpan="5">Loading...</td>
+                  </tr>
+                ) : isError ? (
+                  <tr>
+                    <td colSpan="5">Error loading jobs</td>
+                  </tr>
+                ) : (
+                  data?.map((item, index) => (
+                    <div key={index}>
+                     
+                      <div className="bg-white shadow-md rounded-md p-4  mb-4 ">
+       <div className="flex justify-between items-center px-10 w-full">
          {/* Profile and Details */}
-         <div className="flex space-x-4 gap-16">
+         <div className="flex space-x-4 ">
            <img
-             src="https://via.placeholder.com/50"
+             src={`https://api.sentryspot.co.uk${item?.jobskkers_detail?.photo}`}
              alt="Profile"
              className="rounded-full h-20 w-20"
-           />
+           />{console.log(`https://api.sentryspot.co.uk${item?.jobskkers_detail?.photo}`)}
            <div>
-             <h3 className="font-semibold text-lg">abhinav</h3>
-             <p className="text-gray-500">Experience: 2y 9m <br/> Location: Delhi</p>
-             <p className="text-gray-500">Applied on: 01-05-2024  <br/> Notice Period: 1 month</p>
+             <h3 className="font-semibold text-lg">{item?.jobskkers_detail?.first_name} {item?.jobskkers_detail?.last_name}</h3>
+             <p className="text-gray-500">Experience: 2y 9m <br/> Location:  {item?.jobskkers_detail?.cities?.name}, {item?.jobskkers_detail?.states?.name}, {item?.jobskkers_detail?.countries?.name}</p>
+             <p className="text-gray-500">Applied on: {moment(item?.jobskkers_detail?.created_at).format("MMM Do YYYY")} <br/> Notice Period: 1 month</p>
              <p className="text-blue-500 cursor-pointer">Cover letter</p>
            </div>
         
-           <div className='w-44'>
+          {/* <div className='w-44'>
              <h3 className="font-semibold text-sm"> Redcliffe Life science pvt. Ltd</h3>
              <p className="text-gray-500 text-xs">software developer May, 2022 to Present</p><br/>
              <h3 className="font-semibold text-sm"> Mogli labs India Pvt. Ltd.</h3>
@@ -235,7 +298,7 @@ const WidgetContentBox = () => {
            <p className="text-gray-500 text-xs">software developer May, 2022 to Present</p>
              <p className="text-gray-500 text-xs">BCA (Full Time), 2018 to 2021</p>
           
-           </div>
+           </div> */}
          </div>
 
          {/* Action Buttons */}
@@ -257,58 +320,13 @@ const WidgetContentBox = () => {
          </div>
        </div>
      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            
 
-     {/* Candidate Card 2 */}
-     <div className="bg-white shadow-md rounded-md p-4  mb-4">
-       <div className="flex justify-between items-center px-10">
-         {/* Profile and Details */}
-         <div className="flex space-x-4 gap-16">
-           <img
-             src="https://via.placeholder.com/50"
-             alt="Profile"
-             className="rounded-full h-20 w-20"
-           />
-           <div>
-             <h3 className="font-semibold text-lg">Suraj Barole</h3>
-             <p className="text-gray-500">Experience: 2y 9m <br/> Location: Delhi</p>
-             <p className="text-gray-500">Applied on: 01-05-2024  <br/> Notice Period: 1 month</p>
-             <p className="text-blue-500 cursor-pointer">Cover letter</p>
-           </div>
-        
-           <div className='w-44'>
-             <h3 className="font-semibold text-sm"> Redcliffe Life science pvt. Ltd</h3>
-             <p className="text-gray-500 text-xs">software developer May, 2022 to Present</p><br/>
-             <h3 className="font-semibold text-sm"> Mogli labs India Pvt. Ltd.</h3>
-             <p className="text-gray-500 text-xs">UI Developer Dec, 2021 to Present</p>
-           
-           </div>
-           <div className='w-44'>
-           <h3 className="font-semibold text-sm">Integral University, Lucknow</h3>
-           <p className="text-gray-500 text-xs">software developer May, 2022 to Present</p>
-             <p className="text-gray-500 text-xs">BCA (Full Time), 2018 to 2021</p>
-          
-           </div>
-         </div>
-
-         {/* Action Buttons */}
-         <div className="">
-          <div className='flex gap-2'>
-          <button className="bg-green-700 text-white px-4 py-1 rounded-md hover:bg-green-500">
-             Shortlist
-           </button>
-           <button className="bg-red-800 text-white px-4 py-1 rounded-md hover:bg-red-500">
-             Reject
-           </button>
-           </div>
-           <button className="bg-transparent my-3 border w-full border-green-500 text-green-500 px-4 py-1 rounded-md hover:bg-green-100">
-             Call
-           </button><br/>
-           <button className="bg-white border w-full border-gray-300 px-4 py-1 rounded-md hover:bg-gray-100">
-             Other Actions
-           </button>
-         </div>
-       </div>
-     </div>
+    
        </div>
      )}
      </div>

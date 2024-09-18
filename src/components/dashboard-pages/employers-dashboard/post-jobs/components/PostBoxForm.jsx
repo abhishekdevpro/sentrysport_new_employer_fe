@@ -195,24 +195,40 @@ const PostBoxForm = () => {
   
   
 
-  const handleChange = (key) => (e) =>
-    setKeywords({ ...keywords, [key]: e.target.value });
+ // const handleChange = (key) => (e) =>
+    //setKeywords({ ...keywords, [key]: e.target.value });
 
 
-  const handleSelect = (key, selectedItem) => {
-    setKeywords({ ...keywords, [key]: selectedItem });
-  
-    if (key === "job") {
-      setFormData({ ...formData, job_title: selectedItem }); // Ensure selectedItem contains the correct job title
-    } else if (key === "location") {
-      setFormData({ ...formData, location: selectedItem.city });
-      setCountryId(selectedItem.country_id);
-      setStateId(selectedItem.state_id);
-      setCityId(selectedItem.city_id);
-    }
-  
-    setDropdownVisibility((prev) => ({ ...prev, [key]: false }));
-  };
+ const handleSelect = (key, selectedItem) => {
+  if (key === "job") {
+    setKeywords((prevKeywords) => ({
+      ...prevKeywords,
+      [key]: selectedItem // Assuming selectedItem is a string
+    }));
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      job_title: selectedItem // Ensure selectedItem contains the correct job title
+    }));
+  } else if (key === "location") {
+    setKeywords((prevKeywords) => ({
+      ...prevKeywords,
+      [key]: `${selectedItem.city}, ${selectedItem.state}, ${selectedItem.country}`
+    }));
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      location: `${selectedItem.city}, ${selectedItem.state}, ${selectedItem.country}`
+    }));
+    setCountryId(selectedItem.country_id);
+    setStateId(selectedItem.state_id);
+    setCityId(selectedItem.city_id);
+  }
+
+  setDropdownVisibility((prevVisibility) => ({
+    ...prevVisibility,
+    [key]: false
+  }));
+};
+
   
 
   const handleFormChange = (e) => {
@@ -360,6 +376,59 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
     setSelectedItem(id);
   };
 
+  const handleAiAssist = async () => {
+    const { job_title, location } = formData;
+  
+    // Check if both job_title and location are provided
+    if (!job_title || !location) {
+      alert("Please select a job title and location before proceeding.");
+      return;
+    }
+  
+    // Ensure values are clean and formatted as strings
+    const cleanJobTitle = String(job_title).trim();
+    const cleanLocation = String(location).trim();
+  
+    // Construct the request body as a string
+    const requestBody = {
+      keyword: "Job Description",
+      title: cleanJobTitle,
+      company: "SVAP Infotech",
+      location: cleanLocation,
+    };
+  
+    console.log("Request Body for AI Assist:", JSON.stringify(requestBody));
+  
+    try {
+      const response = await axios.post(
+        "https://api.sentryspot.co.uk/api/employeer/ai-job-description",
+        requestBody, {
+          headers: {
+            
+            Authorization: token,
+          },
+        }
+      );
+      console.log("AI Assist Response:", response.data);
+      if (response.data.code === 200) {
+        // Update the job description with the AI response
+        setFormData({
+          ...formData,
+          description: response.data.data.description,
+        });
+      } else {
+        alert("Failed to get job description from AI. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error with AI Assist:", error);
+      alert("Failed to fetch AI job description. Please try again.");
+    }
+  };
+
+  const handleChange = (key) => (e) => {
+    setKeywords({ ...keywords, [key]: e.target.value });
+  };
+  
 
   return (
     <form className="default-form" onSubmit={handleSubmit}>
@@ -421,15 +490,17 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
 
 {/* Description Editor */}
 <div className="form-group col-lg-12 col-md-12 mt-4">
- 
   <div className="flex justify-between">
-          <label htmlFor="description" className="pt-4 font-semibold">
-          Job Description
-          </label>
-          <button className="border-1 border-violet-700 rounded-md py-2 px-2 m-2 font-semibold">
-            AI Assist +
-          </button>
-        </div>
+    <label htmlFor="description" className="pt-4 font-semibold">
+      Job Description
+    </label>
+    <button
+      className="border-1 border-violet-700 rounded-md py-2 px-2 m-2 font-semibold"
+      onClick={handleAiAssist}
+    >
+      AI Assist +
+    </button>
+  </div>
   <ReactQuill
     value={formData.description}
     onChange={handleDescriptionChange}
@@ -440,6 +511,7 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
     <p className="text-red-500 text-sm mt-1">Job description is required.</p>
   )}
 </div>
+
 
       {/* Experience Year Dropdown */}
       <div className="form-group col-lg-12 col-md-12 mt-4">

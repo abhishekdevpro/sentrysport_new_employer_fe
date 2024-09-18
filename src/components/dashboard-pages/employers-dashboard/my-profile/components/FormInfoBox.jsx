@@ -42,8 +42,9 @@ const FormInfoBox = () => {
           designation: data.employeer_detail.designation,
           organization: data.employeer_detail.organization,
           recuiter_type: data.employeer_detail.recuiter_type,
+          logImg :data.employeer_detail.photo
         });
-        setLogImg(data.employeer_detail.photo); // Set initial photo URL
+      //  setLogImg(data.employeer_detail.photo); // Set initial photo URL
         setSelectedCountry(data.employeer_detail.current_country_id || "");
         setSelectedState(data.employeer_detail.current_state_id || "");
         setSelectedCity(data.employeer_detail.current_city_id || "");
@@ -56,58 +57,71 @@ const FormInfoBox = () => {
   }, [token]);
 
   // Handle image upload
-  const logImgHandler = (event) => {
-    const file = event.target.files[0];
-    if (file && file.type.match('image.*')) {
-      setLogImg(file); // Store the File object
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        setLogImg(reader.result); // Update preview
-      };
-    } else {
-      toast.error("Please upload a valid image file.");
-    }
-  };
+    const logImgHandler = (event) => {
+      const file = event.target.files[0];
+      if (file && file.type.match('image.*')) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+          setLogImg(reader.result); // Store the Base64 string of the file
+        };
+      } else {
+        toast.error("Please upload a valid image file.");
+      }
+    };
 
-  // Submit form data
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData();
-    if (logImg instanceof File) {
-      formData.append("photo", logImg); // Append photo as binary
-    }
-    formData.append("first_name", formValues.first_name);
-    formData.append("last_name", formValues.last_name);
-    formData.append("email", formValues.email);
-    formData.append("phone", formValues.phone);
-    formData.append("website", formValues.website);
-    formData.append("designation", formValues.designation);
-    formData.append("organization", formValues.organization);
-    formData.append("recuiter_type", formValues.recuiter_type);
-    formData.append("current_country_id", selectedCountry);
-    formData.append("current_state_id", selectedState);
-    formData.append("current_city_id", selectedCity);
-
-    try {
-      const response = await axios.patch(
-        `${baseurl}profile`,
-        formData, // Send FormData
-        {
-          headers: {
-            Authorization: token,
-            "Content-Type": "multipart/form-data", // Set content type to multipart
-          },
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+    
+      const form = e.target;
+      const formData = new FormData();
+    
+      // Convert Base64 to Blob if logImg is a Base64 string
+      if (logImg && logImg.startsWith('data:image/')) {
+        const [metadata, base64Data] = logImg.split(',');
+        const mimeString = metadata.match(/:(.*?);/)[1]; // Extract MIME type
+        const byteString = atob(base64Data); // Decode base64
+        const arrayBuffer = new ArrayBuffer(byteString.length);
+        const uint8Array = new Uint8Array(arrayBuffer);
+        
+        for (let i = 0; i < byteString.length; i++) {
+          uint8Array[i] = byteString.charCodeAt(i);
         }
-      );
-      toast.success("Personal Details updated successfully!");
-      // Handle success, e.g., navigate or refresh data
-    } catch (error) {
-      toast.error("Failed to update profile.");
-      console.error("Error updating profile:", error);
-    }
-  };
+    
+        const blob = new Blob([uint8Array], { type: mimeString });
+        formData.append("photo_upload", blob, 'photo.jpg'); // Append Blob as a file
+      }
+    
+      formData.append("first_name", formValues.first_name);
+      formData.append("last_name", formValues.last_name);
+      formData.append("email", formValues.email);
+      formData.append("phone", formValues.phone);
+      formData.append("website", formValues.website);
+      formData.append("designation", formValues.designation);
+      formData.append("organization", formValues.organization);
+      formData.append("recuiter_type", formValues.recuiter_type);
+      formData.append("current_country_id", selectedCountry);
+      formData.append("current_state_id", selectedState);
+      formData.append("current_city_id", selectedCity);
+    
+      try {
+        const response = await axios.patch(
+          `${baseurl}profile`,
+          formData, // Send FormData
+          {
+            headers: {
+              Authorization: token,
+              "Content-Type": "multipart/form-data", // Ensure this header is set
+            },
+          }
+        );
+        toast.success("Personal Details updated successfully!");
+      } catch (error) {
+        toast.error("Failed to update profile.");
+        console.error("Error updating profile:", error);
+      }
+    };
+    
 
   // Fetch countries
   useEffect(() => {
@@ -184,38 +198,45 @@ const FormInfoBox = () => {
       <div className="row">
         {/* Profile Picture Upload */}
         <div className="form-group col-lg-6 col-md-12 flex justify-center">
-          <div>
-            <div className="rounded-full border w-32 h-32 flex items-center justify-center">
-              <input
-                className="uploadButton-input hidden"
-                type="file"
-                name="photo"
-                accept="image/*"
-                id="upload"
-                onChange={logImgHandler}
-              />
-              <label
-                className="uploadButton-button cursor-pointer flex items-center justify-center"
-                htmlFor="upload"
-              >
-                {typeof logImg === 'string' ? (
+        <div>
+          <div className="rounded-full border w-32 h-32 flex items-center justify-center overflow-hidden">
+            <input
+              className="uploadButton-input hidden"
+              type="file"
+              name="photo"
+              accept="image/*"
+              id="upload"
+              onChange={logImgHandler}
+            />
+            <label
+              className="uploadButton-button cursor-pointer flex items-center justify-center w-full h-full"
+              htmlFor="upload"
+            >
+              {logImg && logImg.startsWith('data:image/') ? (
+                <img
+                  src={logImg}
+                  alt="Uploaded"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center text-center w-full h-full">
                   <img
-                    src={logImg}
-                    alt="Uploaded"
-                    className="w-24 h-24 rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="flex flex-col items-center">
-                    <i className="fas fa-camera text-6xl"></i>
-                  </div>
-                )}
-              </label>
-            </div>
-            <div className="bg-violet-800 w-28 mt-2 py-1 ms-2 text-white text-sm text-center rounded-lg">
-              Add Picture
-            </div>
+                  src={`https://api.sentryspot.co.uk${formValues.logImg}`}
+                  alt="Uploaded"
+                  
+                />
+                  
+                  <span className="text-sm mt-2">Upload Image</span>
+                </div>
+              )}
+            </label>
+          </div>
+          <div className="bg-violet-800 w-28 mt-2 py-1 ms-2 text-white text-sm text-center rounded-lg">
+            Add Picture
           </div>
         </div>
+      </div>
+{console.log(`https://api.sentryspot.co.uk${formValues.logImg}`)}
 
         {/* Form Fields */}
         <div className="form-group col-lg-6 col-md-12">
