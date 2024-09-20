@@ -1,337 +1,401 @@
-{/*
-  
-
-import candidatesData from "../../../../../data/candidates";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import moment from "moment";
-import { Constant } from "@/utils/constant/constant";
-
-const WidgetContentBox = () => { 
-    const navigate = useNavigate();
-    const [data, setData] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [isError, setIsError] = useState(false);
-    const token = localStorage.getItem(Constant.USER_TOKEN);
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await fetch("https://api.sentryspot.co.uk/api/employeer/job-seekers", {
-            headers: {
-              Authorization: token,
-            },
-          });
-  
-          if (!response.ok) {
-            throw new Error("Failed to fetch jobs");
-          }
-  
-          const result = await response.json();
-          setData(result.data); // Storing the job data
-          setIsLoading(false);
-        } catch (error) {
-          setIsError(true);
-          setIsLoading(false);
-          toast.error(error.message || "Something went wrong");
-        }
-      };
-  
-      fetchData();
-    }, []);
-  
-    return (
-      <div className="tabs-box">
-      
-      
-        <div className="widget-content">
-          <div className="table-outer">
-            <table className="default-table manage-job-table">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Phone</th>
-                  <th>Location</th>
-                  <th>Created At</th>
-                </tr>
-              </thead>
-  
-              <tbody>
-                {isLoading ? (
-                  <tr>
-                    <td colSpan="5">Loading...</td>
-                  </tr>
-                ) : isError ? (
-                  <tr>
-                    <td colSpan="5">Error loading jobs</td>
-                  </tr>
-                ) : (
-                  data?.map((item, index) => (
-                    <tr key={index}>
-                      <td>
-                        {item?.jobskkers_detail?.first_name} {item?.jobskkers_detail?.last_name}
-                      </td>
-                      <td>{item?.jobskkers_detail?.email}</td>
-                      <td>{item?.jobskkers_detail?.phone}</td>
-                      <td>
-                        {item?.cities?.name}, {item?.states?.name}, {item?.countries?.name}
-                      </td>
-                      <td>{moment(item?.jobskkers_detail?.created_at).format("MMM Do YYYY")}</td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    );
-  };
-  
- 
-  
-export default WidgetContentBox;
-  */}
-
-
-
-
-  
-import React, { useState } from 'react';
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import {  useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import moment from "moment";
 import { Constant } from "@/utils/constant/constant";
 
 const WidgetContentBox = () => {
- const [activeTab, setActiveTab] = useState('applications'); // Set default tab
+  const [activeTab, setActiveTab] = useState("all"); // Default to 'all'
+  const [allData, setAllData] = useState([]);
+  const [unreadData, setUnreadData] = useState([]);
+  const [reviewedData, setReviewedData] = useState([]);
+  const [shortlistedData, setShortlistedData] = useState([]);
+  const [rejectedData, setRejectedData] = useState([]);
+  const [savedData, setSavedData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const token = localStorage.getItem(Constant.USER_TOKEN);
 
- const navigate = useNavigate();
-    const [data, setData] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [isError, setIsError] = useState(false);
-    const token = localStorage.getItem(Constant.USER_TOKEN);
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await fetch("https://api.sentryspot.co.uk/api/employeer/job-seekers", {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(
+          "https://api.sentryspot.co.uk/api/employeer/job-seekers",
+          {
             headers: {
               Authorization: token,
             },
-          });
-  
-          if (!response.ok) {
-            throw new Error("Failed to fetch jobs");
           }
-  
-          const result = await response.json();
-          setData(result.data); // Storing the job data
-          setIsLoading(false);
-        } catch (error) {
-          setIsError(true);
-          setIsLoading(false);
-          toast.error(error.message || "Something went wrong");
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch job seekers");
         }
-      };
+
+        const result = await response.json();
+        const fetchedData = result.data;
+
+        // Set data for each tab (this is for demonstration, adjust conditions as needed)
+        setAllData(fetchedData);
+        setUnreadData(fetchedData.filter((item) => item.is_unread)); // Assuming an 'is_unread' field
+        setReviewedData(fetchedData.filter((item) => item.is_reviewed)); // Assuming an 'is_reviewed' field
+        setShortlistedData(fetchedData.filter((item) => item.is_shortlisted)); // Assuming an 'is_shortlisted' field
+        setRejectedData(fetchedData.filter((item) => item.is_rejected)); // Assuming an 'is_rejected' field
+        setSavedData(fetchedData.filter((item) => item.is_saved)); // Assuming an 'is_saved' field
+
+        setIsLoading(false);
+      } catch (error) {
+        setIsError(true);
+        setIsLoading(false);
+        toast.error(error.message || "Something went wrong");
+      }
+    };
+
+    fetchData();
+  }, [token]);
+
+  // Function to handle shortlisting or rejecting a candidate
+  const handleShortlistReject = async (
+    jobSeekerId,
+    isShortlist,
+    isRejected
+  ) => {
+    try {
+      const response = await fetch(
+        "https://api.sentryspot.co.uk/api/employeer/jobseeker-shortlist",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+          body: JSON.stringify({
+            job_seeker_id: jobSeekerId,
+            is_shortlist: isShortlist,
+            is_rejected: isRejected,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update job seeker status");
+      }
+
+      const result = await response.json();
+      toast.success(result.message || "Action successful");
+    } catch (error) {
+      toast.error(error.message || "Something went wrong");
+    }
+  };
+
+  const handleSave = async (jobSeekerId) => {
+    try {
+      const response = await fetch(
+        "https://api.sentryspot.co.uk/api/employeer/jobseeker-save",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+          body: JSON.stringify({ job_seeker_id: jobSeekerId }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to save job seeker");
+      }
+
+      const result = await response.json();
+      toast.success(result.message || "Job seeker saved successfully");
+    } catch (error) {
+      toast.error(error.message || "Something went wrong");
+    }
+  };
+
+  const handleReview = async (jobSeekerId) => {
+    try {
+      const response = await fetch('https://api.sentryspot.co.uk/api/employeer/jobseeker-reviewed', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+        body: JSON.stringify({ job_seeker_id: jobSeekerId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to review job seeker');
+      }
+
+      const result = await response.json();
+      toast.success(result.message || 'Job seeker reviewed successfully');
+    } catch (error) {
+      toast.error(error.message || 'Something went wrong');
+    }
+  };
   
-      fetchData();
-    }, []);
+  // Function to render the correct data based on the active tab
+  const renderTabContent = () => {
+    let tabData = [];
+    switch (activeTab) {
+      case "unread":
+        tabData = unreadData;
+        break;
+      case "reviewed":
+        tabData = reviewedData;
+        break;
+      case "shortlisted":
+        tabData = shortlistedData;
+        break;
+      case "rejected":
+        tabData = rejectedData;
+        break;
+      case "saved":
+        tabData = savedData;
+        break;
+      default:
+        tabData = allData;
+    }
 
-
-
- return (
-   <div className="p-2   bg-gray-100">
-
-
-
-
-         
-             
-  
-             
-        
-
-
-
-     {/* Header Section */}
-     <div className="flex justify-between items-center mb-6">
-       <div>
-         <h1 className="text-2xl font-semibold">React JS Developer - Javascript/Redux</h1>
-         <p className="text-gray-600">Jaipur • 0 - 1 yrs • Job Code: 1377021</p>
-       </div>
-       <div className="flex space-x-4">
-         
-         <select className='bg-white border text-black border-black px-2 py-2 rounded-sm hover:bg-gray-100'>
-           <option> Default Calendar</option>
-         </select>
-         <select className='bg-white border text-black border-black px-2 py-2 rounded-sm hover:bg-gray-100'>
-           <option> Set Default Assessment</option>
-         </select>
-         <select className='bg-white border text-black border-black px-2 py-2 rounded-sm hover:bg-gray-100'>
-           <option>   Make Premium</option>
-         </select>
-        
-       </div>
-     </div>
-
-     {/* Auto Interview Scheduler */}
-     <div className="flex items-center mb-4 space-x-4">
-       <div className="text-violet-600">Auto Interview Scheduler: ✔️  Enabled</div>
-       <div>
-         <select className="bg-white border border-gray-300 rounded-md px-2 py-1">
-           <option>Face To Face</option>
-           <option>Online</option>
-           <option>Phone</option>
-         </select>
-       </div>
-       <button className="text-red-500">Disable</button>
-     </div>
-
-     <div className='border p-3 bg-white'>
-{/* Tabs for Recommended Candidates and Applications */}
-<div className="border-b border-gray-300  flex space-x-6 mb-6">
-       <button
-         onClick={() => setActiveTab('recommended')}
-         className={`text-lg font-medium pb-2 ${
-           activeTab === 'recommended' ? 'border-b-2 border-violet-500 text-violet-600' : 'text-gray-500'
-         }`}
-       >
-         Recommended Candidates (0)
-       </button>
-       <button
-         onClick={() => setActiveTab('applications')}
-         className={`text-lg font-medium pb-2 ${
-           activeTab === 'applications' ? 'border-b-2 border-violet-500 text-violet-600' : 'text-gray-500'
-         }`}
-       >
-         Applications (2)
-       </button>
-     </div>
-
-     {/* Content for Active Tab */}
-     {activeTab === 'recommended' ? (
-       <div>
-         {/* Recommended Candidates List */}
-         <p className="text-center text-gray-500">No recommended candidates available.</p>
-       </div>
-     ) : (
-       <div>
-         <div className="flex justify-between items-center mb-6">
-       <div className="flex space-x-4">
-         <input
-           type="text"
-           placeholder="Search keyword or candidates"
-           className="border border-black  px-4 py-2 w-80 "
-         />
-        
-         <button className="bg-white border text-black border-black px-4 py-1 rounded-sm hover:bg-gray-100">
-         Filter
-         </button>
-         <select className="bg-white border border-black text-black px-2 py-1 rounded-sm hover:bg-gray-100">
-           <option> Magic Sort (Relevance)</option>
-         </select>
-         
-         <select className="bg-white border border-black text-black px-2 py-2 rounded-sm hover:bg-gray-100">
-           <option> Diversity Candidates</option>
-         </select>
-         
-         <select className="bg-white border border-black text-black px-2 py-2 rounded-sm hover:bg-gray-100">
-           <option> All Candidates</option>
-         </select>
-        
-       </div>
-     </div>
-
-     {/* Tabs */}
-     <div className="border-b border-gray-300 flex space-x-6 mb-6">
-       <button className="text-gray-500 pb-2 border-b-2 border-green-500">All (2)</button>
-       <button className="text-gray-500 pb-2">Unread (2)</button>
-       <button className="text-gray-500 pb-2">Reviewed (20)</button>
-       <button className="text-gray-500 pb-2">Shortlisted (1)</button>
-       <button className="text-gray-500 pb-2">Rejected (5)</button>
-       <button className="text-gray-500 pb-2">Saved (1)</button>
-     </div>
-
-     {/* Candidate Card 1 */}
-     <div>
-                {isLoading ? (
-                  <tr>
-                    <td colSpan="5">Loading...</td>
-                  </tr>
-                ) : isError ? (
-                  <tr>
-                    <td colSpan="5">Error loading jobs</td>
-                  </tr>
-                ) : (
-                  data?.map((item, index) => (
-                    <div key={index}>
-                     
-                      <div className="bg-white shadow-md rounded-md p-4  mb-4 ">
-       <div className="flex justify-between items-center px-10 w-full">
-         {/* Profile and Details */}
-         <div className="flex space-x-4 ">
-           <img
-             src={`https://api.sentryspot.co.uk${item?.jobskkers_detail?.photo}`}
-             alt="Profile"
-             className="rounded-full h-20 w-20"
-           />{console.log(`https://api.sentryspot.co.uk${item?.jobskkers_detail?.photo}`)}
-           <div>
-             <h3 className="font-semibold text-lg">{item?.jobskkers_detail?.first_name} {item?.jobskkers_detail?.last_name}</h3>
-             <p className="text-gray-500">Experience: 2y 9m <br/> Location:  {item?.jobskkers_detail?.cities?.name}, {item?.jobskkers_detail?.states?.name}, {item?.jobskkers_detail?.countries?.name}</p>
-             <p className="text-gray-500">Applied on: {moment(item?.jobskkers_detail?.created_at).format("MMM Do YYYY")} <br/> Notice Period: 1 month</p>
-             <p className="text-blue-500 cursor-pointer">Cover letter</p>
-           </div>
-        
-          {/* <div className='w-44'>
-             <h3 className="font-semibold text-sm"> Redcliffe Life science pvt. Ltd</h3>
-             <p className="text-gray-500 text-xs">software developer May, 2022 to Present</p><br/>
-             <h3 className="font-semibold text-sm"> Mogli labs India Pvt. Ltd.</h3>
-             <p className="text-gray-500 text-xs">UI Developer Dec, 2021 to Present</p>
-           
-           </div>
-           <div className='w-44'>
-           <h3 className="font-semibold text-sm">Integral University, Lucknow</h3>
-           <p className="text-gray-500 text-xs">software developer May, 2022 to Present</p>
-             <p className="text-gray-500 text-xs">BCA (Full Time), 2018 to 2021</p>
-          
-           </div> */}
-         </div>
-
-         {/* Action Buttons */}
-         <div className="">
-          <div className='flex gap-2'>
-          <button className="bg-green-700 text-white px-4 py-1 rounded-md hover:bg-green-500">
-             Shortlist
-           </button>
-           <button className="bg-red-800 text-white px-4 py-1 rounded-md hover:bg-red-500">
-             Reject
-           </button>
-           </div>
-           <button className="bg-transparent my-3 border w-full border-green-500 text-green-500 px-4 py-1 rounded-md hover:bg-green-100">
-             Call
-           </button><br/>
-           <button className="bg-white border w-full border-gray-300 px-4 py-1 rounded-md hover:bg-gray-100">
-             Other Actions
-           </button>
-         </div>
-       </div>
-     </div>
-                    </div>
-                  ))
-                )}
+    return isLoading ? (
+      <p>Loading...</p>
+    ) : isError ? (
+      <p>Error loading candidates</p>
+    ) : (
+      tabData?.map((item, index) => (
+        <div key={index} className="bg-white shadow-md rounded-md p-4 mb-4">
+          <div className="flex justify-between items-center px-10 w-full">
+            {/* Profile and Details */}
+            <div className="flex space-x-4">
+              <img
+                src={`https://api.sentryspot.co.uk${item?.jobskkers_detail?.photo}`}
+                alt="Profile"
+                className="rounded-full h-20 w-20"
+              />
+              <div>
+                <h3 className="font-semibold text-lg">
+                  {item?.jobskkers_detail?.first_name}{" "}
+                  {item?.jobskkers_detail?.last_name}
+                </h3>
+                <p className="text-gray-500">
+                  Experience: 2y 9m <br />
+                  Location: {item?.jobskkers_detail?.cities?.name},{" "}
+                  {item?.jobskkers_detail?.states?.name},{" "}
+                  {item?.jobskkers_detail?.countries?.name}
+                </p>
+                <p className="text-gray-500">
+                  Applied on:{" "}
+                  {moment(item?.jobskkers_detail?.created_at).format(
+                    "MMM Do YYYY"
+                  )}{" "}
+                  <br />
+                  Notice Period: 1 month
+                </p>
+                <p className="text-blue-500 cursor-pointer">Cover letter</p>
               </div>
-            
+            </div>
 
-    
-       </div>
-     )}
-     </div>
-   </div>
- );
+            {/* Action Buttons */}
+            <div>
+              <div className="flex gap-2">
+                <button
+                  className={`px-4 py-1 rounded-md  w-1/2 ${
+                    item?.jobskkers_detail?.job_seeker_shortlisted === 0
+
+                      ? "bg-green-700 text-white hover:bg-green-500"
+                      : "bg-gray-400 text-gray-200 cursor-not-allowed"
+                  }`}
+                  onClick={() =>
+                    handleShortlistReject(item?.jobskkers_detail?.id, 1, 0)
+                  }
+                  disabled={
+                    item?.jobskkers_detail?.job_seeker_shortlisted !== 0  }   >
+                  {item?.jobskkers_detail?.job_seeker_shortlisted === 0  ? "Shortlist" : "Shortlisted"} 
+                  </button>
+
+                <button
+                  className={`px-4 py-1 rounded-md w-1/2 ${
+                    item?.jobskkers_detail?.job_seeker_rejected === 0  ? "bg-red-800 text-white hover:bg-red-500" : "bg-gray-400 text-gray-200 cursor-not-allowed" }`}
+
+                  onClick={() => handleShortlistReject(item?.jobskkers_detail?.id, 0, 1) }
+                  disabled={item?.jobskkers_detail?.job_seeker_rejected !== 0  }
+                >
+                  {item?.jobskkers_detail?.job_seeker_rejected === 0
+             
+                    ? "Reject"
+                    : "Rejected"}
+                </button>
+              </div>
+
+              <button
+                onClick={() => handleSave(item?.jobskkers_detail?.id)}
+                className={`bg-${
+                  item?.jobskkers_detail?.job_seeker_fav_id === 0
+                    ? "blue-700"
+                    : "blue-300"
+                } text-white px-4 py-1 rounded-md w-full my-2 hover:bg-${
+                  item?.jobskkers_detail?.job_seeker_fav_id === 0
+                    ? "blue-500"
+                    : "gray-400"
+                }`}
+                disabled={!(item?.jobskkers_detail?.job_seeker_fav_id === 0)}
+              >
+                {item?.jobskkers_detail?.job_seeker_fav_id === 0
+                  ? "Save"
+                  : "Saved"}
+              </button>
+              <button className="bg-white border w-full border-gray-300 px-4 py-1 rounded-md hover:bg-gray-100"
+                 onClick={() => handleReview(item.jobskkers_detail.id)}
+              >
+                 Review
+              </button>
+            </div>
+          </div>
+        </div>
+      ))
+    );
+  };
+
+  return (
+    <div className="p-2 bg-gray-100">
+      <div className="border p-3 bg-white">
+        {/* Tabs for Recommended Candidates and Applications */}
+        <div className="border-b border-gray-300  flex space-x-6 mb-6">
+          <button
+            onClick={() => setActiveTab("recommended")}
+            className={`text-lg font-medium pb-2 ${
+              activeTab === "recommended"
+                ? "border-b-2 border-violet-500 text-violet-600"
+                : "text-gray-500"
+            }`}
+          >
+            Recommended Candidates (0)
+          </button>
+          <button
+            onClick={() => setActiveTab("applications")}
+            className={`text-lg font-medium pb-2 ${
+              activeTab === "applications"
+                ? "border-b-2 border-violet-500 text-violet-600"
+                : "text-gray-500"
+            }`}
+          >
+            Applications ({allData.length})
+          </button>
+        </div>
+
+        {/* Content for Active Tab */}
+        {activeTab === "recommended" ? (
+          <div>
+            {/* Recommended Candidates List */}
+            <p className="text-center text-gray-500">
+              No recommended candidates available.
+            </p>
+          </div>
+        ) : (
+          <div>
+            <div className="flex justify-between items-center mb-6">
+              <div className="flex space-x-4">
+                <input
+                  type="text"
+                  placeholder="Search keyword or candidates"
+                  className="border border-black  px-4 py-2 w-80 "
+                />
+
+                <button className="bg-white border text-black border-black px-4 py-1 rounded-sm hover:bg-gray-100">
+                  Filter
+                </button>
+                <select className="bg-white border border-black text-black px-2 py-1 rounded-sm hover:bg-gray-100">
+                  <option> Magic Sort (Relevance)</option>
+                </select>
+
+                <select className="bg-white border border-black text-black px-2 py-2 rounded-sm hover:bg-gray-100">
+                  <option> Diversity Candidates</option>
+                </select>
+
+                <select className="bg-white border border-black text-black px-2 py-2 rounded-sm hover:bg-gray-100">
+                  <option> All Candidates</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Candidate Card 1 */}
+            <div className="border p-3 bg-white">
+              {/* Tabs for All, Unread, Reviewed, etc. */}
+              <div className="border-b border-gray-300 flex space-x-6 mb-6">
+                <button
+                  onClick={() => setActiveTab("all")}
+                  className={`text-lg font-medium pb-2 ${
+                    activeTab === "all"
+                      ? "border-b-2 border-green-500 text-green-600"
+                      : "text-gray-500"
+                  }`}
+                >
+                  All ({allData.length})
+                </button>
+                <button
+                  onClick={() => setActiveTab("unread")}
+                  className={`text-lg font-medium pb-2 ${
+                    activeTab === "unread"
+                      ? "border-b-2 border-green-500 text-green-600"
+                      : "text-gray-500"
+                  }`}
+                >
+                  Unread ({unreadData.length})
+                </button>
+                <button
+                  onClick={() => setActiveTab("reviewed")}
+                  className={`text-lg font-medium pb-2 ${
+                    activeTab === "reviewed"
+                      ? "border-b-2 border-green-500 text-green-600"
+                      : "text-gray-500"
+                  }`}
+                >
+                  Reviewed ({reviewedData.length})
+                </button>
+                <button
+                  onClick={() => setActiveTab("shortlisted")}
+                  className={`text-lg font-medium pb-2 ${
+                    activeTab === "shortlisted"
+                      ? "border-b-2 border-green-500 text-green-600"
+                      : "text-gray-500"
+                  }`}
+                >
+                  Shortlisted ({shortlistedData.length})
+                </button>
+                <button
+                  onClick={() => setActiveTab("rejected")}
+                  className={`text-lg font-medium pb-2 ${
+                    activeTab === "rejected"
+                      ? "border-b-2 border-green-500 text-green-600"
+                      : "text-gray-500"
+                  }`}
+                >
+                  Rejected ({rejectedData.length})
+                </button>
+                <button
+                  onClick={() => setActiveTab("saved")}
+                  className={`text-lg font-medium pb-2 ${
+                    activeTab === "saved"
+                      ? "border-b-2 border-green-500 text-green-600"
+                      : "text-gray-500"
+                  }`}
+                >
+                  Saved ({savedData.length})
+                </button>
+              </div>
+
+              {/* Content for Active Tab */}
+              <div>{renderTabContent()}</div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
-export default WidgetContentBox
+export default WidgetContentBox;

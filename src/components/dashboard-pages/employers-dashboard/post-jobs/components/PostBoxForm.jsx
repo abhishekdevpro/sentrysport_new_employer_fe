@@ -304,7 +304,7 @@ const handleSubmit = async (e) => {
         },
       }
     );
-    toast.log("Job posted successfully:", response.data);
+    toast.success("Job posted successfully:", response.data);
   } catch (error) {
     if (error.response) {
       toast.error("Error details:", error.response.data);
