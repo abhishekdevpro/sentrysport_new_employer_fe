@@ -64,7 +64,7 @@ const employerMenu = [
   },
   {
     id: 10,
-    name: "Packages",
+    name: "Coin",
     icon: "la-box",
     routePath: "/employers-dashboard/packages",
     active: "",

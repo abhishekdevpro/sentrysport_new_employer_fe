@@ -36,8 +36,8 @@ const DashboardEmployerSidebar = () => {
             <li
               className={`mb-1 transition-transform duration-200 ease-in-out ${
                 isActiveLink(item.routePath, pathname)
-                  ? "bg-purple-200 text-white rounded-lg"
-                  : "hover:scale-125 hover:bg-pink-300 hover:text-white rounded-lg"
+                  ? "bg-blue-200 text-white rounded-lg"
+                  : "hover:scale-125 hover:bg-sky-300 hover:text-white rounded-lg"
               }`}
               key={item.id}
               onClick={menuToggleHandler}

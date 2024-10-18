@@ -231,7 +231,7 @@ const FormInfoBox = () => {
               )}
             </label>
           </div>
-          <div className="bg-violet-800 w-28 mt-2 py-1 ms-2 text-white text-sm text-center rounded-lg">
+          <div className="bg-blue-800 w-28 mt-2 py-1 ms-2 text-white text-sm text-center rounded-lg">
             Add Picture
           </div>
         </div>
@@ -384,7 +384,7 @@ const FormInfoBox = () => {
       </div>
 
       <div className="form-group col-lg-12">
-        <button type="submit" className="btn bg-violet-800 text-white">Save</button>
+        <button type="submit" className="btn bg-blue-800 text-white">Save</button>
       </div>
     </form>
   );

@@ -4,8 +4,8 @@ import JobAlerts from "@/components/dashboard-pages/candidates-dashboard/job-ale
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "My Job Alerts || Abroadium - Job Borad ReactJs Template",
-  description: "Abroadium - Job Borad ReactJs Template",
+  title: "My Job Alerts || Sentryspot - Job Borad ReactJs Template",
+  description: "Sentryspot - Job Borad ReactJs Template",
 };
 
 const JobAlertPage = () => {

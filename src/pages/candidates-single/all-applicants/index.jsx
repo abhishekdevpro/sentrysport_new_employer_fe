@@ -5,9 +5,9 @@ import AllApplicants from "../../../components/dashboard-pages/employers-dashboa
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: 'All Applicants || Abroadium - Job Borad ReactJs Template',
+  title: 'All Applicants || Sentryspot - Job Borad ReactJs Template',
   description:
-    'Abroadium - Job Borad ReactJs Template',
+    'Sentryspot - Job Borad ReactJs Template',
   
 }
 

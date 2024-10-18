@@ -11,7 +11,8 @@ import Social from "@/components/candidates-single-pages/social/Social";
 import JobSkills from "@/components/candidates-single-pages/shared-components/JobSkills";
 import AboutVideo from "@/components/candidates-single-pages/shared-components/AboutVideo";
 import {useParams } from "react-router-dom";
-
+import { useState } from "react";
+import { useRef } from "react";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
@@ -24,6 +25,51 @@ const CandidateSingleDynamicV1 = () => {
   let params = useParams();
   const id = params.id;
   const candidate = candidates.find((item) => item.id == id) || candidate[0];
+
+  const [audioSrc] = useState("https://www.example.com/your-audio-file.mp3"); // Pre-uploaded audio file URL
+  const [videoSrc] = useState("https://www.example.com/your-video-file.mp4"); // Pre-uploaded video file URL
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [speed, setSpeed] = useState(1);
+
+  const audioRef = useRef(null);
+
+  // Format time in minutes:seconds
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+  };
+
+  // Play or pause the audio
+  const togglePlayPause = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  // Update time as the audio plays
+  const updateCurrentTime = () => {
+    setCurrentTime(audioRef.current.currentTime);
+  };
+
+  // Update duration once audio metadata is loaded
+  const onLoadedMetadata = () => {
+    setDuration(audioRef.current.duration);
+  };
+
+  // Change playback speed
+  const handleSpeedChange = (event) => {
+    const newSpeed = parseFloat(event.target.value);
+    setSpeed(newSpeed);
+    audioRef.current.playbackRate = newSpeed;
+  };
 
   return (
     <>
@@ -80,8 +126,9 @@ const CandidateSingleDynamicV1 = () => {
                 </div>
 
                 <div className="btn-box">
+                 
                   <a
-                    className="theme-btn btn-style-one"
+                    className="theme-btn btn-style-one ms-2"
                     href="/images/sample.pdf"
                     download
                   >
@@ -91,23 +138,98 @@ const CandidateSingleDynamicV1 = () => {
                     <i className="flaticon-bookmark"></i>
                   </button>
                 </div>
+                
               </div>
+              
             </div>
             {/*  <!-- Candidate block Five --> */}
           </div>
         </div>
         {/* <!-- Upper Box --> */}
+        <div className="flex justify-center  mx-20">
+      {/* Audio Section */}
+      <div className="bg-gray-100 p-2 rounded-lg m-2 ms-4 shadow-md w-full  lg:w-4/6">
+        <h2 className="text-lg mb-2">Audio</h2>
+        <audio
+          ref={audioRef}
+          src={audioSrc}
+          onTimeUpdate={updateCurrentTime}
+          onLoadedMetadata={onLoadedMetadata}
+          className="hidden"
+        ></audio>
 
+        {/* Play/Pause button */}
+        <button onClick={togglePlayPause} className="mr-4">
+          {isPlaying ? <span>⏸</span> : <span>▶️</span>}
+        </button>
+
+        {/* Progress bar */}
+        <input
+          type="range"
+          min="0"
+          max={duration}
+          value={currentTime}
+          onChange={(e) => (audioRef.current.currentTime = e.target.value)}
+          className="w-3/4 mx-2"
+        />
+
+        {/* Current time and duration */}
+        <span>{formatTime(currentTime)}</span>
+        <span className="mx-2">/</span>
+        <span>{formatTime(duration)}</span>
+
+        {/* Playback speed control */}
+        <select
+          value={speed}
+          onChange={handleSpeedChange}
+          className="ml-4 border p-1 rounded-md"
+        >
+          <option value="0.5">0.5x</option>
+          <option value="1">1x</option>
+          <option value="1.5">1.5x</option>
+          <option value="2">2x</option>
+        </select>
+
+        {/* Audio Description */}
+        <div className="mt-4 bg-blue-100 p-2 rounded-lg">
+          <p>
+            The contract principal UX designer will help shape the user experience
+            for Linktree's newest social commerce product. You'll lead the design
+            process from research to high-fidelity prototypes and work closely with
+            product engineering teams to create a seamless, engaging user experience.
+          </p>
+        </div>
+      </div>
+
+      {/* Video Section */}
+      <div className="bg-gray-100 p-2 rounded-lg shadow-md w-full h-3/6 m-2 lg:w-4/12">
+       
+        <video
+          controls
+          src={videoSrc}
+          className="w-full rounded-lg "
+        ></video>
+
+        {/* Video Description */}
+        <div className="mt-4 bg-blue-100 p-2 mrounded-lg">
+          <p>
+            This is a demo video for the new product launch showcasing how the
+            user experience is transformed through our new UX design.
+          </p>
+        </div>
+      </div>
+    </div>
         <div className="candidate-detail-outer">
+        
           <div className="auto-container">
             <div className="row">
               <div className="content-column col-lg-8 col-md-12 col-sm-12">
                 <div className="job-detail">
                   <div className="video-outer">
-                    <h4>Candidates About</h4>
-                    <AboutVideo />
+                    <h4>About Us</h4>
+                    {/*  <AboutVideo /> */}
                   </div>
-                  {/* <!-- About Video Box --> */}
+                 
                   <p>
                     Hello my name is Nicole Wells and web developer from
                     Portland. In pharetra orci dignissim, blandit mi semper,
@@ -130,7 +252,7 @@ const CandidateSingleDynamicV1 = () => {
 
                   {/* <!-- Portfolio --> */}
                   <div className="portfolio-outer">
-                    <div className="row">
+                    <div className="row border rounded-lg bg-blue-100 p-2">
                       <GalleryBox />
                     </div>
                   </div>
@@ -244,10 +366,19 @@ const CandidateSingleDynamicV1 = () => {
                   {/* End .sidebar-widget skill widget */}
 
                   <div className="sidebar-widget contact-widget">
-                    <h4 className="widget-title">Contact Us</h4>
+                    <h4 className="widget-title">Connect</h4>
                     <div className="widget-content">
                       <div className="default-form">
-                        <Contact />
+                       {/* <Contact /> */}
+                        <div className="col-lg-12 col-md-12 col-sm-12 form-group mb-0">
+          <button
+            className="theme-btn btn-style-one"
+            type="submit"
+            name="submit-form"
+          >
+            Send Message
+          </button>
+        </div>
                       </div>
                     </div>
                   </div>

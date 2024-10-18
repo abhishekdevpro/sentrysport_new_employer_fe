@@ -101,7 +101,7 @@ const Login = ({ setIsLogin }) => {
           <Button
             type="submit"
             size="sm"
-            className="px-3 py-4 w-full duration-300 bg-[#51366c] hover:bg-[#e60278]"
+            className="px-3 py-4 w-full duration-300 bg-[#2d1f89] hover:bg-[#e60278]"
           >
             {loading ? <ActionLoader /> : "Login"}
           </Button>

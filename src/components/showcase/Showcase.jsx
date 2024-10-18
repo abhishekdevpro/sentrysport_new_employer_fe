@@ -131,7 +131,7 @@ const ShowcaseComponent = () => {
               <span className="inline-block border-2 !border-red-700 min-w-36 max-w-36"></span>
               <p className="title text-xl sm:text-3xl text-black font-bold w-[70%]">{formData.title}</p>
               <p>{formData.description}</p>
-              <button className="text-white bg-violet-950 border p-2 rounded-lg px-4 flex gap-2 justify-center" onClick={handleEditClick}>
+              <button className="text-white bg-blue-950 border p-2 rounded-lg px-4 flex gap-2 justify-center" onClick={handleEditClick}>
                 <MdEdit size={20} /> Edit
               </button>
             </div>
@@ -159,7 +159,7 @@ const ShowcaseComponent = () => {
 
       {isPopupOpen && (
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-violet-50 p-6 mx-20 rounded-lg shadow-lg w-full">
+          <div className="bg-blue-50 p-6 mx-20 rounded-lg shadow-lg w-full">
             <h2 className="text-xl mb-4 font-semibold">Edit About Section</h2>
             <form onSubmit={handleFormSubmit}>
               <div className="mb-4">
@@ -185,7 +185,7 @@ const ShowcaseComponent = () => {
                 <label className="block text-gray-700 font-semibold">Image</label>
                 <input type="file" onChange={handleImageChange} className="w-full p-2 border rounded" />
               </div>
-              <button type="submit" className="bg-violet-900 text-white p-2 px-3 rounded font-semibold">Save</button>
+              <button type="submit" className="bg-blue-900 text-white p-2 px-3 rounded font-semibold">Save</button>
               <button type="button" onClick={handleClosePopup} className="bg-red-500 text-white p-2 ml-2 rounded">Cancel</button>
             </form>
           </div>
@@ -207,7 +207,7 @@ const ShowcaseComponent = () => {
           <p className="text-lg sm:text-xl">{description1}</p>
          
           <button
-            className="text-white bg-violet-950 border p-2 rounded-lg px-4"
+            className="text-white bg-blue-950 border p-2 rounded-lg px-4"
             onClick={() => setIsModalOpen(true)}
           >
             Edit
@@ -248,7 +248,7 @@ const ShowcaseComponent = () => {
                 Cancel
               </button>
               <button
-                className="text-white bg-violet-950 border p-2 rounded-lg px-4"
+                className="text-white bg-blue-950 border p-2 rounded-lg px-4"
                 onClick={handleSave}
               >
                 Save
@@ -526,7 +526,7 @@ const ShowcaseComponent = () => {
             </svg>
           </a>
         </div>
-        <h3 className="text-white font-semibold text-sm pt-5 ">Follow us All rights reserved © abroadium.com</h3>
+        <h3 className="text-white font-semibold text-sm pt-5 ">Follow us All rights reserved © Sentryspot.com</h3>
       </div>
     </>
   );

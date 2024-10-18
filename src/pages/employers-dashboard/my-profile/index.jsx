@@ -2,8 +2,8 @@ import SocialNetworkBox from "@/components/dashboard-pages/employers-dashboard/m
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Company Profile || Abroadium - Job Borad ReactJs Template",
-  description: "Abroadium - Job Borad ReactJs Template",
+  title: "Company Profile || Sentryspot - Job Borad ReactJs Template",
+  description: "Sentryspot - Job Borad ReactJs Template",
 };
 
 const MyProfileEmploeeDBPage = () => {

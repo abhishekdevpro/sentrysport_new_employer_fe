@@ -5,9 +5,9 @@ import BlogList from "@/components/blog-meu-pages/blog-list-v2";
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: 'Blog List V2 || Abroadium - Job Borad ReactJs Template',
+  title: 'Blog List V2 || Sentryspot - Job Borad ReactJs Template',
   description:
-    'Abroadium - Job Borad ReactJs Template',
+    'Sentryspot - Job Borad ReactJs Template',
   
 }
 

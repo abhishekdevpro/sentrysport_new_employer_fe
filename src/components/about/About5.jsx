@@ -52,7 +52,7 @@ const About5 = () => {
 
             {/* <!-- Count Employers --> */}
             <div className="applicants-list -pos-2">
-              <div className="title-box bg-purple">
+              <div className="title-box bg-blue">
                 <h4>Applicants List</h4>
               </div>
               {/* End title */}

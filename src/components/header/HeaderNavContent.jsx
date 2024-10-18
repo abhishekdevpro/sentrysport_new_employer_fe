@@ -30,10 +30,10 @@ const HeaderNavContent = () => {
 
   return (
     <>
-      <nav className="nav main-menu">
+      <nav className="nav main-menu " >
         <ul className="navigation" id="navbar">
-          <li className="text-white">
-            <Link to="/employers-dashboard/dashboard" className="text-white p-0">Dashboard</Link>
+          <li className="text-blue-900">
+            <Link to="/employers-dashboard/dashboard" className="text-blue-900 p-0">Dashboard</Link>
           </li>
           <li
             className={`${
@@ -42,7 +42,7 @@ const HeaderNavContent = () => {
                 : ""
             } dropdown`}
           >
-            <span className="text-white">Jobs</span>
+            <span className="text-blue-900">Jobs</span>
             <ul>
               <li className={pathname?.includes("/employers-dashboard") ? "current" : ""}>
                 <Link to="/employers-list-v2">My Job</Link>
@@ -58,8 +58,8 @@ const HeaderNavContent = () => {
               </li>
             </ul>
           </li>
-          <li className="text-white">
-            <button onClick={handleSearchClick} className="text-white font-semibold">Search Resume</button>
+          <li className="text-blue-900">
+            <button onClick={handleSearchClick} className="text-blue-900 font-semibold">Search Resume</button>
           </li>
           
           <li
@@ -72,16 +72,16 @@ const HeaderNavContent = () => {
                 : ""
             } dropdown`}
           >
-            <Link className="text-white" to="/showcase/org">View</Link>
+            <Link className="text-blue-900" to="/showcase/org">View</Link>
             </li>
           <li className="border h-[80%] p-0 m-0"></li>
           <li className="hover:bg-slate-200  rounded-md ml-2">
-            <Link to="/" className="text-white">
-              <span className="font-light text-white"> Recruiting</span>? Post a job
+            <Link to="/" className="text-blue-900">
+              <span className="font-light text-blue-900"> Recruiting</span>? Post a job
             </Link>
           </li>
-          <li className="text-white">
-            <button onClick={handleDropdownToggle} className="text-white font-semibold">Contact Us</button>
+          <li className="text-blue-900">
+            <button onClick={handleDropdownToggle} className="text-blue-900 font-semibold">Contact Us</button>
           </li>
         </ul>
       </nav>
@@ -89,8 +89,8 @@ const HeaderNavContent = () => {
       {isPopupOpen && <SearchResumePopup onClose={closePopup} />}
       {dropdownOpen && (
                   <div className="absolute top-12 right-40 mt-2 w-62 bg-white shadow-lg rounded-lg  z-50">
-                    <div className="px-4 pb-2 pt-2 bg-purple-900 rounded-t-lg border-b border-gray-200">
-                      <p className="font-bold text-white">Connect with our Sales Team</p>
+                    <div className="px-4 pb-2 pt-2 bg-blue-900 rounded-t-lg border-b border-gray-200">
+                      <p className="font-bold text-blue-900">Connect with our Sales Team</p>
                      
                     </div>
                     
@@ -102,14 +102,14 @@ const HeaderNavContent = () => {
                       <p className="text-lg text-gray-700 mt-2 font-semibold">Sales Enquiries</p>
                       <p className="text-sm text-gray-700 my-2">1000-100-7044
                         </p>
-                      <p className="text-sm text-gray-700">sales@abroadium.tech</p>
+                      <p className="text-sm text-gray-700">sales@Sentryspot.tech</p>
                     </div>
 
                     <div className="px-4 py-3">
 
 
 <p className="text-lg text-gray-700 mt-2 font-semibold">Customer Support</p>
-<p className="text-sm text-gray-700 mt-2">sales@abroadium.tech</p>
+<p className="text-sm text-gray-700 mt-2">sales@Sentryspot.tech</p>
 </div>
                   </div>
                 )}

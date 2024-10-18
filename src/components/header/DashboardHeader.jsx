@@ -28,7 +28,7 @@ const DashboardHeader = () => {
 
   return (
     <header
-      style={{ backgroundColor: "#4C3957" }}
+   
       className={`main-header header-shadow z-10 ${navbar ? "fixed-header" : ""}`}
     >
       <div className="container-fluid">
@@ -37,7 +37,7 @@ const DashboardHeader = () => {
             <div className="logo-box">
               <div className="me-10">
                 <Link to="/">
-                  <img alt="brand" src={logo} className="h-16 p-2" />
+                  <img alt="brand" src="https://htmlsentryspot.vercel.app/img/company_logo.png" className="h-16 p-2" />
                 </Link>
               </div>
             </div>
@@ -71,7 +71,7 @@ const DashboardHeader = () => {
 
                 {dropdownOpen && (
                   <div className="absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-lg  z-50">
-                    <div className="px-4 pb-4 pt-2 bg-purple-700 rounded-t-lg">
+                    <div className="px-4 pb-4 pt-2 bg-blue-700 rounded-t-lg">
                       <p className="font-bold text-white">User</p>
                       <p className="text-sm text-white">User@cUser.com</p>
                       <Link to="/public-profile" className="text-white text-sm hover:underline">
@@ -79,7 +79,7 @@ const DashboardHeader = () => {
                       </Link>
                     </div>
                     
-                    <div className="px-3 flex justify-between py-1 text-white bg-violet-900">
+                    <div className="px-3 flex justify-between py-1 text-white bg-blue-900">
                       <p className="text-xs text-white">Viewed: 0 times</p>
                       <p className="text-xs text-white">Last Login: Sep 9, 2024</p>
                     </div>

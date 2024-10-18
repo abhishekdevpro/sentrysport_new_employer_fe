@@ -137,12 +137,12 @@ export default function JobListingsTable() {
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-2xl font-bold">Job Details</h1>
             <Link to={"/employers-dashboard/post-jobs"}>
-              <Button className="bg-violet-900 text-white">Post Job</Button>
+              <Button className="bg-blue-900 text-white">Post Job</Button>
             </Link>
           </div>
           <div className="overflow-x-auto border">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-violet-100">
+              <thead className="bg-blue-100">
                 <tr>
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">CREATED ON</th>
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">JOB TITLE</th>
@@ -711,7 +711,7 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
   
 
   return (
-    <div className="absolute top-0   items-center justify-center col-lg-12 bg-violet-800 overflow-y-auto h-4/5 p-2 rounded-xl">
+    <div className="absolute top-0   items-center justify-center col-lg-12 bg-blue-800 overflow-y-auto h-4/5 p-2 rounded-xl">
      <h1 className='text-2xl font-semibold m-2 text-white'> Edit job</h1>
      <button
         onClick={onClose}
@@ -1001,10 +1001,10 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
   className="w-full relative"
   name="tags"
 >
-  <MultiSelectorTrigger className="bg-violet-200">
+  <MultiSelectorTrigger className="bg-blue-200">
     <MultiSelectorInput
       placeholder="Select tags"
-      className="bg-violet-500"
+      className="bg-blue-500"
     />
   </MultiSelectorTrigger>
   <MultiSelectorContent>

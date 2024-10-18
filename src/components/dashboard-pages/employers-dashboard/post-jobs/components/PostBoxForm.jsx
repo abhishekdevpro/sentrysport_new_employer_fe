@@ -709,10 +709,10 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
   className="w-full relative"
   name="tags"
 >
-  <MultiSelectorTrigger className="bg-violet-200">
+  <MultiSelectorTrigger className="bg-blue-200">
     <MultiSelectorInput
       placeholder="Select tags"
-      className="bg-violet-500"
+      className="bg-blue-500"
     />
   </MultiSelectorTrigger>
   <MultiSelectorContent>

@@ -186,7 +186,7 @@ const handleLogin = () => {
                 />
                 <button
                   onClick={addPost}
-                  className="my-2 bg-purple-950 w-full text-lg text-white px-4 py-2.5 rounded hover:bg-blue-700"
+                  className="my-2 bg-blue-950 w-full text-lg text-white px-4 py-2.5 rounded hover:bg-blue-700"
                 >
                   Post
                 </button>

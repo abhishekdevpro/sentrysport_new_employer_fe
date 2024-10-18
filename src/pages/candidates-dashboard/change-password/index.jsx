@@ -4,8 +4,8 @@ import ChangePassword from "@/components/dashboard-pages/candidates-dashboard/ch
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Change Password || Abroadium - Job Borad ReactJs Template",
-  description: "Abroadium - Job Borad ReactJs Template",
+  title: "Change Password || Sentryspot - Job Borad ReactJs Template",
+  description: "Sentryspot - Job Borad ReactJs Template",
 };
 
 const ChangePasswordPage = () => {

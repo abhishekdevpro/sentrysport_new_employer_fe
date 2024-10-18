@@ -65,7 +65,7 @@ const InsideCognizant = () => {
           <p className="font-bold text-xl sm:text-3xl text-black">Inside Cognizant</p>
         </div>
 
-        <button onClick={toggleEdit} className="text-white bg-violet-950 border p-2 rounded-lg px-4 ">
+        <button onClick={toggleEdit} className="text-white bg-blue-950 border p-2 rounded-lg px-4 ">
           {isEditing ? "Cancel" : "Edit"}
         </button>
 
@@ -93,7 +93,7 @@ const InsideCognizant = () => {
             
            </Card>
             ) : (
-              <div className="w-full flex flex-col gap-4 mt-4 border p-4 bg-violet-200 rounded-lg">
+              <div className="w-full flex flex-col gap-4 mt-4 border p-4 bg-blue-200 rounded-lg">
               
                 <div className="flex justify-around ">
                   {formData.cultureImgs.map((img, index) => (
@@ -195,7 +195,7 @@ const InsideCognizant = () => {
         {isEditing && (
           <button
             onClick={handleUpdate}
-            className="mt-6 px-4 py-2 bg-violet-900 text-white rounded hover:bg-blue-600"
+            className="mt-6 px-4 py-2 bg-blue-900 text-white rounded hover:bg-blue-600"
           >
             Update
           </button>

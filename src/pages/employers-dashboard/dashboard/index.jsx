@@ -4,8 +4,8 @@ import DashboadHome from "@/components/dashboard-pages/employers-dashboard/dashb
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Employeers Dashboard || Abroadium - Job Borad ReactJs Template",
-  description: "Abroadium - Job Borad ReactJs Template",
+  title: "Employeers Dashboard || Sentryspot - Job Borad ReactJs Template",
+  description: "Sentryspot - Job Borad ReactJs Template",
 };
 
 const DashboardEmploeeDBPage = () => {

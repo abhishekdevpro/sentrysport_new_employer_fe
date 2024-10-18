@@ -14,13 +14,13 @@ export default function FilterTopBox() {
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-2xl font-bold">All Jobs</h1>
             <Link to={"/employers-dashboard/post-jobs"}>
-            <Button className="bg-violet-900 text-white">Post Job</Button>
+            <Button className="bg-blue-900 text-white">Post Job</Button>
             </Link>
           
           </div>
           <div className="overflow-x-auto border">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-violet-100">
+              <thead className="bg-blue-100">
                 <tr>
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase ">CREATED ON</th>
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">JOB TITLE</th>

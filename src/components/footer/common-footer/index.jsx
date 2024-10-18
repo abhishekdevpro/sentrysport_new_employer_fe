@@ -5,7 +5,7 @@ import logo from "../../../Images/logo.png"
 import { Link } from "react-router-dom";
 const index = ({ footerStyle = "" }) => {
   return (
-    <footer className={`main-footer ${footerStyle}`} style={{backgroundColor:"#4C3957"}}>
+    <footer className={`main-footer ${footerStyle}`} style={{backgroundColor:"#224194"}}>
       <div className="auto-container">
         {/* <!--Widgets Section--> */}
         <div className="widgets-section" data-aos="fade-up">
@@ -28,8 +28,8 @@ const index = ({ footerStyle = "" }) => {
                 <p className="address text-white">
                   329 Queensberry Street, North Melbourne VIC
                   <br /> 3051, Australia. <br />
-                  <a href="mailto:support@Abroadium.com" className="email text-white">
-                    support@Abroadium.com
+                  <a href="mailto:support@Sentryspot.com" className="email text-white">
+                    support@Sentryspot.com
                   </a>
                 </p>
               </div>

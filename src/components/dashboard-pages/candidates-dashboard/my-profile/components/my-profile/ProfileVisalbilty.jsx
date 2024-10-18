@@ -46,7 +46,7 @@ const ProfileVisalbilty = () => {
             <div className="flex items-center gap-3">
               <p className="font-bold">{option?.label}</p>
               {option?.recommended && (
-                <span className="bg-purple-600 rounded-lg px-3 py-1 text-white">
+                <span className="bg-blue-600 rounded-lg px-3 py-1 text-white">
                   Recommended
                 </span>
               )}

@@ -82,7 +82,7 @@ const Form = () => {
 
         {/* Submit Button */}
         <div className="form-group col-lg-12 col-md-12 ">
-          <button type="submit" className="theme-btn btn-style-one bg-violet-800 w-full">
+          <button type="submit" className="theme-btn btn-style-one bg-blue-800 w-full">
             Update
           </button>
         </div>

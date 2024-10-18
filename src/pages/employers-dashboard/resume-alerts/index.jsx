@@ -4,8 +4,8 @@ import ResumeAlerts from "@/components/dashboard-pages/employers-dashboard/resum
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Resume Alerts || Abroadium - Job Borad ReactJs Template",
-  description: "Abroadium - Job Borad ReactJs Template",
+  title: "Resume Alerts || Sentryspot - Job Borad ReactJs Template",
+  description: "Sentryspot - Job Borad ReactJs Template",
 };
 
 const ResumeAlertsEmploeeDBPage = () => {

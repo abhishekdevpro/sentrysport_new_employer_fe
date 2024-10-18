@@ -4,8 +4,8 @@ import Packages from "@/components/dashboard-pages/employers-dashboard/packages"
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "Packages || Abroadium - Job Borad ReactJs Template",
-  description: "Abroadium - Job Borad ReactJs Template",
+  title: "Packages || Sentryspot - Job Borad ReactJs Template",
+  description: "Sentryspot - Job Borad ReactJs Template",
 };
 
 const PackageEmploeeDBPage = () => {

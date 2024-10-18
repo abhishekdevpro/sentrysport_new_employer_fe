@@ -33,7 +33,7 @@ const SearchResumePopup = ({ onClose }) => {
       </select>
 
       <div className="mt-4">
-        <button className="bg-violet-500 text-white px-4 py-3 rounded-3xl font-semibold w-96" onClick={onClose}>
+        <button className="bg-blue-500 text-white px-4 py-3 rounded-3xl font-semibold w-96" onClick={onClose}>
           Request a Callback
         </button>
       </div>

@@ -81,19 +81,19 @@ const index = () => {
   return (
     <>
       
-      <nav className="header" style={{ backgroundColor: "#4C3957" }}>
+      <nav className="header" >
   <div className="auto-container mx-auto px-4">
     <div className="header-menu flex  items-center py-">
       {/* Logo Section */}
       <div className="header-logo flex items-center">
-        <img src={logo} alt="Logo" />
+        <img src="https://htmlsentryspot.vercel.app/img/company_logo.png" alt="Logo" />
       </div>
 
       {/* Desktop Menu */}
-      <div className="main-menu hidden lg:flex  font-medium text-white">
+      <div className="main-menu hidden lg:flex  font-medium text-blue-800">
         <ul className="flex ">
           <li>
-            <Link href="" className="hover:text-gray-300">
+            <Link href="" className="hover:text-gray-300 text-blue-800">
               Home
             </Link>
           </li>
@@ -108,7 +108,7 @@ const index = () => {
             </Link>
           </li>
           <li>
-            <Link href="" className="hover:text-gray-300">
+            <Link href="" className=" text-blue-800">
               Hiring Advice
             </Link>
           </li>
@@ -157,7 +157,7 @@ const index = () => {
           </button>
         ) : (
           <button
-            className="theme-btn btn-style-three call-modal p-2 text-lg px-3 bg-transparent !text-[#ffffff]"
+            className="theme-btn btn-style-three call-modal p-2 text-lg px-3 bg-transparent !text-[#09359c]"
             onClick={() => {
               dispatch(toggleSignupDialog());
             }}
@@ -167,7 +167,7 @@ const index = () => {
         )}
         <button
           type="button"
-          className="register-btn bg-transparent text-white p-2 border border-white"
+          className="register-btn bg-transparent text-blue-900 p-2 border border-blue-900"
           onClick={() => {
             handleCheck("job-post");
           }}
@@ -219,7 +219,7 @@ const index = () => {
     <div className="banner-text flex flex-col lg:flex-row justify-between items-center">
       <div className="b-text lg:w-1/2 mb-8 lg:mb-0">
         <div className="b-head  lg:text-left">
-          <p className="text-xl font-medium text-gray-700">Abroadium, your personal HR partner</p>
+          <p className="text-xl font-medium text-gray-700">Sentryspot, your personal HR partner</p>
           <h2 className="font-bold text-2xl lg:text-3xl mt-4">
             Signup to AI-Enabled platform to{" "}
             <TypeAnimation
@@ -240,14 +240,14 @@ const index = () => {
           </h2>
           <div className="b-para mt-4 text-gray-600">
             <p>
-              Abroadium is the Canada premier AI-driven security services job portal. Post
+              Sentryspot is the Canada premier AI-driven security services job portal. Post
               your job listings for free and connect with top candidates across security
               domains such as cybersecurity, physical security, security management,
               data protection, and more.
             </p>
           </div>
         </div>
-        <div className="banntxt mt-8 flex flex-col lg:flex-row gap-6">
+        <div className=" mt-8 flex flex-col lg:flex-row gap-6">
           <div className="icon flex items-start">
             <i className="fading text-4xl text-gray-500"></i>
             <div className=" -4">
@@ -329,7 +329,7 @@ const index = () => {
                 <i className="fa-solid fa-1 "></i>
                 <h3 className="my-3">
                   Gain access to top-tier, AI-verified talent through
-                  Abroadium.
+                  Sentryspot.
                 </h3>
                 <p>
                   Post a job in minutes with AI and swiftly connect with the
@@ -416,7 +416,7 @@ const index = () => {
       
       <div className="category">
         <div className="auto-container">
-          <h2>Why Abroadium for Employers</h2>
+          <h2>Why Sentryspot for Employers</h2>
           <div className="testimonials">
             <Slider {...sliderSettings} className="testimonial-reel">
               <div>
@@ -433,7 +433,7 @@ const index = () => {
                     </article>
                     <article className="test-content">
                       <p>
-                        Abroadium utilizes advanced AI algorithms to match your
+                        Sentryspot utilizes advanced AI algorithms to match your
                         job postings with the most relevant candidates. Our AI
                         system evaluates skills, experience, and job fit to
                         ensure you connect with top-quality talent quickly and
@@ -457,7 +457,7 @@ const index = () => {
                     </article>
                     <article className="test-content">
                       <p>
-                        Posting a job on Abroadium is fast and easy. With a
+                        Posting a job on Sentryspot is fast and easy. With a
                         user-friendly interface, you can create and publish job
                         listings in minutes. Our platform ensures your job
                         openings are visible to a broad and diverse pool of
@@ -481,7 +481,7 @@ const index = () => {
                     </article>
                     <article className="test-content">
                       <p>
-                        All candidates on Abroadium undergo rigorous AI-powered
+                        All candidates on Sentryspot undergo rigorous AI-powered
                         skill verification, so you can be confident that you're
                         considering only the best-qualified professionals. This
                         saves you time and effort in screening, as we provide a
@@ -505,7 +505,7 @@ const index = () => {
                     </article>
                     <article className="test-content">
                       <p>
-                        Abroadium’s AI tools automate the initial screening
+                        Sentryspot’s AI tools automate the initial screening
                         process, filtering candidates based on your specific
                         criteria. This reduces the workload for your HR team,
                         allowing them to focus on more critical tasks and making
@@ -531,7 +531,7 @@ const index = () => {
                     <article className="test-content">
                       <p>
                         Our platform offers integrated scheduling tools that
-                        make arranging interviews a breeze. Abroadium syncs
+                        make arranging interviews a breeze. Sentryspot syncs
                         with your calendar, allowing you to easily coordinate
                         interviews with candidates, ensuring a smooth and
                         organized recruitment process.
@@ -555,7 +555,7 @@ const index = () => {
                     <article className="test-content">
                       <p>
                         As a platform dedicated to the security industry,
-                        Abroadium understands the unique requirements of
+                        Sentryspot understands the unique requirements of
                         security roles. Whether you're hiring for cybersecurity,
                         physical security, or security management, we provide
                         access to a specialized talent pool tailored to your
@@ -579,7 +579,7 @@ const index = () => {
                     </article>
                     <article className="test-content">
                       <p>
-                        Abroadium provides detailed analytics and reports to
+                        Sentryspot provides detailed analytics and reports to
                         help you track the success of your job postings,
                         understand candidate engagement, and optimize your
                         hiring strategy. This data-driven approach ensures you
@@ -604,7 +604,7 @@ const index = () => {
                     </article>
                     <article className="test-content">
                       <p>
-                        With Abroadium, you can post jobs and access top-tier
+                        With Sentryspot, you can post jobs and access top-tier
                         talent without breaking the bank. Our platform offers
                         competitive pricing, ensuring you get maximum value for
                         your recruitment budget.
@@ -630,7 +630,7 @@ const index = () => {
                         Our dedicated support team is always ready to assist
                         you. Whether you need help with posting a job,
                         navigating the platform, or optimizing your hiring
-                        process, Abroadium’s customer support is just a call or
+                        process, Sentryspot’s customer support is just a call or
                         click away.
                       </p>
                     </article>
@@ -647,7 +647,7 @@ const index = () => {
           <div className="menu-section">
             <div className="footer-one">
               <div className="logo">
-                <img src={logo} />
+                <img src="https://htmlsentryspot.vercel.app/img/company_logo.png" />
                 <div className="social-mdeai">
                   <a href="">
                     <i className="fa-brands fa-linkedin-in"></i>
@@ -669,7 +669,7 @@ const index = () => {
                 <h2>Our services</h2>
                 <ul>
                   <li>
-                    <a href="">Why Abroadium?</a>
+                    <a href="">Why Sentryspot?</a>
                   </li>
                   <li>
                     <a href="">Recruiter Advice</a>
@@ -737,10 +737,10 @@ const index = () => {
                     <a href="">Advertise a course</a>
                   </li>
                   <li>
-                    <a href="">Abroadium Global</a>
+                    <a href="">Sentryspot Global</a>
                   </li>
                   <li>
-                    <a href="">Abroadium Screening</a>
+                    <a href="">Sentryspot Screening</a>
                   </li>
                 </ul>
               </div>

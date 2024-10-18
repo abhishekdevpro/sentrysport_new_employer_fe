@@ -26,7 +26,7 @@ const index = () => {
       {/* <!-- End User Sidebar Menu --> */}
 
       {/* <!-- Dashboard --> */}
-      <section className="user-dashboard bg-violet-50 ">
+      <section className="user-dashboard bg-blue-50 ">
         <div className="dashboard-outer">
         {/*  <BreadCrumb title="Resume Alerts!" />
            breadCrumb */}

@@ -23,7 +23,7 @@ const DashboardCandidatesHeader = () => {
 
   return (
     // <!-- Main Header-->
-    <header style={{backgroundColor:"#4C3957"}}
+    <header style={{backgroundColor:"#224194"}}
       className={`main-header header-shaddow  ${navbar ? "fixed-header " : ""}`}
     >
       <div className="container-fluid">
@@ -34,7 +34,7 @@ const DashboardCandidatesHeader = () => {
             <div className="logo-box">
               <div className="me-10">
                 <Link to="/">
-                  <img alt="brand" src={logo} className="" />
+                  <img alt="brand" src="https://htmlsentryspot.vercel.app/img/company_logo.png" className="" />
                 </Link>
               </div>
             </div>

@@ -4,8 +4,8 @@ import MyResume from "@/components/dashboard-pages/candidates-dashboard/my-resum
 import MetaComponent from "@/components/common/MetaComponent";
 
 const metadata = {
-  title: "My Resume || Abroadium - Job Borad ReactJs Template",
-  description: "Abroadium - Job Borad ReactJs Template",
+  title: "My Resume || Sentryspot - Job Borad ReactJs Template",
+  description: "Sentryspot - Job Borad ReactJs Template",
 };
 
 const MyResumePage = () => {

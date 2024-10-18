@@ -44,7 +44,7 @@ const DefaulHeader2 = () => {
 
   return (
     // <!-- Main Header-->
-    <header style={{backgroundColor:"#4C3957"}}
+    <header style={{backgroundColor:"#224194"}}
       className={`main-header font-bold border z-10 ${
         navbar ? "fixed-header animated slideInDown   " : ""
       }`}

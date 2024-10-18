@@ -130,9 +130,9 @@ const ChatBoxContentField = () => {
   
 
   return (
-    <div className="flex h-screen bg-rounded-lg bg-purple-200">
+    <div className="flex h-screen bg-rounded-lg bg-blue-200">
       {/* Sidebar: List of Conversations */}
-      <div className="w-1/4 bg-purple-800 text-black border-r overflow-y-scroll rounded-lg">
+      <div className="w-1/4 bg-blue-800 text-black border-r overflow-y-scroll rounded-lg">
         <div className="p-3 border-b border-purple-700">
           <h2 className="text-lg font-semibold text-white">Messages</h2>
         </div>
@@ -142,7 +142,7 @@ const ChatBoxContentField = () => {
             return (
               <div
                 key={jobskkers_detail.id}
-                className="flex items-center cursor-pointer p-3 hover:bg-purple-700 border-b bg-white border-gray-300 mx-2 text-white"
+                className="flex items-center cursor-pointer p-3 hover:bg-blue-700 border-b bg-white border-gray-300 mx-2 text-white"
                 onClick={() => setActiveChat(jobskkers_detail.id)}
               >
                 <img
@@ -162,7 +162,7 @@ const ChatBoxContentField = () => {
       </div>
 
       {/* Main: Active Chat */}
-      <div className="flex-1 flex flex-col bg-purple-900 rounded-lg">
+      <div className="flex-1 flex flex-col bg-blue-900 rounded-lg">
         {/* Chat Header */}
         <div className="p-3 border-b border-purple-700 flex items-center">
           {activeChat && data && (
@@ -182,7 +182,7 @@ const ChatBoxContentField = () => {
         </div>
 
         {/* Messages Display */}
-        <div className="flex-1 overflow-y-auto p-4 text-white bg-purple-50">
+        <div className="flex-1 overflow-y-auto p-4 text-white bg-blue-50">
   <div className="flex flex-col space-y-4">
     {messages.map((msg, index) => (
       <div
@@ -207,7 +207,7 @@ const ChatBoxContentField = () => {
 
 
         {/* Input Area */}
-        <div className="border-t bg-purple-300 p-4 flex items-center">
+        <div className="border-t bg-blue-300 p-4 flex items-center">
           <input
             type="text"
             placeholder="Type a message"
