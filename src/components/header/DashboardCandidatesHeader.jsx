@@ -23,7 +23,7 @@ const DashboardCandidatesHeader = () => {
 
   return (
     // <!-- Main Header-->
-    <header style={{backgroundColor:"#224194"}}
+    <header 
       className={`main-header header-shaddow  ${navbar ? "fixed-header " : ""}`}
     >
       <div className="container-fluid">

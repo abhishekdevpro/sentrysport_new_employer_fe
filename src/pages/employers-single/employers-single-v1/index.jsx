@@ -12,6 +12,9 @@ import PrivateMessageBox from "@/components/employer-single-pages/shared-compone
 import {useParams } from "react-router-dom";
 
 import MetaComponent from "@/components/common/MetaComponent";
+import DefaulHeader2 from "@/components/header/DefaulHeader2";
+import DashboardCandidatesHeader from "@/components/header/DashboardCandidatesHeader";
+import DashboardHeader from "@/components/header/DashboardHeader";
 
 const metadata = {
   title:
@@ -35,7 +38,7 @@ const EmployersSingleV1 = () => {
       <LoginPopup />
       {/* End Login Popup Modal */}
 
-      <DefaulHeader />
+      <DashboardHeader/>
       {/* <!--End Main Header --> */}
 
       <MobileMenu />
