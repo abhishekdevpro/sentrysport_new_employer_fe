@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
+
 const FilterleftSidebar = () => {
   return (
       <div className=" pd-right ">
           <div className="filters-outer text-center">
-          <h4 className="">Personalize your jobs          </h4>
+          <h4 className="">SPOT COURSES          </h4>
              <div className="flex-row flex justify-center">
              <img src="https://img.freepik.com/premium-vector/people-talking-discussing-together-vector-young-man-woman-people-talking-have-funny-discussion-planning-togetherness-characters-boy-girl-communication-flat-cartoon-illustration_87720-5022.jpg"
               className="rounded-full w-36 h-40 "
@@ -10,10 +12,12 @@ const FilterleftSidebar = () => {
              </div>
 
              <p className="text-xs my-2">
-             Get recommendations for recent and relevant jobs.
+             Find and enroll in courses to enhance your skills, grow your expertise, and advance your career.
               </p>
+               <Link to={'/courses'}>
               <button className="py-1 px-4 m-3 bg-blue-950 text-white">Get Started</button>
-              
+                 
+               </Link>
           </div>
           <div className="filters-outer text-center bg-">
               
@@ -23,10 +27,10 @@ const FilterleftSidebar = () => {
               alt="" />
              </div>
 
-              <h6 className="m-3">YOUR GROUPS</h6>
-              <p className="text-xs my-2">
+              <h6 className="m-3">AD 1</h6>
+              {/* <p className="text-xs my-2">
               Discover and join groups with like-minded women who share your interests, profession, and lifestyle.
-              </p>
+              </p> */}
               <button className="my-2 text-blue-950">Explore</button>
           </div>
           <div className="filters-outer text-center">
@@ -37,10 +41,10 @@ const FilterleftSidebar = () => {
               alt="" />
              </div>
 
-             <h6 className="m-3">COMPANIES YOU FOLLOW</h6>
-              <p className="text-xs my-2">
+             <h6 className="m-3">AD 2</h6>
+              {/* <p className="text-xs my-2">
              Get alerted when there are new employee reviews.
-              </p>
+              </p> */}
               <button className="my-2 text-blue-950">Explore</button>
               
           </div>

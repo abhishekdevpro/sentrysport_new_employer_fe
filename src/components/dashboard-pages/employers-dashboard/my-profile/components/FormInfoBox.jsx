@@ -115,6 +115,7 @@ const FormInfoBox = () => {
             },
           }
         );
+        console.log(resposne)
         toast.success("Personal Details updated successfully!");
       } catch (error) {
         toast.error("Failed to update profile.");

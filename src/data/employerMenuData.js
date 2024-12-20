@@ -31,7 +31,7 @@ const employerMenu = [
     id: 5,
     name: "Community",
     icon: "la-safari",
-    routePath: "/employers-dashboard/resume-alerts",
+    routePath: "/community",
     active: "",
   },
   {
