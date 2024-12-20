@@ -83,7 +83,7 @@ const token = localStorage.getItem(Constant.USER_TOKEN)
     e.preventDefault();
     try {
       // Replace with your API endpoint
-      const response = await axios.patch("https://api.sentryspot.co.uk/api/employeer/company", formData,
+      const response = await axios.put("https://api.sentryspot.co.uk/api/employeer/company", formData,
         {
           headers:{
             Authorization:token
