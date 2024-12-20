@@ -15,7 +15,7 @@ const Form = () => {
     event.preventDefault();
 
     if (newPassword !== confirmPassword) {
-      alert('New password and confirm password do not match');
+      toast('New password and confirm password do not match');
       return;
     }
 
@@ -33,12 +33,22 @@ const Form = () => {
           },
         }
       );
-      console.log('Password changed successfully:', response.data);
-      toast.success('Password changed successfully:', response.data.message);
+
+      if(response.data.code == 200 || response.data.status == "success"){
+        console.log('Password changed successfully:', response.data);
+        toast.success( response.data.message||'Password changed successfully:');
+        setConfirmPassword();
+        setNewPassword();
+        setOldPassword()
+      }
+      else{
+        console.log(response,"<<<<");
+        toast.error( response.data.message||'Error');
+      }
       // Handle successful password change (e.g., show a success message or redirect)
     } catch (error) {
       console.error('Error changing password:', error);
-      toast.error('Error changing password:', error);
+      toast.error( 'Error changing password');
       // Handle error (e.g., show an error message)
     }
   };

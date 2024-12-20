@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import HeaderNavContent from "./HeaderNavContent";
-import logo from "../../Images/logo.png";
+import logo from "../../Images/image.png";
 import { useLocation } from "react-router-dom";
+import { ChevronDown } from "lucide-react";
 
 const DashboardHeader = () => {
   const { pathname } = useLocation();
@@ -37,7 +38,7 @@ const DashboardHeader = () => {
             <div className="logo-box">
               <div className="me-10">
                 <Link to="/">
-                  <img alt="brand" src="https://htmlsentryspot.vercel.app/img/company_logo.png" className="h-16 p-2" />
+                  <img alt="brand" src={logo} className="h-16 w-auto p-2" />
                 </Link>
               </div>
             </div>
@@ -56,7 +57,7 @@ const DashboardHeader = () => {
 
               {/* Dropdown for Account */}
               <div className="relative">
-                <button
+                {/* <button
                   className="flex items-center space-x-2 text-white"
                   onClick={handleDropdownToggle}
                 >
@@ -67,7 +68,19 @@ const DashboardHeader = () => {
                   />
              
                   <i className={`la la-angle-down ${dropdownOpen ? 'rotate-180' : ''}`}></i>
-                </button>
+                </button> */}
+
+<button
+                className="flex items-center space-x-2 p-2 rounded-lg hover:bg-blue-50"
+                onClick={handleDropdownToggle}
+              >
+                <img
+                  alt="avatar"
+                  className="w-8 h-8 rounded-full border-2 border-blue-600"
+                  src="/images/resource/company-6.png"
+                />
+                <ChevronDown className={`h-4 w-4 text-blue-600 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
 
                 {dropdownOpen && (
                   <div className="absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-lg  z-50">

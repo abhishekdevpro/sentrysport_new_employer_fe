@@ -5,7 +5,7 @@ import axios from "axios";
 
 import DefaulHeader2 from "@/components/header/DefaulHeader2";
 import MobileMenu from "@/components/header/MobileMenu";
-import FilterSidebar from "@/components/candidates-listing-pages/candidates-list-v1/FilterSidebar";
+
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import { AiFillFacebook } from "react-icons/ai";
@@ -13,7 +13,7 @@ import { AiFillLinkedin } from "react-icons/ai";
 import { FaRegCopy } from "react-icons/fa";
 import { Constant } from "@/utils/constant/constant";
 import { Link } from "react-router-dom";
-import FilterleftSidebar from "../../community/FilterleftSidebar";
+import FilterleftSidebar from "@/components/community/FilterleftSidebar";
 const AlertDataTable = () => {
 
   const [posts, setPosts] = useState([]);

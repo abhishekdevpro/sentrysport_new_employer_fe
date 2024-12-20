@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import MobileSidebar from "./mobile-sidebar";
-import logo from "../../Images/logo.png";
+import logo from "../../Images/image.png";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, toggleSignupDialog } from "@/store/slices/auth";
 import { Button } from "../ui/button";
@@ -14,7 +14,7 @@ const MobileMenu = () => {
   );
   return (
     // <!-- Main Header-->
-    <header className="main-header main-header-mobile z-10"  style={{ backgroundColor: "#4C3957" }} >
+    <header className="main-header main-header-mobile z-10"  >
       <div className="auto-container">
         {/* <!-- Main box --> */}
         <div className="inner-box">
