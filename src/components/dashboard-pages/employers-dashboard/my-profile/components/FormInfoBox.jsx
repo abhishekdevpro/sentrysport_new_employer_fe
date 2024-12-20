@@ -106,16 +106,18 @@ const FormInfoBox = () => {
     
       try {
         const response = await axios.patch(
-          `${baseurl}profile`,
-          formData, // Send FormData
+          `https://api.sentryspot.co.uk/api/employeer/profile`,
+          formData, // Send FormDataF
           {
             headers: {
               Authorization: token,
-              "Content-Type": "multipart/form-data", // Ensure this header is set
+              // "Content-Type": "multipart/form-data",
+              "Content-Type": "application/json",
+ 
             },
           }
         );
-        console.log(resposne)
+        console.log(response)
         toast.success("Personal Details updated successfully!");
       } catch (error) {
         toast.error("Failed to update profile.");

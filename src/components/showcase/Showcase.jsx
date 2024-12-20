@@ -31,6 +31,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import ImageGalleryComponent from "./ImageGallery";
 import InsideCognizant from "./InsideCognizant ";
+import { Constant } from "@/utils/constant/constant";
 // import { Button } from "bootstrap";
 
 const ShowcaseComponent = () => {
@@ -77,12 +78,18 @@ const ShowcaseComponent = () => {
   const handleImageChange = (e) => {
     setFormData((prevState) => ({ ...prevState, image: URL.createObjectURL(e.target.files[0]) }));
   };
-
+const token = localStorage.getItem(Constant.USER_TOKEN)
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
       // Replace with your API endpoint
-      const response = await axios.post("https://yourapi.com/update", formData);
+      const response = await axios.patch("https://api.sentryspot.co.uk/api/employeer/company", formData,
+        {
+          headers:{
+            Authorization:token
+          }
+        }
+      );
       console.log("Update Successful", response.data);
       setIsPopupOpen(false); // Close the popup after successful update
     } catch (error) {
