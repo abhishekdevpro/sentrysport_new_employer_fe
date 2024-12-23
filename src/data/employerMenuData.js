@@ -55,13 +55,13 @@ const employerMenu = [
     routePath: "/employers-dashboard/all-applicants",
     active: "",
   },
-  {
-    id: 9,
-    name: "Shortlisted Resumes",
-    icon: "la-bookmark-o",
-    routePath: "/employers-dashboard/shortlisted-resumes",
-    active: "",
-  },
+  // {
+  //   id: 9,
+  //   name: "Shortlisted Resumes",
+  //   icon: "la-bookmark-o",
+  //   routePath: "/employers-dashboard/shortlisted-resumes",
+  //   active: "",
+  // },
   {
     id: 10,
     name: "Coin",
