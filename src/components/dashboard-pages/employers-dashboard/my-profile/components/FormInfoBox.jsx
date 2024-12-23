@@ -105,7 +105,7 @@ const FormInfoBox = () => {
       formData.append("current_city_id", selectedCity);
     
       try {
-        const response = await axios.patch(
+        const response = await axios.put(
           `https://api.sentryspot.co.uk/api/employeer/profile`,
           formData, // Send FormDataF
           {

@@ -198,6 +198,79 @@ const SocialNetworkBox = () => {
             <p className="!text-red-500 text-sm">{errors.name.message}</p>
           )} */}
         </div>
+           {/* About Company Section */}
+        <h4 className="text-2xl text-black capitalize mb-2">
+          About Company
+        </h4>
+
+        <div className="form-group col-lg-12 col-md-12">
+          <label>Section Title</label>
+          <input
+            type="text"
+            name="about_title"
+            value={companyData.about_title}
+            onChange={handleInputChange}
+            placeholder="Enter section title"
+            className="mb-4"
+          />
+        </div>
+
+        <div className="form-group col-lg-12 col-md-12">
+          <label>About Description</label>
+          <ReactQuill
+            theme="snow"
+            value={companyData.about_description}
+            onChange={(value) => setCompanyData(prev => ({...prev, about_description: value}))}
+            placeholder="Describe your company's story, mission, and values"
+            className="h-36 mb-5 text-lg"
+          />
+        </div>
+
+        <div className="form-group col-lg-12 col-md-12">
+          <label className="block mb-2">Upload Images (Max 3)</label>
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-4">
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                // onChange={handleAboutImagesUpload}
+                className="hidden"
+                id="about-images-upload"
+                // disabled={companyData.about_images.length >= 3}
+              />
+              <label
+                htmlFor="about-images-upload"
+                className={`cursor-pointer px-4 py-2 rounded-md  text-white transition-colors`}
+              >
+                Upload Images
+              </label>
+              <span className="text-sm text-gray-500">
+                {/* {3 - companyData.about_images.length} slots remaining */}
+              </span>
+            </div>
+            
+            <div className="flex flex-wrap gap-4">
+              {/* {companyData.about_images.map((image, index) => (
+                <div key={index} className="relative">
+                  <img
+                    src={URL.createObjectURL(image)}
+                    alt={`About ${index + 1}`}
+                    className="w-32 h-32 object-cover rounded-lg"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeAboutImage(index)}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))} */}
+               <LogoCoverUploader />
+            </div>
+          </div>
+        </div>
 
         {/*  */}
         <h4 className="text-2xl text-black capitalize mb-2">
