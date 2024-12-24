@@ -18,7 +18,7 @@ const LogoCoverUploader = ({ text }) => {
     <>
       <div className="uploading-outer">
         <div className="uploadButton">
-          {/* <input
+          <input
             className="uploadButton-input"
             type="file"
             name="attachments[]"
@@ -26,7 +26,7 @@ const LogoCoverUploader = ({ text }) => {
             id="upload"
             required
             onChange={(e) => logoHandler(e.target.files[0])}
-          /> */}
+          />
           <label className="uploadButton-button ripple-effect" htmlFor="upload">
             {logoImg !== "" ? logoImg?.name : text ? `${text}` : " Add photo"}
           </label>
