@@ -1248,6 +1248,7 @@ const ShowcaseComponent = () => {
       const response = await axios.patch("https://api.sentryspot.co.uk/api/employeer/company-about", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization:token,
         },
       });
 
