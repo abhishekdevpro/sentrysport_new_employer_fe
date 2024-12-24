@@ -1263,6 +1263,21 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const SocialNetworkBox = () => {
+  const [images, setImages] = useState([]);
+
+const handleImageUpload = (e) => {
+  const file = e.target.files[0];
+  if (file && images.length < 3) {
+    setImages((prev) => [...prev, file]);
+  } else if (images.length >= 3) {
+    alert("You can only upload up to 3 images.");
+  }
+};
+
+const removeImage = (index) => {
+  setImages((prev) => prev.filter((_, i) => i !== index));
+};
+
   const [companyData, setCompanyData] = useState({
     company_name: "",
     summery: "",
@@ -1458,10 +1473,19 @@ const SocialNetworkBox = () => {
             />
           </div>
         </div>
+        <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Summary</label>
+            <ReactQuill
+              theme="snow"
+              value={companyData.summery || ""}
+              onChange={(value) => setCompanyData(prev => ({...prev, summery: value}))}
+              className="h-48 mb-12"
+            />
+          </div>
       </FormSection>
 
       {/* About Section */}
-      <FormSection>
+      {/* <FormSection>
         <SectionTitle>About Company</SectionTitle>
         <div className="space-y-6">
           <div>
@@ -1484,17 +1508,76 @@ const SocialNetworkBox = () => {
               className="h-48 mb-12"
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Summary</label>
-            <ReactQuill
-              theme="snow"
-              value={companyData.summery || ""}
-              onChange={(value) => setCompanyData(prev => ({...prev, summery: value}))}
-              className="h-48 mb-12"
-            />
-          </div>
+          <LogoCoverUploader />
+          
         </div>
-      </FormSection>
+      </FormSection> */}
+
+<FormSection>
+  <SectionTitle>About Company</SectionTitle>
+  <div className="space-y-6">
+    {/* Company Title */}
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-1">
+        Company Title
+      </label>
+      <input
+        type="text"
+        name="title"
+        value={companyData.title || ""}
+        onChange={handleInputChange}
+        className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+        placeholder="Enter Company title"
+      />
+    </div>
+    {/* Description */}
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-1">
+        Description
+      </label>
+      <ReactQuill
+        theme="snow"
+        value={companyData.about || ""}
+        onChange={(value) =>
+          setCompanyData((prev) => ({ ...prev, about: value }))
+        }
+        className="h-48 mb-12"
+      />
+    </div>
+    {/* Image Uploader */}
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-1">
+        Upload Images (Max: 3)
+      </label>
+      <div className="flex items-center space-x-4">
+        {images.map((image, index) => (
+          <div key={index} className="relative w-24 h-24">
+            <img
+              src={URL.createObjectURL(image)}
+              alt="Uploaded"
+              className="w-full h-full object-cover rounded-lg"
+            />
+            <button
+              onClick={() => removeImage(index)}
+              className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+            >
+              ✕
+            </button>
+          </div>
+        ))}
+      </div>
+      {images.length < 3 && (
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageUpload}
+          className="mt-2"
+        />
+      )}
+    </div>
+  </div>
+</FormSection>
+
 
       {/* Watch What We Have to Say Section */}
       <FormSection>

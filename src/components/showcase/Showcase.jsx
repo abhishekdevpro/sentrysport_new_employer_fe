@@ -1241,7 +1241,9 @@ const ShowcaseComponent = () => {
     }
 
     const formData = new FormData();
-    formData.append("about", companyData.about);
+
+    formData.append("title", companyData.title)
+    formData.append("about", companyData.about)
     selectedImages.forEach((image) => formData.append("about_images_upload", image));
 
     try {
@@ -1253,14 +1255,41 @@ const ShowcaseComponent = () => {
       });
 
       if (response.status === 200) {
-        alert("Content updated successfully!");
-        setIsModalOpen(false);
+        toast.success("Content updated successfully!");
+        setIsPopupOpen(false);
       } else {
         alert("Failed to update content. Please try again.");
       }
     } catch (error) {
       console.error("Error updating content:", error);
-      alert("An error occurred. Please try again.");
+      toast.error("An error occurred. Please try again.");
+    }
+  };
+  const handleSave3 = async () => {
+   
+
+    const formData = new FormData();
+
+    // formData.append("title", companyData.title)
+    formData.append("summery", companyData.summery)
+
+    try {
+      const response = await axios.patch("https://api.sentryspot.co.uk/api/employeer/company-about", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization:token,
+        },
+      });
+
+      if (response.status === 200) {
+        toast.success("Content updated successfully!");
+        setIsPopupOpen(false);
+      } else {
+        alert("Failed to update content. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error updating content:", error);
+      toast.error("An error occurred. Please try again.");
     }
   };
 
@@ -1306,11 +1335,11 @@ const ShowcaseComponent = () => {
               <figure className="image relative" data-aos="fade-right">
                 <div className="flex">
                   <div>
-                    <img src={formData.image[2]?formData.image[2]: "https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"} alt="Culture 3" className="object-cover w-[700px] h-full p-2" />
+                    <img src={companyData.about_images[2]?companyData.about_images[2]: "https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"} alt="Culture 3" className="object-cover w-[700px] h-full p-2" />
                   </div>
                   <div className="grid grid-rows-2 gap-2">
-                    <img src={formData.image[0]?formData.image[0]:"https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"} alt="Culture 1" className=" w-full h-[250px] p-2 " />
-                    <img src={formData.image[1]?formData.image[1] : "https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"} alt="Culture 2" className=" w-full h-[250px] p-2"  />
+                    <img src={companyData.about_images[0]?`https://api.sentryspot.co.uk${companyData.about_images[0]}`:"https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"} alt="Culture 1" className=" w-full h-[250px] p-2 " />
+                    <img src={companyData.about_images[1]?companyData.about_images[1] : "https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"} alt="Culture 2" className=" w-full h-[250px] p-2"  />
                   </div>
                 </div>
                 <button className="absolute bottom-3 right-3 flex items-center gap-3 rounded-md p-2 px-3 bg-slate-800 text-white">
@@ -1388,7 +1417,7 @@ const ShowcaseComponent = () => {
           </div>
           <span className="border hidden md:inline-block"></span>
           <div className="px-0 sm:px-7 md:px-16">
-            <p className="text-lg sm:text-xl" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(companyData.about) }}></p>
+            <p className="text-lg sm:text-xl" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(companyData.summery) }}></p>
             <button
               className="text-white bg-blue-950 border p-2 rounded-lg px-4 mt-4"
               onClick={() => setIsModalOpen(true)}
@@ -1398,29 +1427,30 @@ const ShowcaseComponent = () => {
           </div>
         </div>
 
-        {isModalOpen && (
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center h-full">
-            <div className="bg-white p-6 rounded-lg w-[90%] sm:w-[60%] md:w-[40%]">
+        {/* {isModalOpen && (
+          <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center h-full p-2">
+            <div className="bg-gray-200 p-6 rounded-lg w-[90%] sm:w-[60%] md:w-[40%]">
               <h3 className="text-xl font-bold mb-4">Edit Content</h3>
               <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">Title</label>
+                <label className="block text-sm font-medium mb-2">Company name </label>
                 <input
                   type="text"
                   className="w-full border p-2 rounded"
-                  value={`Why ${companyData.title}?`}
+                  value={`Why ${companyData.company_name}?`}
                   readOnly
                 />
               </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium mb-2">
-                  Description
-                </label>
-                <textarea
-                  className="w-full border p-2 rounded"
-                  value={companyData.about}
-                  onChange={(e) => setCompanyData({...companyData, about: e.target.value})}
-                />
-              </div>
+             
+                <div className="mb-4">
+            <label className="block text-sm font-medium mb-2">Description</label>
+            {/* React-Quill for rich text editing 
+            <ReactQuill
+              theme="snow"
+              value={companyData.summery}
+              onChange={(value) => setCompanyData({ ...companyData, summery: value })}
+              className="h-48"
+            />
+          </div>
               <div className="flex justify-end">
                 <button
                   className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
@@ -1430,21 +1460,60 @@ const ShowcaseComponent = () => {
                 </button>
                 <button
                   className="text-white bg-blue-950 border p-2 rounded-lg px-4"
-                  onClick={() => {
-                    // Here you would typically update the API
-                    setIsModalOpen(false);
-                  }}
+                    onClick={handleSave3}
+                  
                 >
                   Save
                 </button>
               </div>
             </div>
           </div>
-        )}
+        )} */}
+
+{isModalOpen && (
+  <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center h-full p-4">
+    <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] sm:w-[60%] md:w-[40%] max-h-[90%] overflow-y-auto">
+      <h3 className="text-2xl font-semibold text-gray-800 mb-4">Edit Content</h3>
+      {/* <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
+        <input
+          type="text"
+          className="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+          value={`Why ${companyData.company_name}?`}
+          readOnly
+        />
+      </div> */}
+      <div className="mb-6 ">
+        <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+        <ReactQuill
+          theme="snow"
+          value={companyData.summery}
+          onChange={(value) => setCompanyData({ ...companyData, summery: value })}
+          // className="h-24 rounded focus:ring-2 focus:ring-blue-600"
+        />
+      </div>
+      <div className="flex justify-end gap-2">
+        <button
+          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-200"
+          onClick={() => setIsModalOpen(false)}
+        >
+          Cancel
+        </button>
+        <button
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-200"
+          onClick={handleSave3}
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
       </section>
 
       <section id="inside-cognizant">
-        <InsideCognizant />
+        <InsideCognizant companyData={companyData} />
       </section>
 
       <section className="job-categories ui-job-categories border-none" id="watch">
