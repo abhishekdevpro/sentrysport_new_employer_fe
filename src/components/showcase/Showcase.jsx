@@ -1165,7 +1165,7 @@ const ShowcaseComponent = () => {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const token = localStorage.getItem(Constant.USER_TOKEN)
-
+  const BASE_IMAGE_URL = "https://api.sentryspot.co.uk"
   useEffect(() => {
     const fetchCompanyData = async () => {
       try {
@@ -1335,11 +1335,11 @@ const ShowcaseComponent = () => {
               <figure className="image relative" data-aos="fade-right">
                 <div className="flex">
                   <div>
-                    <img src={companyData.about_images[2]?companyData.about_images[2]: "https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"} alt="Culture 3" className="object-cover w-[700px] h-full p-2" />
+                    <img src={companyData.about_images[2]?`${BASE_IMAGE_URL}${companyData.about_images[2]}`: "https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"} alt="Culture 3" className="object-cover w-[700px] h-full p-2" />
                   </div>
                   <div className="grid grid-rows-2 gap-2">
-                    <img src={companyData.about_images[0]?`https://api.sentryspot.co.uk${companyData.about_images[0]}`:"https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"} alt="Culture 1" className=" w-full h-[250px] p-2 " />
-                    <img src={companyData.about_images[1]?companyData.about_images[1] : "https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"} alt="Culture 2" className=" w-full h-[250px] p-2"  />
+                    <img src={companyData.about_images[0]?`${BASE_IMAGE_URL}${companyData.about_images[0]}`:"https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"} alt="Culture 1" className=" w-full h-[250px] p-2 " />
+                    <img src={companyData.about_images[1]?`${BASE_IMAGE_URL}${companyData.about_images[1]}` : "https://d3ckeg60qk79fq.cloudfront.net/media/79250/U-79250-02/templateImages1678785237743_cropped.jpg"} alt="Culture 2" className=" w-full h-[250px] p-2"  />
                   </div>
                 </div>
                 <button className="absolute bottom-3 right-3 flex items-center gap-3 rounded-md p-2 px-3 bg-slate-800 text-white">
