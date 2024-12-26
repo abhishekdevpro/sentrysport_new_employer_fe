@@ -3,8 +3,21 @@ import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import Quill CSS
 import { Constant } from "@/utils/constant/constant";
-import { MultiSelector, MultiSelectorContent, MultiSelectorInput, MultiSelectorItem, MultiSelectorList,MultiSelectorTrigger } from "@/components/ui/multiSelector";
-import { BriefcaseIcon, CheckIcon, ClockIcon, HandIcon, UserIcon } from "lucide-react";
+import {
+  MultiSelector,
+  MultiSelectorContent,
+  MultiSelectorInput,
+  MultiSelectorItem,
+  MultiSelectorList,
+  MultiSelectorTrigger,
+} from "@/components/ui/multiSelector";
+import {
+  BriefcaseIcon,
+  CheckIcon,
+  ClockIcon,
+  HandIcon,
+  UserIcon,
+} from "lucide-react";
 import { IoDocument } from "react-icons/io5";
 import { FaPennyArcade } from "react-icons/fa";
 import { FaPerson, FaUserGroup } from "react-icons/fa6";
@@ -14,6 +27,8 @@ import { BiHandicap } from "react-icons/bi";
 import { Switch } from "@/components/ui/switch";
 import { FaCheckCircle } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
+import SalarySection from "./SalarySection";
+import ScreeningQuestionsForm from "./ScreeningQuestions";
 
 const tags = [
   { value: "Banking", label: "Banking" },
@@ -33,6 +48,7 @@ const PostBoxForm = () => {
   const [experienceYears, setExperienceYears] = useState([]);
   const [expectedExperienceYears, setExpectedExperienceYears] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [industry, setIndustry] = useState([]);
   const [functionalTypes, setFunctionalTypes] = useState([]);
   const [salaryTypes, setSalaryTypes] = useState([]);
   const [expectedSalaryTypes, setExpectedSalaryTypes] = useState([]);
@@ -41,7 +57,7 @@ const PostBoxForm = () => {
   const [countryId, setCountryId] = useState("");
   const [stateId, setStateId] = useState("");
   const [cityId, setCityId] = useState("");
-  
+
   const [keywords, setKeywords] = useState({ job: "", location: "" });
   const [dropdownVisibility, setDropdownVisibility] = useState({
     job: false,
@@ -52,10 +68,9 @@ const PostBoxForm = () => {
     if (selectedTags.length === 0) {
       return "";
     }
-    return Array.isArray(selectedTags) ? selectedTags.join(', ') : "";
+    return Array.isArray(selectedTags) ? selectedTags.join(", ") : "";
   };
-  
-  
+
   const [formData, setFormData] = useState({
     job_title: "",
     location: "",
@@ -109,6 +124,14 @@ const PostBoxForm = () => {
       .then((response) => setSalaryTypes(response.data.data))
       .catch((error) => console.error(error));
   }, []);
+  useEffect(() => {
+    axios
+      .get(`https://api.sentryspot.co.uk/api/jobseeker/industries`, {
+        headers: { Authorization: token },
+      })
+      .then((response) => setIndustry(response.data.data))
+      .catch((error) => console.error(error));
+  }, []);
 
   useEffect(() => {
     axios
@@ -136,13 +159,13 @@ const PostBoxForm = () => {
 
   useEffect(() => {
     axios
-      .get('https://api.sentryspot.co.uk/api/employeer/job-types', {
+      .get("https://api.sentryspot.co.uk/api/employeer/job-types", {
         headers: {
           Authorization: token,
         },
       })
-      .then(response => setJobTypes(response.data.data))
-      .catch(error => console.error("Error fetching job types:", error));
+      .then((response) => setJobTypes(response.data.data))
+      .catch((error) => console.error("Error fetching job types:", error));
   }, []);
 
   const fetchData = async (url, setData, dropdownKey) => {
@@ -174,16 +197,20 @@ const PostBoxForm = () => {
           const states = countries.flatMap((c) => c.states) || [];
           const cities = states.flatMap((s) => s.cities) || [];
           const locationsData = cities.map((city) => {
-            const state = states.find((s) => s.cities.some((c) => c.id === city.id));
-            const country = countries.find((c) => c.states.some((s) => s.id === state.id));
-  
+            const state = states.find((s) =>
+              s.cities.some((c) => c.id === city.id)
+            );
+            const country = countries.find((c) =>
+              c.states.some((s) => s.id === state.id)
+            );
+
             return {
               city: city.name,
               state: state?.name,
               country: country?.name,
               country_id: country?.id,
               state_id: state?.id,
-              city_id: city.id
+              city_id: city.id,
             };
           });
           setLocations(locationsData);
@@ -192,44 +219,39 @@ const PostBoxForm = () => {
       );
     else setDropdownVisibility((prev) => ({ ...prev, location: false }));
   }, [keywords.location]);
-  
-  
 
- // const handleChange = (key) => (e) =>
-    //setKeywords({ ...keywords, [key]: e.target.value });
+  // const handleChange = (key) => (e) =>
+  //setKeywords({ ...keywords, [key]: e.target.value });
 
+  const handleSelect = (key, selectedItem) => {
+    if (key === "job") {
+      setKeywords((prevKeywords) => ({
+        ...prevKeywords,
+        [key]: selectedItem, // Assuming selectedItem is a string
+      }));
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        job_title: selectedItem, // Ensure selectedItem contains the correct job title
+      }));
+    } else if (key === "location") {
+      setKeywords((prevKeywords) => ({
+        ...prevKeywords,
+        [key]: `${selectedItem.city}, ${selectedItem.state}, ${selectedItem.country}`,
+      }));
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        location: `${selectedItem.city}, ${selectedItem.state}, ${selectedItem.country}`,
+      }));
+      setCountryId(selectedItem.country_id);
+      setStateId(selectedItem.state_id);
+      setCityId(selectedItem.city_id);
+    }
 
- const handleSelect = (key, selectedItem) => {
-  if (key === "job") {
-    setKeywords((prevKeywords) => ({
-      ...prevKeywords,
-      [key]: selectedItem // Assuming selectedItem is a string
+    setDropdownVisibility((prevVisibility) => ({
+      ...prevVisibility,
+      [key]: false,
     }));
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      job_title: selectedItem // Ensure selectedItem contains the correct job title
-    }));
-  } else if (key === "location") {
-    setKeywords((prevKeywords) => ({
-      ...prevKeywords,
-      [key]: `${selectedItem.city}, ${selectedItem.state}, ${selectedItem.country}`
-    }));
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      location: `${selectedItem.city}, ${selectedItem.state}, ${selectedItem.country}`
-    }));
-    setCountryId(selectedItem.country_id);
-    setStateId(selectedItem.state_id);
-    setCityId(selectedItem.city_id);
-  }
-
-  setDropdownVisibility((prevVisibility) => ({
-    ...prevVisibility,
-    [key]: false
-  }));
-};
-
-  
+  };
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -244,86 +266,96 @@ const PostBoxForm = () => {
     setVideoFile(e.target.files[0]);
   };
 
- // Utility function to strip HTML tags
-const stripHtmlTags = (html) => {
-  const doc = new DOMParser().parseFromString(html, 'text/html');
-  return doc.body.textContent || "";
-};
+  // Utility function to strip HTML tags
+  const stripHtmlTags = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
+  };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  // Strip HTML tags from description
-  const strippedDescription = stripHtmlTags(formData.description);
+    // Strip HTML tags from description
+    const strippedDescription = stripHtmlTags(formData.description);
 
-  // Validate required fields
-  if (!strippedDescription.trim()) {
-    alert("Please enter a job description.");
-    return;
-  }
-
-   // Get comma-separated tags
-   const skills = getCommaSeparatedTags();
-   if (!skills) {
-     alert("Please select at least one skill.");
-     return;
-   }
-    
-
-  try {
-    const formDataToSubmit = new FormData();
-    formDataToSubmit.append("job_title", formData.job_title);
-    formDataToSubmit.append("location", formData.location);
-    formDataToSubmit.append("job_description", strippedDescription); // Strip HTML tags
-    formDataToSubmit.append("category_id", formData.category_id);
-    formDataToSubmit.append("functional_area_id", formData.functional_area_id);
-    formDataToSubmit.append("experience_year", formData.experience_year);
-    formDataToSubmit.append("expected_experience_year", formData.expected_experience_year);
-    formDataToSubmit.append("salary_type", formData.salary_type);
-    formDataToSubmit.append("expected_salary_type", formData.expected_salary_type);
-    formDataToSubmit.append("batch_start_year", formData.batch_start_year);
-    formDataToSubmit.append("batch_end_year", formData.batch_end_year);
-    formDataToSubmit.append("skills", skills);
-    formDataToSubmit.append("country_id", countryId || "");
-    formDataToSubmit.append("state_id", stateId || "");
-    formDataToSubmit.append("city_id", cityId || "");
-
-    if (videoFile) {
-      formDataToSubmit.append("video_jd_file", videoFile);
+    // Validate required fields
+    if (!strippedDescription.trim()) {
+      alert("Please enter a job description.");
+      return;
     }
 
-    console.log("Submitting form data:", Object.fromEntries(formDataToSubmit));
+    // Get comma-separated tags
+    const skills = getCommaSeparatedTags();
+    if (!skills) {
+      alert("Please select at least one skill.");
+      return;
+    }
 
-    const response = await axios.post(
-      "https://api.sentryspot.co.uk/api/employeer/job-post",
-      formDataToSubmit,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: token,
-        },
+    try {
+      const formDataToSubmit = new FormData();
+      formDataToSubmit.append("job_title", formData.job_title);
+      formDataToSubmit.append("location", formData.location);
+      formDataToSubmit.append("job_description", strippedDescription); // Strip HTML tags
+      formDataToSubmit.append("category_id", formData.category_id);
+      formDataToSubmit.append(
+        "functional_area_id",
+        formData.functional_area_id
+      );
+      formDataToSubmit.append("experience_year", formData.experience_year);
+      formDataToSubmit.append(
+        "expected_experience_year",
+        formData.expected_experience_year
+      );
+      formDataToSubmit.append("salary_type", formData.salary_type);
+      formDataToSubmit.append(
+        "expected_salary_type",
+        formData.expected_salary_type
+      );
+      formDataToSubmit.append("batch_start_year", formData.batch_start_year);
+      formDataToSubmit.append("batch_end_year", formData.batch_end_year);
+      formDataToSubmit.append("skills", skills);
+      formDataToSubmit.append("country_id", countryId || "");
+      formDataToSubmit.append("state_id", stateId || "");
+      formDataToSubmit.append("city_id", cityId || "");
+
+      if (videoFile) {
+        formDataToSubmit.append("video_jd_file", videoFile);
       }
-    );
-    toast.success("Job posted successfully:", response.data);
-  } catch (error) {
-    if (error.response) {
-      toast.error("Error details:", error.response.data);
-    } else {
-      toast.error("Error posting job:", error);
+
+      console.log(
+        "Submitting form data:",
+        Object.fromEntries(formDataToSubmit)
+      );
+
+      const response = await axios.post(
+        "https://api.sentryspot.co.uk/api/employeer/job-post",
+        formDataToSubmit,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: token,
+          },
+        }
+      );
+      toast.success("Job posted successfully:", response.data);
+    } catch (error) {
+      if (error.response) {
+        toast.error("Error details:", error.response.data);
+      } else {
+        toast.error("Error posting job:", error);
+      }
     }
-  }
-};
+  };
 
-console.log("Selected Tags:", selectedTags);
-console.log("Comma-Separated Tags:", getCommaSeparatedTags());
-
+  console.log("Selected Tags:", selectedTags);
+  console.log("Comma-Separated Tags:", getCommaSeparatedTags());
 
   const handleTypeClick = (id) => {
     setSelectedTypes((prev) =>
       prev.includes(id) ? prev.filter((typeId) => typeId !== id) : [...prev, id]
     );
   };
-  
+
   const getIcon = (jobTypeName) => {
     switch (jobTypeName.toLowerCase()) {
       case "full-time":
@@ -378,17 +410,17 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
 
   const handleAiAssist = async () => {
     const { job_title, location } = formData;
-  
+
     // Check if both job_title and location are provided
     if (!job_title || !location) {
       alert("Please select a job title and location before proceeding.");
       return;
     }
-  
+
     // Ensure values are clean and formatted as strings
     const cleanJobTitle = String(job_title).trim();
     const cleanLocation = String(location).trim();
-  
+
     // Construct the request body as a string
     const requestBody = {
       keyword: "Job Description",
@@ -396,15 +428,15 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
       company: "SVAP Infotech",
       location: cleanLocation,
     };
-  
+
     console.log("Request Body for AI Assist:", JSON.stringify(requestBody));
-  
+
     try {
       const response = await axios.post(
         "https://api.sentryspot.co.uk/api/employeer/ai-job-description",
-        requestBody, {
+        requestBody,
+        {
           headers: {
-            
             Authorization: token,
           },
         }
@@ -428,11 +460,10 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
   const handleChange = (key) => (e) => {
     setKeywords({ ...keywords, [key]: e.target.value });
   };
-  
 
   return (
     <form className="default-form" onSubmit={handleSubmit}>
-      <div className="form-group col-lg-12 col-md-12  mt-4">
+      {/* <div className="form-group col-lg-12 col-md-12  mt-4">
         <label htmlFor="job" className="block text-sm font-medium text-gray-700">
           Job Title
         </label>
@@ -458,16 +489,46 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
             ))}
           </ul>
         )}
+      </div> */}
+      <ToastContainer />
+      <div className="mb-4">
+        <label
+          htmlFor="job"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Job Title
+        </label>
+        <input
+          type="text"
+          name="job"
+          placeholder="Type job title"
+          onChange={handleChange("job")}
+          value={keywords.job}
+          required
+          className="mt-1 block w-full px-3 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+        />
+        {dropdownVisibility.job && (
+          <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+            {jobTitles.map((item, index) => (
+              <li
+                key={index}
+                onClick={() => handleSelect("job", item.name)}
+                className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+              >
+                {item.name}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
-<ToastContainer/>
-      <div className="form-group col-lg-12 col-md-12 relative mt-4">
+      {/* <div className="form-group col-lg-12 col-md-12 relative mt-4">
   <label htmlFor="location" className="block text-sm font-medium text-gray-700">
     Location
   </label>
   <input
     type="text"
     name="location"
-    placeholder="Type location"
+    placeholder="+ Add location"
     onChange={handleChange("location")}
     value={keywords.location}
     required
@@ -486,10 +547,40 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
       ))}
     </ul>
   )}
-</div>
+</div> */}
+      <div className="relative mb-4">
+        <label
+          htmlFor="location"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Location
+        </label>
+        <input
+          type="text"
+          name="location"
+          placeholder="+ Add location"
+          onChange={handleChange("location")}
+          value={keywords.location}
+          required
+          className="mt-1 block w-full px-3 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+        />
+        {dropdownVisibility.location && (
+          <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+            {locations.map((item, index) => (
+              <li
+                key={index}
+                onClick={() => handleSelect("location", item)}
+                className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+              >
+                {item.city}, {item.state}, {item.country}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
 
-{/* Description Editor */}
-<div className="form-group col-lg-12 col-md-12 mt-4">
+      {/* Description Editor */}
+      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
   <div className="flex justify-between">
     <label htmlFor="description" className="pt-4 font-semibold">
       Job Description
@@ -510,11 +601,38 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
   {!formData.description && (
     <p className="text-red-500 text-sm mt-1">Job description is required.</p>
   )}
-</div>
-
+</div> */}
+      <div>
+        <div className="flex justify-between items-center">
+          <label
+            htmlFor="description"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Job Description
+          </label>
+          <button
+            type="button"
+            onClick={handleAiAssist}
+            className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            AI Assist +
+          </button>
+        </div>
+        <ReactQuill
+          value={formData.description}
+          onChange={handleDescriptionChange}
+          className="mt-1 block w-full"
+          theme="snow"
+        />
+        {!formData.description && (
+          <p className="mt-2 text-sm text-red-600">
+            Job description is required.
+          </p>
+        )}
+      </div>
 
       {/* Experience Year Dropdown */}
-      <div className="form-group col-lg-12 col-md-12 mt-4">
+      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
         <label htmlFor="experience_year" className="block text-sm font-medium text-gray-700">
         Min Experience Year
         </label>
@@ -533,7 +651,7 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
         </select>
       </div>
 
-      {/* Expected Experience Year Dropdown */}
+      {/* Expected Experience Year Dropdown 
       <div className="form-group col-lg-12 col-md-12 mt-4">
         <label htmlFor="expected_experience_year" className="block text-sm font-medium text-gray-700">
           Max Experience Year
@@ -551,10 +669,128 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
             </option>
           ))}
         </select>
+      </div> */}
+
+      <div className="flex flex-wrap gap-4 mt-4">
+        {/* Min Experience Year Dropdown */}
+        <div className="flex-1">
+          <label
+            htmlFor="experience_year"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Min Experience Year
+          </label>
+          <select
+            name="experience_year"
+            value={formData.experience_year}
+            onChange={handleFormChange}
+            className="mt-1 block w-full p-3 border-3 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="">Min Experience Year</option>
+            {experienceYears.map((item, index) => (
+              <option key={index} value={item.id}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Max Experience Year Dropdown */}
+        <div className="flex-1">
+          <label
+            htmlFor="expected_experience_year"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Max Experience Year
+          </label>
+          <select
+            name="expected_experience_year"
+            value={formData.expected_experience_year}
+            onChange={handleFormChange}
+            className="mt-1 block w-full p-3 border-3 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="">Max Experience Year</option>
+            {expectedExperienceYears.map((item, index) => (
+              <option key={index} value={item.id}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
+      <div className="flex flex-wrap gap-4 mt-4">
+        {/* Job indusrty dropdown  */}
+        <div className="flex-1">
+          <label
+            htmlFor="functional_area_id"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Industry
+          </label>
+          <select
+            name="functional_area_id"
+            value={formData.functional_area_id}
+            onChange={handleFormChange}
+            className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="">Select Indusrty</option>
+            {industry.map((item, index) => (
+              <option key={index} value={item.id}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        {/* Job Category Dropdown */}
+        <div className="flex-1">
+          <label
+            htmlFor="category_id"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Job Category
+          </label>
+          <select
+            name="category_id"
+            value={formData.category_id}
+            onChange={handleFormChange}
+            required
+            className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="">Select Job Category</option>
+            {categories.map((item, index) => (
+              <option key={index} value={item.id}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Functional Area Dropdown */}
+        <div className="flex-1">
+          <label
+            htmlFor="functional_area_id"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Functional Area
+          </label>
+          <select
+            name="functional_area_id"
+            value={formData.functional_area_id}
+            onChange={handleFormChange}
+            className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="">Select Functional Area</option>
+            {functionalTypes.map((item, index) => (
+              <option key={index} value={item.id}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
       {/* Category Dropdown */}
-      <div className="form-group col-lg-12 col-md-12 mt-4">
+      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
         <label htmlFor="category_id" className="block text-sm font-medium text-gray-700">
           Job Category
         </label>
@@ -572,10 +808,10 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
             </option>
           ))}
         </select>
-      </div>
+      </div> */}
 
       {/* Functional Area Dropdown */}
-      <div className="form-group col-lg-12 col-md-12 mt-4">
+      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
         <label htmlFor="functional_area_id" className="block text-sm font-medium text-gray-700">
           Functional Area
         </label>
@@ -592,10 +828,10 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
             </option>
           ))}
         </select>
-      </div>
+      </div> */}
 
       {/* Salary Type Dropdown */}
-      <div className="form-group col-lg-12 col-md-12 mt-4">
+      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
         <label htmlFor="salary_type" className="block text-sm font-medium text-gray-700">
           Salary Type
         </label>
@@ -614,7 +850,7 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
         </select>
       </div>
 
-      {/* Expected Salary Type Dropdown */}
+      {/* Expected Salary Type Dropdown 
       <div className="form-group col-lg-12 col-md-12 mt-4">
         <label htmlFor="expected_salary_type" className="block text-sm font-medium text-gray-700">
           Expected Salary Type
@@ -632,10 +868,12 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
             </option>
           ))}
         </select>
-      </div>
+      </div> */}
+
+      <SalarySection />
 
       {/* Batch Start Year Dropdown */}
-      <div className="form-group col-lg-12 col-md-12 mt-4">
+      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
         <label htmlFor="batch_start_year" className="block text-sm font-medium text-gray-700">
           Batch Start Year
         </label>
@@ -652,10 +890,10 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
             </option>
           ))}
         </select>
-      </div>
+      </div> */}
 
       {/* Batch End Year Dropdown */}
-      <div className="form-group col-lg-12 col-md-12 mt-4">
+      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
         <label htmlFor="batch_end_year" className="block text-sm font-medium text-gray-700">
           Batch End Year
         </label>
@@ -672,10 +910,10 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
             </option>
           ))}
         </select>
-      </div>
+      </div> */}
 
       {/* Video Upload */}
-      <div className="form-group col-lg-12 col-md-12 mt-4">
+      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
         <label htmlFor="video" className="block text-sm font-medium text-gray-700">
           Upload Video
         </label>
@@ -685,12 +923,55 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
           onChange={handleFileChange}
           className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         />
+      </div> */}
+      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
+  <label htmlFor="video" className="block text-sm font-medium text-gray-700">
+    Audio/Video JD
+  </label>
+  <p className="text-sm text-gray-500 mb-2">Add a video to tell your brand's story</p>
+  <input
+    type="file"
+    id="video"
+    accept="video/*"
+    onChange={handleFileChange}
+    className="mt-1 max-w-2xl block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-700"
+    placeholder="Paste a Youtube link here"
+  />
+   <input
+          type="text"
+          placeholder="Paste a YouTube link here"
+          className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-700 text-sm"
+        />
+</div> */}
+      <div className="form-group col-lg-12 col-md-12 mt-4">
+        <label
+          htmlFor="video"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Audio/Video JD
+        </label>
+        <p className="text-sm text-gray-500 mb-2">
+          Add a video to tell your brand's story
+        </p>
+        <div className="flex gap-4">
+          {" "}
+          {/* Flex container with gap between inputs */}
+          <input
+            type="file"
+            id="video"
+            accept="video/*"
+            onChange={handleFileChange}
+            className="mt-1 flex-1 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-700"
+          />
+          <input
+            type="text"
+            placeholder="Paste a YouTube link here"
+            className="flex-1 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
+          />
+        </div>
       </div>
 
-      
-
-
-      <div className="form-group col-lg-12 col-md-12 mt-4">
+      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
         <div className="flex justify-between">
           <label htmlFor="tags" className="pt-4 font-semibold">
             Skills
@@ -726,44 +1007,88 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
   </MultiSelectorContent>
 </MultiSelector>
 
-      </div>
-
- {/* Course Type Section */}
- <div className="form-group col-lg-12 col-md-12">
-  <label htmlFor="job_type">Course Type</label>
-  <div className="flex flex-wrap gap-4 mt-2">
-    {jobTypes.map((jobType) => (
-      <div
-        key={jobType.id}
-        className={`relative cursor-pointer p-2 rounded-lg flex flex-col items-center justify-center w-40 h-36 text-center 
-          ${selectedTypes.includes(jobType.id)
-            ? "shadow-inner shadow-indigo-700 border-2 border-violet-700"
-            : "border "}`}
-        onClick={() => handleTypeClick(jobType.id)}
-      >
-        <div className="text-center">
-          <div>{getIcon(jobType.name)}</div>
-        </div>
-        <p className="text-sm mt-2">{jobType.name}</p>
-        {selectedTypes.includes(jobType.id) && (
-          <CheckIcon className="absolute -top-2 -right-1 rounded-full border-2 border-violet-700 w-7 h-7 text-violet-700 bg-white" />
-        )}
-      </div>
-    ))}
-  </div>
-</div>
-
-
- <div className="form-group col-lg-12 col-md-12 my-3">
-          <label htmlFor="email">Add Screening Questions</label> <br />
-          Candidates will be asked to answer these question before they submit
-          their application. You can add up to 10 questions.
-          <br />
-          <button className="border-1 rounded-md py-2 my-5 border-violet-500">
-            Add Question
+      </div> */}
+      <div>
+        <div className="flex justify-between items-center">
+          <label
+            htmlFor="tags"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Skills
+          </label>
+          <button
+            type="button"
+            className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            AI Assist +
           </button>
         </div>
-        <div className="form-group col-lg-12 col-md-12">
+        <MultiSelector
+          values={selectedTags}
+          onValuesChange={(e) => {
+            console.log("Updated Tags:", e);
+            setSelectedTags(e);
+          }}
+          className="w-full relative "
+          name="tags"
+        >
+          <MultiSelectorTrigger className="w-full px-3 py-3 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+            <MultiSelectorInput placeholder="Select tags" />
+          </MultiSelectorTrigger>
+          <MultiSelectorContent>
+            <MultiSelectorList className="bg-white absolute z-10 w-full mt-1 border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+              {tags.map((item) => (
+                <MultiSelectorItem
+                  value={item.value}
+                  key={item.value}
+                  className="px-4 py-2 hover:bg-blue-100  cursor-pointer"
+                >
+                  {item.label}
+                </MultiSelectorItem>
+              ))}
+            </MultiSelectorList>
+          </MultiSelectorContent>
+        </MultiSelector>
+      </div>
+
+      {/* Course Type Section */}
+      <div className="form-group col-lg-12 col-md-12">
+        <label htmlFor="job_type">Job Type</label>
+        <div className="flex flex-wrap gap-4 mt-2">
+          {jobTypes.map((jobType) => (
+            <div
+              key={jobType.id}
+              className={`relative cursor-pointer p-2 rounded-lg flex flex-col items-center justify-center w-40 h-36 text-center 
+          ${
+            selectedTypes.includes(jobType.id)
+              ? "shadow-inner shadow-indigo-700 border-2 border-violet-700"
+              : "border "
+          }`}
+              onClick={() => handleTypeClick(jobType.id)}
+            >
+              <div className="text-center">
+                <div>{getIcon(jobType.name)}</div>
+              </div>
+              <p className="text-sm mt-2">{jobType.name}</p>
+              {selectedTypes.includes(jobType.id) && (
+                <CheckIcon className="absolute -top-2 -right-1 rounded-full border-2 border-violet-700 w-7 h-7 text-violet-700 bg-white" />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* <div className="form-group col-lg-12 col-md-12 my-3">
+        <label htmlFor="email">Add Screening Questions</label> <br />
+        Candidates will be asked to answer these question before they submit
+        their application. You can add up to 10 questions.
+        <br />
+        <button className="border-1 rounded-md py-2 my-5 border-violet-500">
+          Add Question
+        </button>
+      </div> */}
+      <ScreeningQuestionsForm />
+      {/* <div className="form-group col-lg-12 col-md-12">
           <label htmlFor="diversity_hiring">Diversity hiring !</label>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -825,9 +1150,7 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
           <button className="theme-btn btn-style-one" type="submit" >
            
           </button>
-        </div>
-      
-
+        </div> */}
 
       <button
         type="submit"
