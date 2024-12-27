@@ -199,7 +199,7 @@ const CompanyWTSSection = () => {
                               })
                             }
                             placeholder="Enter description"
-                            className="w-full px-4 py-3 border border-gray-200 rounded-lg h-32 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition duration-200 outline-none resize-none"
+                            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent transition duration-200 outline-none resize-none"
                           />
                         </div>
                       </div>

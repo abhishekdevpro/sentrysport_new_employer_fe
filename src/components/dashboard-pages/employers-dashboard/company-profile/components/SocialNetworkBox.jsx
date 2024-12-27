@@ -364,7 +364,7 @@ const SocialNetworkBox = () => {
       {/* About Section */}
       <FormSection>
         <SectionTitle>About Company</SectionTitle>
-        <div className="space-y-6 ">
+        <div className="space-y-6  flex flex-col justify-between gap-4 md:gap-2">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1 ">
               Company Title
@@ -379,6 +379,15 @@ const SocialNetworkBox = () => {
             />
           </div>
           <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Summary</label>
+          <ReactQuill
+            theme="snow"
+            value={companyData.summery || ""}
+            onChange={(value) => setCompanyData(prev => ({...prev, summery: value}))}
+            className="h-48 mb-12"
+          />
+        </div>
+          <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Description
             </label>
@@ -391,20 +400,12 @@ const SocialNetworkBox = () => {
               className="h-48 mb-12"
             />
           </div>
-          <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Summary</label>
-          <ReactQuill
-            theme="snow"
-            value={companyData.summery || ""}
-            onChange={(value) => setCompanyData(prev => ({...prev, summery: value}))}
-            className="h-48 mb-12"
-          />
-        </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+         
+          <div className="">
+            <label className="block text-sm font-medium text-gray-700">
               Upload Images (Max: 3)
             </label>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center ">
               {selectedImages.map((image, index) => (
                 <div key={index} className="relative w-24 h-24">
                   <img
@@ -427,16 +428,16 @@ const SocialNetworkBox = () => {
                 type="file"
                 accept="image/*"
                 onChange={handleImageUpload}
-                className="mt-2"
+                className="mt-4"
                 multiple
               />
             )}
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-start">
             <button
               type="button"
               onClick={handleAboutSave}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
             >
               Save About Section
             </button>

@@ -17,6 +17,8 @@ const TeamMemberManager = () => {
   const [editSelectedFile, setEditSelectedFile] = useState(null);
 
   const baseUrl = 'https://api.sentryspot.co.uk/api/employeer';
+  const baseImageUrl = "https://api.sentryspot.co.uk";
+
   const token = localStorage.getItem(Constant.USER_TOKEN);
 
   const fetchTeamMembers = useCallback(async () => {
@@ -177,7 +179,7 @@ const TeamMemberManager = () => {
   if (loading) return <div className="text-center p-4">Loading...</div>;
 
   return (
-    <div className="max-w-5xl mx-auto p-4">
+    <div className="md:max-w-5xl md:mx-auto md:p-4">
       <h1 className="text-2xl font-bold mb-4">Team Member Manager</h1>
 
       {error && (
@@ -245,11 +247,11 @@ const TeamMemberManager = () => {
               ) : (
                 <div>
                   {member.media && (
-                    <div className="mb-4">
+                    <div className="mb-4 ">
                       <img
-                        src={member.media}
+                        src={`${baseImageUrl}${member.media}`}
                         alt={member.name}
-                        className="w-full h-48 object-cover rounded"
+                        className="w-24 md:w-auto h-24 md:h-48 object-cover rounded"
                       />
                     </div>
                   )}
