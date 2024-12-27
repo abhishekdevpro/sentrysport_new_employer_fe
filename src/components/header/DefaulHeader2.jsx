@@ -1,6 +1,6 @@
 import { IoLogOutOutline } from "react-icons/io5";
 
-import logo from "../../Images/logo.png";
+import logo from "../../Images/image.png";
 
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -44,7 +44,7 @@ const DefaulHeader2 = () => {
 
   return (
     // <!-- Main Header-->
-    <header style={{backgroundColor:"#224194"}}
+    <header 
       className={`main-header font-bold border z-10 ${
         navbar ? "fixed-header animated slideInDown   " : ""
       }`}

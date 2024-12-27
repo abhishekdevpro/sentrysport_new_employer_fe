@@ -17,6 +17,7 @@ const MediaContentManager = () => {
   const [editSelectedFile, setEditSelectedFile] = useState(null);
   
   const baseUrl = 'https://api.sentryspot.co.uk/api/employeer';
+  const baseImageUrl = "https://api.sentryspot.co.uk";
   const token = localStorage.getItem(Constant.USER_TOKEN);
 
   const fetchMediaItems = useCallback(async () => {
@@ -182,7 +183,7 @@ const MediaContentManager = () => {
   );
 
   return (
-    <div className="max-w-5xl mx-auto p-4">
+    <div className="md:max-w-5xl md:mx-auto md:p-4">
       <h1 className="text-2xl font-bold mb-4">Media Content Manager</h1>
       
       {mediaItems.map((item) => (
@@ -234,7 +235,7 @@ const MediaContentManager = () => {
               </div>
             </div>
           ) : (
-            <div>
+            <div className=''>
               <h2 className="text-xl font-semibold">{item.title || 'Untitled'}</h2>
               <div dangerouslySetInnerHTML={{ __html: item.description }} className="my-2" />
               {item.media_url && (

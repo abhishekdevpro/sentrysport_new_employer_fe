@@ -10,32 +10,11 @@ import { FaHospital, FaHeart, FaCalendarAlt, FaLinkedin, FaTwitter, FaFacebook, 
 import { TbTargetArrow } from "react-icons/tb";
 import { FaCarBurst } from "react-icons/fa6";
 import DOMPurify from 'dompurify';
-
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-import ImageGalleryComponent from "./ImageGallery";
 import InsideCognizant from "./InsideCognizant ";
 import { Constant } from "@/utils/constant/constant";
 import ReactQuill from "react-quill";
 import CompanyWTSSection from "./WtsSection";
+import LeadershipTeam from "./LeaderShipTeams";
 
 const ShowcaseComponent = () => {
   const [companyData, setCompanyData] = useState(null);
@@ -187,7 +166,7 @@ const ShowcaseComponent = () => {
 
   return (
     <>
-      <nav className="fixed top-16 left-0 w-full bg-white shadow-lg z-50">
+      {/* <nav className="fixed top-16 left-0 w-full bg-white shadow-lg ">
         <ul className="flex justify-around p-3">
           <li><a href="#about" className="text-black font-semibold">About</a></li>
           <li><a href="#why-cognizant" className="text-black font-semibold">Why {companyData.company_name}?</a></li>
@@ -197,14 +176,14 @@ const ShowcaseComponent = () => {
           <li><a href="#unique" className="text-black font-semibold">What Makes Us Unique</a></li>
           <li><a href="#join-us" className="text-black font-semibold">Join Us</a></li>
         </ul>
-      </nav>
+      </nav> */}
 
-      <ImageGalleryComponent
+      {/* <ImageGalleryComponent
         open={openImageGallery}
         closeHandler={() => {
           setOpenImageGallery(false);
         }}
-      />
+      /> */}
 
       <section className="about-section" id="about">
         <div className="auto-container">
@@ -297,9 +276,9 @@ const ShowcaseComponent = () => {
       </section>
 
       <section className="about-section mb-10" id="why-cognizant">
-        <div className="auto-container md:flex-row gap-4 w-[90%] mx-auto h-80">
+        <div className="auto-container md:flex-row  gap-4 w-[90%] mx-auto h-80">
           <div className="flex items-center">
-            <p className="title text-xl sm:text-3xl text-black font-bold w-full sm:w-[80%] md:w-[55%] px-0 sm:px-7 md:px-16">
+            <p className="title text-xl md:text-3xl text-black font-bold w-full sm:w-[80%] md:w-[55%] px-0 sm:px-7 md:px-16">
               Why {companyData.company_name}?
             </p>
           </div>
@@ -362,15 +341,7 @@ const ShowcaseComponent = () => {
   <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center h-full p-4">
     <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] sm:w-[60%] md:w-[40%] max-h-[90%] overflow-y-auto">
       <h3 className="text-2xl font-semibold text-gray-800 mb-4">Edit Content</h3>
-      {/* <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
-        <input
-          type="text"
-          className="w-full border border-gray-300 p-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-          value={`Why ${companyData.company_name}?`}
-          readOnly
-        />
-      </div> */}
+      
       <div className="mb-6 ">
         <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
         <ReactQuill
@@ -449,7 +420,7 @@ const ShowcaseComponent = () => {
       </section> */}
       <CompanyWTSSection companyData={companyData}/>
 
-      <section className="job-categories ui-job-categories border-none" id="leadership">
+      {/* <section className="job-categories ui-job-categories border-none" id="leadership">
         <div className="auto-container w-[90%]">
           <div className="sec-title text-center">
             <p className="font-bold text-xl sm:text-3xl text-black">
@@ -491,7 +462,8 @@ const ShowcaseComponent = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
+      <LeadershipTeam />
 
       <section className="job-categories ui-job-categories border-none py-2" id="unique">
         <div className="auto-container w-[90%]">
