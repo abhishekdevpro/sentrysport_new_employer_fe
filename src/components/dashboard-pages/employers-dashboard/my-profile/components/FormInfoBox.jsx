@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Constant } from "@/utils/constant/constant";
 import { toast, ToastContainer } from "react-toastify";
+import TitleAutocomplete from "./TitleDropdown";
 
 const FormInfoBox = () => {
   const token = localStorage.getItem(Constant.USER_TOKEN);
@@ -276,7 +277,9 @@ const FormInfoBox = () => {
             value={formValues.email || ""}
             readOnly
           />
-          <label>Phone</label>
+        </div>
+        <div className="form-group col-lg-6 col-md-12">
+        <label>Phone</label>
           <input
             type="text"
             name="phone"
@@ -298,7 +301,7 @@ const FormInfoBox = () => {
             value={formValues.website || ""}
             onChange={handleChange}
           />
-          <label>Designation</label>
+          {/* <label>Designation</label>
           <input
             type="text"
             name="designation"
@@ -306,8 +309,11 @@ const FormInfoBox = () => {
             className="border rounded-none"
             value={formValues.designation || ""}
             onChange={handleChange}
-          />
+          /> */}
         </div>
+        {/* <TitleAutocomplete/> */}
+        <TitleAutocomplete setFormValues={setFormValues} />
+
 
         <div className="form-group col-lg-12 col-md-12">
           <label>Organization</label>

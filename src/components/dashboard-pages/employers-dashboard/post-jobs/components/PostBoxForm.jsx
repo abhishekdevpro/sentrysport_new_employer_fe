@@ -16,6 +16,7 @@ import {
   CheckIcon,
   ClockIcon,
   HandIcon,
+  Loader2,
   UserIcon,
 } from "lucide-react";
 import { IoDocument } from "react-icons/io5";
@@ -57,6 +58,7 @@ const PostBoxForm = () => {
   const [countryId, setCountryId] = useState("");
   const [stateId, setStateId] = useState("");
   const [cityId, setCityId] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [keywords, setKeywords] = useState({ job: "", location: "" });
   const [dropdownVisibility, setDropdownVisibility] = useState({
@@ -188,41 +190,47 @@ const PostBoxForm = () => {
     else setDropdownVisibility((prev) => ({ ...prev, job: false }));
   }, [keywords.job]);
 
+  // useEffect(() => {
+  //   if (keywords.location.length > 1)
+  //     fetchData(
+  //       `https://api.sentryspot.co.uk/api/jobseeker/locations`,
+  //       (data) => {
+  //         console.log(data,">>>>>");
+        
+  //         const locationsData = data.locations_names.map((location) => {
+  //           value: location,
+  //           label: location.split(',').slice(1).join(', ')
+  //         });
+  //         setLocations(locationsData);
+  //       },
+  //       "location"
+  //     );
+  //   else setDropdownVisibility((prev) => ({ ...prev, location: false }));
+  // }, [keywords.location]);
+
+  // const handleChange = (key) => (e) =>
+  //setKeywords({ ...keywords, [key]: e.target.value });
   useEffect(() => {
-    if (keywords.location.length > 1)
+    if (keywords.location && keywords.location.length > 1) {
       fetchData(
         `https://api.sentryspot.co.uk/api/jobseeker/locations?locations=${keywords.location}`,
         (data) => {
-          const countries = data.countries || [];
-          const states = countries.flatMap((c) => c.states) || [];
-          const cities = states.flatMap((s) => s.cities) || [];
-          const locationsData = cities.map((city) => {
-            const state = states.find((s) =>
-              s.cities.some((c) => c.id === city.id)
-            );
-            const country = countries.find((c) =>
-              c.states.some((s) => s.id === state.id)
-            );
-
-            return {
-              city: city.name,
-              state: state?.name,
-              country: country?.name,
-              country_id: country?.id,
-              state_id: state?.id,
-              city_id: city.id,
-            };
-          });
+            //  console.log(data,">>>>");
+          // const locationsData = data.location_names.map((location) => ({
+          //   value: location,
+          //   label: location.split(',').slice(1).join(', ')
+          // }));
+          const locationsData = data.location_names;
+  
           setLocations(locationsData);
         },
         "location"
       );
-    else setDropdownVisibility((prev) => ({ ...prev, location: false }));
+    } else {
+      setDropdownVisibility((prev) => ({ ...prev, location: false }));
+    }
   }, [keywords.location]);
-
-  // const handleChange = (key) => (e) =>
-  //setKeywords({ ...keywords, [key]: e.target.value });
-
+  
   const handleSelect = (key, selectedItem) => {
     if (key === "job") {
       setKeywords((prevKeywords) => ({
@@ -236,15 +244,16 @@ const PostBoxForm = () => {
     } else if (key === "location") {
       setKeywords((prevKeywords) => ({
         ...prevKeywords,
-        [key]: `${selectedItem.city}, ${selectedItem.state}, ${selectedItem.country}`,
+        [key]: selectedItem,
       }));
+      // {console.log(selectedItem,">>>")}
       setFormData((prevFormData) => ({
         ...prevFormData,
-        location: `${selectedItem.city}, ${selectedItem.state}, ${selectedItem.country}`,
+        location: selectedItem,
       }));
-      setCountryId(selectedItem.country_id);
-      setStateId(selectedItem.state_id);
-      setCityId(selectedItem.city_id);
+      // setCountryId(selectedItem.country_id);
+      // setStateId(selectedItem.state_id);
+      // setCityId(selectedItem.city_id);
     }
 
     setDropdownVisibility((prevVisibility) => ({
@@ -322,10 +331,10 @@ const PostBoxForm = () => {
         formDataToSubmit.append("video_jd_file", videoFile);
       }
 
-      console.log(
-        "Submitting form data:",
-        Object.fromEntries(formDataToSubmit)
-      );
+      // console.log(
+      //   "Submitting form data:",
+      //   Object.fromEntries(formDataToSubmit)
+      // );
 
       const response = await axios.post(
         "https://api.sentryspot.co.uk/api/employeer/job-post",
@@ -347,8 +356,8 @@ const PostBoxForm = () => {
     }
   };
 
-  console.log("Selected Tags:", selectedTags);
-  console.log("Comma-Separated Tags:", getCommaSeparatedTags());
+  // console.log("Selected Tags:", selectedTags);
+  // console.log("Comma-Separated Tags:", getCommaSeparatedTags());
 
   const handleTypeClick = (id) => {
     setSelectedTypes((prev) =>
@@ -413,7 +422,7 @@ const PostBoxForm = () => {
 
     // Check if both job_title and location are provided
     if (!job_title || !location) {
-      alert("Please select a job title and location before proceeding.");
+      toast.warn("Please select a job title and location before proceeding.");
       return;
     }
 
@@ -422,6 +431,7 @@ const PostBoxForm = () => {
     const cleanLocation = String(location).trim();
 
     // Construct the request body as a string
+    setLoading(true); 
     const requestBody = {
       keyword: "Job Description",
       title: cleanJobTitle,
@@ -429,7 +439,7 @@ const PostBoxForm = () => {
       location: cleanLocation,
     };
 
-    console.log("Request Body for AI Assist:", JSON.stringify(requestBody));
+    // console.log("Request Body for AI Assist:", JSON.stringify(requestBody));
 
     try {
       const response = await axios.post(
@@ -441,7 +451,7 @@ const PostBoxForm = () => {
           },
         }
       );
-      console.log("AI Assist Response:", response.data);
+      // console.log("AI Assist Response:", response.data);
       if (response.data.code === 200) {
         // Update the job description with the AI response
         setFormData({
@@ -449,11 +459,14 @@ const PostBoxForm = () => {
           description: response.data.data.description,
         });
       } else {
-        alert("Failed to get job description from AI. Please try again.");
+        toast.error("Failed to get job description from AI. Please try again.");
       }
     } catch (error) {
       console.error("Error with AI Assist:", error);
-      alert("Failed to fetch AI job description. Please try again.");
+      toast.error("Failed to fetch AI job description. Please try again.");
+    }
+    finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -491,7 +504,7 @@ const PostBoxForm = () => {
         )}
       </div> */}
       <ToastContainer />
-      <div className="mb-4">
+      <div className="form-group col-lg-12 col-md-12 relative mt-4">
         <label
           htmlFor="job"
           className="block text-sm font-medium text-gray-700"
@@ -505,7 +518,7 @@ const PostBoxForm = () => {
           onChange={handleChange("job")}
           value={keywords.job}
           required
-          className="mt-1 block w-full px-3 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          className="mt-1 block w-full px-3 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         />
         {dropdownVisibility.job && (
           <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
@@ -521,7 +534,7 @@ const PostBoxForm = () => {
           </ul>
         )}
       </div>
-      {/* <div className="form-group col-lg-12 col-md-12 relative mt-4">
+      <div className="form-group col-lg-12 col-md-12 relative mt-4">
   <label htmlFor="location" className="block text-sm font-medium text-gray-700">
     Location
   </label>
@@ -536,19 +549,24 @@ const PostBoxForm = () => {
   />
   {dropdownVisibility.location && (
     <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg">
-      {locations.map((item, index) => (
-        <li
-          key={index}
-          onClick={() => handleSelect("location", item)}
-          className="cursor-pointer px-4 py-2 hover:bg-gray-100"
-        >
-          {item.city}, {item.state}, {item.country}
-        </li>
-      ))}
+      {/* {console.log(locations,">>>locations")} */}
+      {locations?.length > 0 && (
+  <ul>
+    {locations.map((item, index) => (
+      <li
+        key={index}
+        onClick={() => handleSelect("location", item)}
+        className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+      >
+        {item}
+      </li>
+    ))}
+  </ul>
+)}
     </ul>
   )}
-</div> */}
-      <div className="relative mb-4">
+</div>
+      {/* <div className="relative mb-4">
         <label
           htmlFor="location"
           className="block text-sm font-medium text-gray-700"
@@ -562,7 +580,7 @@ const PostBoxForm = () => {
           onChange={handleChange("location")}
           value={keywords.location}
           required
-          className="mt-1 block w-full px-3 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          className="mt-1 block w-full px-3 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
         />
         {dropdownVisibility.location && (
           <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
@@ -577,7 +595,7 @@ const PostBoxForm = () => {
             ))}
           </ul>
         )}
-      </div>
+      </div> */}
 
       {/* Description Editor */}
       {/* <div className="form-group col-lg-12 col-md-12 mt-4">
@@ -586,7 +604,7 @@ const PostBoxForm = () => {
       Job Description
     </label>
     <button
-      className="border-1 border-violet-700 rounded-md py-2 px-2 m-2 font-semibold"
+      className="border-1 border-blue-700 rounded-md py-2 px-2 m-2 font-semibold"
       onClick={handleAiAssist}
     >
       AI Assist +
@@ -610,13 +628,30 @@ const PostBoxForm = () => {
           >
             Job Description
           </label>
-          <button
+          {/* <button
             type="button"
             onClick={handleAiAssist}
-            className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="px-4 py-2 bg-blue-900 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             AI Assist +
-          </button>
+          </button> */}
+           <button
+      type="button"
+      onClick={handleAiAssist}
+      disabled={loading}
+      className={`px-4 py-2 bg-blue-900 text-white text-sm font-medium rounded-md 
+        hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 
+        ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+    >
+      {loading ? (
+        <div className="flex items-center space-x-2">
+          <Loader2 className="w-5 h-5 animate-spin" /> {/* Lucide Loader */}
+          <span>Loading...</span>
+        </div>
+      ) : (
+        "AI Assist +"
+      )}
+    </button>
         </div>
         <ReactQuill
           value={formData.description}
@@ -976,7 +1011,7 @@ const PostBoxForm = () => {
           <label htmlFor="tags" className="pt-4 font-semibold">
             Skills
           </label>
-          <button className="border-1 border-violet-700 rounded-md py-2 px-2 m-2 font-semibold">
+          <button className="border-1 border-blue-700 rounded-md py-2 px-2 m-2 font-semibold">
             AI Assist +
           </button>
         </div>
@@ -1016,23 +1051,23 @@ const PostBoxForm = () => {
           >
             Skills
           </label>
-          <button
+          {/* <button
             type="button"
-            className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="px-4 py-2 bg-blue-900 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             AI Assist +
-          </button>
+          </button> */}
         </div>
         <MultiSelector
           values={selectedTags}
           onValuesChange={(e) => {
-            console.log("Updated Tags:", e);
+            // console.log("Updated Tags:", e);
             setSelectedTags(e);
           }}
           className="w-full relative "
           name="tags"
         >
-          <MultiSelectorTrigger className="w-full px-3 py-3 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+          <MultiSelectorTrigger className="w-full px-3 py-3 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
             <MultiSelectorInput placeholder="Select tags" />
           </MultiSelectorTrigger>
           <MultiSelectorContent>
@@ -1061,7 +1096,7 @@ const PostBoxForm = () => {
               className={`relative cursor-pointer p-2 rounded-lg flex flex-col items-center justify-center w-40 h-36 text-center 
           ${
             selectedTypes.includes(jobType.id)
-              ? "shadow-inner shadow-indigo-700 border-2 border-violet-700"
+              ? "shadow-inner shadow-blue-700 border-2 border-blue-700"
               : "border "
           }`}
               onClick={() => handleTypeClick(jobType.id)}
@@ -1071,7 +1106,7 @@ const PostBoxForm = () => {
               </div>
               <p className="text-sm mt-2">{jobType.name}</p>
               {selectedTypes.includes(jobType.id) && (
-                <CheckIcon className="absolute -top-2 -right-1 rounded-full border-2 border-violet-700 w-7 h-7 text-violet-700 bg-white" />
+                <CheckIcon className="absolute -top-2 -right-1 rounded-full border-2 border-blue-700 w-7 h-7 text-blue-700 bg-white" />
               )}
             </div>
           ))}
@@ -1083,7 +1118,7 @@ const PostBoxForm = () => {
         Candidates will be asked to answer these question before they submit
         their application. You can add up to 10 questions.
         <br />
-        <button className="border-1 rounded-md py-2 my-5 border-violet-500">
+        <button className="border-1 rounded-md py-2 my-5 border-blue-500">
           Add Question
         </button>
       </div> */}
