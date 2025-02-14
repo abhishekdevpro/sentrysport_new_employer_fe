@@ -323,9 +323,9 @@ const PostBoxForm = () => {
       formDataToSubmit.append("batch_start_year", formData.batch_start_year);
       formDataToSubmit.append("batch_end_year", formData.batch_end_year);
       formDataToSubmit.append("skills", skills);
-      formDataToSubmit.append("country_id", countryId || "");
-      formDataToSubmit.append("state_id", stateId || "");
-      formDataToSubmit.append("city_id", cityId || "");
+      // formDataToSubmit.append("country_id", countryId || "");
+      // formDataToSubmit.append("state_id", stateId || "");
+      // formDataToSubmit.append("city_id", cityId || "");
 
       if (videoFile) {
         formDataToSubmit.append("video_jd_file", videoFile);
@@ -503,7 +503,7 @@ const PostBoxForm = () => {
           </ul>
         )}
       </div> */}
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <div className="form-group col-lg-12 col-md-12 relative mt-4">
         <label
           htmlFor="job"
@@ -666,45 +666,6 @@ const PostBoxForm = () => {
         )}
       </div>
 
-      {/* Experience Year Dropdown */}
-      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
-        <label htmlFor="experience_year" className="block text-sm font-medium text-gray-700">
-        Min Experience Year
-        </label>
-        <select
-          name="experience_year"
-          value={formData.experience_year}
-          onChange={handleFormChange}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value="">Min Experience Year</option>
-          {experienceYears.map((item, index) => (
-            <option key={index} value={item.id}>
-              {item.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Expected Experience Year Dropdown 
-      <div className="form-group col-lg-12 col-md-12 mt-4">
-        <label htmlFor="expected_experience_year" className="block text-sm font-medium text-gray-700">
-          Max Experience Year
-        </label>
-        <select
-          name="expected_experience_year"
-          value={formData.expected_experience_year}
-          onChange={handleFormChange}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value=""> Max Experience Year</option>
-          {expectedExperienceYears.map((item, index) => (
-            <option key={index} value={item.id}>
-              {item.name}
-            </option>
-          ))}
-        </select>
-      </div> */}
 
       <div className="flex flex-wrap gap-4 mt-4">
         {/* Min Experience Year Dropdown */}
@@ -1006,43 +967,7 @@ const PostBoxForm = () => {
         </div>
       </div>
 
-      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
-        <div className="flex justify-between">
-          <label htmlFor="tags" className="pt-4 font-semibold">
-            Skills
-          </label>
-          <button className="border-1 border-blue-700 rounded-md py-2 px-2 m-2 font-semibold">
-            AI Assist +
-          </button>
-        </div>
-        <MultiSelector
-  values={selectedTags}
-  onValuesChange={(e) => {
-    // Debugging to check how values are updated
-    console.log("Updated Tags:", e);
-    setSelectedTags(e);
-  }}
-  className="w-full relative"
-  name="tags"
->
-  <MultiSelectorTrigger className="bg-blue-200">
-    <MultiSelectorInput
-      placeholder="Select tags"
-      className="bg-blue-500"
-    />
-  </MultiSelectorTrigger>
-  <MultiSelectorContent>
-    <MultiSelectorList className="bg-white absolute z-10">
-      {tags.map((item) => (
-        <MultiSelectorItem value={item.value} key={item.value}>
-          {item.label}
-        </MultiSelectorItem>
-      ))}
-    </MultiSelectorList>
-  </MultiSelectorContent>
-</MultiSelector>
-
-      </div> */}
+      
       <div>
         <div className="flex justify-between items-center">
           <label

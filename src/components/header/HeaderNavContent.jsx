@@ -76,8 +76,8 @@ const HeaderNavContent = () => {
             </li>
           <li className="border h-[80%] p-0 m-0"></li>
           <li className="hover:bg-slate-200  rounded-md ml-2">
-            <Link to="/" className="text-blue-900">
-              <span className="font-light text-blue-900"> Recruiting</span>? Post a job
+            <Link to="/employers-dashboard/post-jobs" className="text-blue-900">
+              <span className="font-light text-blue-900"> </span> Post a job
             </Link>
           </li>
           <li className="text-blue-900">

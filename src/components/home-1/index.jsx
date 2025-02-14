@@ -30,6 +30,12 @@ import Login from "../auth/Login";
 import ResetPassword from "../auth/ResetPassword";
 import { TypeAnimation } from "react-type-animation";
 import { useState } from "react";
+import DashboardHeader from "../header/DashboardHeader";
+import { Menu } from "lucide-react";
+import Footer from "./Footer";
+import PeopleSection from "./People-section";
+import CategorySection from "./Category-Section";
+import TestimonialSlider from "./Testimonial-Slider";
 const index = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -81,9 +87,11 @@ const index = () => {
   return (
     <>
       
-      <nav className="header" >
-  <div className="auto-container mx-auto px-4">
-    <div className="header-menu flex  items-center py-">
+     <nav className="header" >
+ {userToken? <div className="mb-8"> 
+  <DashboardHeader />
+ </div>: <div className="auto-container mx-auto px-4">
+    <div className="header-menu flex  items-center">
       {/* Logo Section */}
       <div className="header-logo flex items-center">
         <img src="https://htmlsentryspot.vercel.app/img/company_logo.png" alt="Logo" />
@@ -94,17 +102,17 @@ const index = () => {
         <ul className="flex ">
           <li>
             <Link href="" className="hover:text-gray-300 text-blue-800">
-              Home
+              Search Resume
             </Link>
           </li>
           <li>
             <Link href="" className="hover:text-gray-300">
-              Jobs
+              AI Jobs Posting
             </Link>
           </li>
           <li>
             <Link href="" className="hover:text-gray-300">
-              Products
+              AI Skill Test
             </Link>
           </li>
           <li>
@@ -126,20 +134,7 @@ const index = () => {
           className="text-white"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 6h16M4 12h16m-7 6h7"
-            ></path>
-          </svg>
+          <Menu />
         </button>
       </div>
 
@@ -209,80 +204,168 @@ const index = () => {
         </ul>
       </div>
     )}
-  </div>
-</nav>
+  </div>}
+       </nav>
 
-
+<MobileMenu />
       
-<div className="banner bg-gray-100 py-10">
-  <div className="auto-container mx-auto px-4">
-    <div className="banner-text flex flex-col lg:flex-row justify-between items-center">
-      <div className="b-text lg:w-1/2 mb-8 lg:mb-0">
-        <div className="b-head  lg:text-left">
-          <p className="text-xl font-medium text-gray-700">Sentryspot, your personal HR partner</p>
-          <h2 className="font-bold text-2xl lg:text-3xl mt-4">
-            Signup to AI-Enabled platform to{" "}
-            <TypeAnimation
-              sequence={[
-                " Hire Talent",
-                1000,
-                " Post Jobs",
-                1000,
-                " Send Skill Test",
-                1000,
-                " Video JD",
-                1000,
-              ]}
-              wrapper="span"
-              speed={50}
-              repeat={Infinity}
-            />
-          </h2>
-          <div className="b-para mt-4 text-gray-600">
-            <p>
-              Sentryspot is the Canada premier AI-driven security services job portal. Post
-              your job listings for free and connect with top candidates across security
-              domains such as cybersecurity, physical security, security management,
-              data protection, and more.
-            </p>
-          </div>
-        </div>
-        <div className=" mt-8 flex flex-col lg:flex-row gap-6">
-          <div className="icon flex items-start">
-            <i className="fading text-4xl text-gray-500"></i>
-            <div className=" -4">
-              <h2 className="font-bold text-xl">50+ organizations</h2>
-              <p className="text-gray-600">
-                Choose to use our AI-Enabled services for smoother HR processes.
-              </p>
-            </div>
-          </div>
-          <div className="icoxt flex items-start">
-            <i className="fa=ext-4xl text-gray-500"></i>
-            <div className="txt ml-4">
-              <h2 className="font-bold text-xl">Huge number</h2>
-              <p className="text-gray-600">
-                Of Jobseekers already choosing to use our services.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+{!userToken && 
+// (<div className="banner bg-gray-100 py-10">
+//   <div className="auto-container mx-auto px-4">
+//     <div className="banner-text flex flex-col lg:flex-row justify-between items-center">
+//       <div className="b-text lg:w-1/2 mb-8 lg:mb-0">
+//         <div className="b-head  lg:text-left">
+//           <p className="text-xl font-medium text-gray-700">Sentryspot, your personal HR partner</p>
+//           <h2 className="font-bold text-2xl lg:text-3xl mt-4">
+//             Signup to AI-Enabled platform to{" "}
+//             <TypeAnimation
+//               sequence={[
+//                 " Hire Talent",
+//                 1000,
+//                 " Post Jobs",
+//                 1000,
+//                 " Skill Test",
+//                 1000,
+//                 " Video JD",
+//                 1000,
+//               ]}
+//               wrapper="span"
+//               speed={50}
+//               repeat={Infinity}
+//             />
+//           </h2>
+//           <div className="b-para mt-4 text-gray-600">
+//             <p>
+//               Sentryspot is the Canada premier AI-driven security services job portal. Post
+//               your job listings for free and connect with top candidates across security
+//               domains such as cybersecurity, physical security, security management,
+//               data protection, and more.
+//             </p>
+//           </div>
+//         </div>
+//         <div className=" mt-8 flex flex-col lg:flex-row gap-6">
+//           <div className="icon flex items-start">
+//             <i className="fading text-4xl text-gray-500"></i>
+//             <div className=" -4">
+//               <h2 className="font-bold text-xl">50+ organizations</h2>
+//               <p className="text-gray-600">
+//                 Choose to use our AI-Enabled services for smoother HR processes.
+//               </p>
+//             </div>
+//           </div>
+//           <div className="icoxt flex items-start">
+//             <i className="fa=ext-4xl text-gray-500"></i>
+//             <div className="txt ml-4">
+//               <h2 className="font-bold text-xl">Huge number</h2>
+//               <p className="text-gray-600">
+//                 Of Jobseekers already choosing to use our services.
+//               </p>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
 
-      {/* Login/ResetPassword Section */}
-      <div className="">
-        {isLogin ? (
-          <Login setIsLogin={() => setIsLogin(false)} />
-        ) : (
-          <ResetPassword setIsLogin={() => setIsLogin(true)} />
-        )}
+//       {/* Login/ResetPassword Section */}
+//       <div className="">
+//         {isLogin ? (
+//           <Login setIsLogin={() => setIsLogin(false)} />
+//         ) : (
+//           <ResetPassword setIsLogin={() => setIsLogin(true)} />
+//         )}
+//       </div>
+//     </div>
+//   </div>
+// </div>)
+<div className="min-h-screen bg-gray-100 py-8 sm:py-12 lg:py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+          {/* Left Content Section */}
+          <div className="w-full lg:w-1/2 space-y-8">
+            {/* Header Content */}
+            <div className="space-y-6">
+              <p className="text-lg sm:text-xl font-medium text-gray-700">
+                Sentryspot, your personal HR partner
+              </p>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
+                Signup to AI-Enabled platform to{" "}
+                <TypeAnimation
+                  sequence={[
+                    " Hire Talent",
+                    1000,
+                    " Post Jobs",
+                    1000,
+                    " Skill Test",
+                    1000,
+                    " Video JD",
+                    1000,
+                  ]}
+                  wrapper="span"
+                  speed={10}
+                  repeat={Infinity}
+                  className="text-blue-600"
+                />
+              </h2>
+              <p className="text-base sm:text-lg text-gray-600 max-w-2xl">
+                Sentryspot is the Canada premier AI-driven security services job portal. 
+                Post your job listings for free and connect with top candidates across 
+                security domains such as cybersecurity, physical security, security 
+                management, data protection, and more.
+              </p>
+            </div>
+
+            {/* Stats Section */}
+            <div className="grid sm:grid-cols-2 gap-8">
+              {/* First Stat */}
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0">
+                  <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center">
+                    <span className="text-2xl text-blue-600">50+</span>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    50+ organizations
+                  </h3>
+                  <p className="mt-2 text-sm text-gray-600">
+                    Choose to use our AI-Enabled services for smoother HR processes.
+                  </p>
+                </div>
+              </div>
+
+              {/* Second Stat */}
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0">
+                  <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center">
+                    <span className="text-2xl text-blue-600">∞</span>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Huge number
+                  </h3>
+                  <p className="mt-2 text-sm text-gray-600">
+                    Of Jobseekers already choosing to use our services.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Section - Login/Reset Form */}
+          <div className=" bg-white rounded-2xl shadow-xl ">
+            {isLogin ? (
+              <Login setIsLogin={() => setIsLogin(false)} />
+            ) : (
+              <ResetPassword setIsLogin={() => setIsLogin(true)} />
+            )}
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+}
 
 
-      <div className="people">
+      {/* <div className="people">
         <div className="auto-container">
           <div className="people-card">
             <div className="card-one  hover:shadow-xl" data-aos="fade">
@@ -315,8 +398,8 @@ const index = () => {
             </button>
           </div>
         </div>
-      </div>
-
+      </div> */}
+<PeopleSection />
 
       <div className="steps">
         <div className="auto-container">
@@ -371,7 +454,7 @@ const index = () => {
       </div>
 
 
-      <div className="category">
+      {/* <div className="category">
         <div className="auto-container">
           <h2>
             Spot top-quality candidates across all key functions,
@@ -412,9 +495,10 @@ const index = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+      <CategorySection />
       
-      <div className="category">
+      {/* <div className="category">
         <div className="auto-container">
           <h2>Why Sentryspot for Employers</h2>
           <div className="testimonials">
@@ -640,9 +724,13 @@ const index = () => {
             </Slider>
           </div>
         </div>
-      </div>
+      </div> */}
+      <TestimonialSlider />
 
-      <div className="footer">
+
+
+     <Footer />
+      {/* <div className="footer">
         <div className="auto-container">
           <div className="menu-section">
             <div className="footer-one">
@@ -763,7 +851,7 @@ const index = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

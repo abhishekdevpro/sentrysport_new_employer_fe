@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import MobileSidebar from "./mobile-sidebar";
+// import logo from "../../Images/image.png";
 import logo from "../../Images/image.png";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, toggleSignupDialog } from "@/store/slices/auth";
@@ -19,7 +20,7 @@ const MobileMenu = () => {
         {/* <!-- Main box --> */}
         <div className="inner-box">
           <div className="nav-outer">
-            <div className="logo-box">
+            <div className="logo-box border-white border-2">
               <div className="me-10">
                 <Link to="/">
                   <img alt="brand" src={logo} className="h-14 w-28" />

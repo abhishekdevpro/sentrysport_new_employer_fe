@@ -336,7 +336,7 @@ function App() {
           </BrowserRouter>
 
           {/* Toastify */}
-          {/* <ToastContainer
+          <ToastContainer
             position="bottom-right"
             autoClose={500}
             hideProgressBar={false}
@@ -347,9 +347,9 @@ function App() {
             draggable
             pauseOnHover
             theme="colored"
-          /> */}
+          />
           <SignUpDialog />
-          <Toaster />
+          {/* <Toaster /> */}
           {/* <!-- Scroll To Top --> */}
           <ScrollToTop />
         </div>

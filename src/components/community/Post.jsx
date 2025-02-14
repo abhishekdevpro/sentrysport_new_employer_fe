@@ -88,12 +88,12 @@ const Post = ({
         </div>
 
         <div className="relative">
-          <button
+         {post.is_edit && <button
             onClick={() => toggleDropdown(post.id)}
             className="p-2 text-gray-600 hover:text-gray-800 transition-colors"
           >
             <FaEllipsisV />
-          </button>
+          </button>}
 
           {openDropdownId === post.id && (
             <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-lg z-10">
