@@ -76,42 +76,42 @@ const employerMenu = [
     routePath: "/employers-dashboard/messages",
     active: "",
   },
-  {
-    id: 12,
-    name: "Resume Alerts",
-    icon: "la-bell",
-    routePath: "/employers-dashboard/resume-alerts",
-    active: "",
-  },
-  {
-    id: 13,
-    name: "Change Password",
-    icon: "la-lock",
-    routePath: "/employers-dashboard/change-password",
-    active: "",
-  },
+  // {
+  //   id: 12,
+  //   name: "Resume Alerts",
+  //   icon: "la-bell",
+  //   routePath: "/employers-dashboard/resume-alerts",
+  //   active: "",
+  // },
+  // {
+  //   id: 13,
+  //   name: "Change Password",
+  //   icon: "la-lock",
+  //   routePath: "/employers-dashboard/change-password",
+  //   active: "",
+  // },
   
   {
     id: 14,
     name: "Services",
    icon: "la-trash",
-   routePath: "/",
+   routePath: "/employers-dashboard/dashboard",
   active: "",
   },
   {
    id: 15,
    name: "Setting",
   icon: "la-gear",
-  routePath: "/",
+  routePath: "/employers-dashboard/my-profile",
  active: "",
  },
- {
-  id: 16,
-  name: "signout",
-  icon: "la-sign-out",
- routePath: "/",
-active: "",
-},
+//  {
+//   id: 16,
+//   name: "signout",
+//   icon: "la-sign-out",
+//  routePath: "/",
+// active: "",
+// },
  
 
   // {

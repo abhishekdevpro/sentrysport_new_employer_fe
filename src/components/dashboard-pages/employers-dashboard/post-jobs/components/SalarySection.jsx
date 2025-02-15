@@ -95,11 +95,11 @@ const SalarySection = () => {
   ];
 
   return (
-    <div className="w-full  bg-white p-6 rounded-lg shadow-sm mt-4">
+    <div className="w-full  mt-4">
       <h2 className="text-xl font-semibold text-gray-800 mb-6">Salary Details</h2>
       
       <div className="mb-6">
-        <div className="flex gap-6">
+        <div className="flex gap-2 md:gap-6">
           {salaryTypes.map((type) => (
             <label key={type.id} className="flex items-center cursor-pointer group">
               <input
@@ -118,63 +118,66 @@ const SalarySection = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-6 mb-6">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Minimum Salary
-          </label>
-          <div className="relative">
-            <div className="absolute left-0 top-0 bottom-0 w-8 flex items-center justify-center bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-              <span className="text-gray-500 font-medium">£</span>
-            </div>
-            <input
-              type="text"
-              name="min_salary"
-              value={formData.min_salary}
-              onChange={handleFormChange}
-              className={`block w-full pl-8 p-2.5 border ${
-                errors.min_salary 
-                  ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
-                  : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'
-              } rounded-md shadow-sm focus:outline-none`}
-              placeholder={`Min ${minimumSalaries[salaryType].toLocaleString()}`}
-            />
-          </div>
-          {errors.min_salary && (
-            <p className="mt-1.5 text-sm text-red-600 font-medium">
-              {errors.min_salary}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Maximum Salary <span className="text-gray-500">(optional)</span>
-          </label>
-          <div className="relative">
-            <div className="absolute left-0 top-0 bottom-0 w-8 flex items-center justify-center bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
-              <span className="text-gray-500 font-medium">£</span>
-            </div>
-            <input
-              type="text"
-              name="max_salary"
-              value={formData.max_salary}
-              onChange={handleFormChange}
-              className={`block w-full pl-8 p-2.5 border ${
-                errors.max_salary 
-                  ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
-                  : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'
-              } rounded-md shadow-sm focus:outline-none`}
-              placeholder="Enter maximum salary"
-            />
-          </div>
-          {errors.max_salary && (
-            <p className="mt-1.5 text-sm text-red-600 font-medium">
-              {errors.max_salary}
-            </p>
-          )}
-        </div>
+      <div className="flex flex-col md:flex-row gap-6 mb-6">
+  {/* Minimum Salary */}
+  <div className="flex-1">
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      Minimum Salary
+    </label>
+    <div className="relative flex items-center">
+      <div className="absolute left-0 inset-y-0 flex items-center justify-center px-3 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+        <span className="text-gray-500 font-medium">£</span>
       </div>
+      <input
+        type="text"
+        name="min_salary"
+        value={formData.min_salary}
+        onChange={handleFormChange}
+        className={`w-full pl-10 p-2.5 border ${
+          errors.min_salary 
+            ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
+            : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'
+        } rounded-md shadow-sm focus:outline-none`}
+        placeholder={`Min ${minimumSalaries[salaryType].toLocaleString()}`}
+      />
+    </div>
+    {errors.min_salary && (
+      <p className="mt-1.5 text-sm text-red-600 font-medium">
+        {errors.min_salary}
+      </p>
+    )}
+  </div>
+
+  {/* Maximum Salary */}
+  <div className="flex-1">
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      Maximum Salary <span className="text-gray-500">(optional)</span>
+    </label>
+    <div className="relative flex items-center">
+      <div className="absolute left-0 inset-y-0 flex items-center justify-center px-3 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+        <span className="text-gray-500 font-medium">£</span>
+      </div>
+      <input
+        type="text"
+        name="max_salary"
+        value={formData.max_salary}
+        onChange={handleFormChange}
+        className={`w-full pl-10 p-2.5 border ${
+          errors.max_salary 
+            ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
+            : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'
+        } rounded-md shadow-sm focus:outline-none`}
+        placeholder="Enter maximum salary"
+      />
+    </div>
+    {errors.max_salary && (
+      <p className="mt-1.5 text-sm text-red-600 font-medium">
+        {errors.max_salary}
+      </p>
+    )}
+  </div>
+</div>
+
 
       <div className="mb-6">
         <label className="flex items-center cursor-pointer group">

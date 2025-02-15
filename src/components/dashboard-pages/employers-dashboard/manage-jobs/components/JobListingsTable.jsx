@@ -130,91 +130,210 @@ export default function JobListingsTable() {
   };
 
   return (
-    <div className="min-h-screen bg-white p-2 relative">
-      <div className="flex">
-        <ToastContainer/>
-        <main className="flex-1 pe-2">
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold">Job Details</h1>
-            <Link to={"/employers-dashboard/post-jobs"}>
-              <Button className="bg-blue-900 text-white">Post Job</Button>
-            </Link>
-          </div>
-          <div className="overflow-x-auto border">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-blue-100">
-                <tr>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">CREATED ON</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">JOB TITLE</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">STATUS</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">ENGAGEMENT</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">ACTIONS</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {data.length > 0 ? (
-                  data.map((job) => (
-                    <tr key={job.job_detail.id}>
-                      <td className="px-6 py-4 text-sm text-gray-500">{moment(job.job_detail.created_at).format("MMM Do YYYY")}</td>
-                      <td className="px-6 py-4 text-sm font-medium text-green-600">
-                        <a href="#">{job.job_detail.job_title || "N/A"}</a>
-                        <div className="text-sm text-gray-500">{job.job_detail.experience_id_min || "0"} - {job.job_detail.experience_id_min || "0"} year • {job.cities?.name}, {job.states?.name}, {job.countries?.name}</div>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-500 "><p className='bg-pink-200 px-2 p-1 rounded-3xl'>{job.job_detail.job_status_id === 1 ? `Published 🖋️` : `Unpublished 🖊`}</p></td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
-                        <div>4571 Views</div>
-                        <Link to={"/employers-list"}><button className='underline text-blue-600'>2143 Applied</button></Link>
-                      </td>
-                      <td className="px-6 py-4 text-sm font-medium">
-                        <div className="flex space-x-2">
-                          <FaPen className="w-4 h-4 text-violet-400 cursor-pointer" onClick={() => handleEditClick(job.job_detail.id)} />
+    // <div className="min-h-screen bg-white p-2 relative">
+    //   <div className="flex">
+        
+    //     <main className="flex-1 pe-2">
+    //       <div className="flex justify-between items-center mb-4">
+    //         <h1 className="text-2xl font-bold">Job Details</h1>
+    //         <Link to={"/employers-dashboard/post-jobs"}>
+    //           <Button className="bg-blue-900 text-white">Post Job</Button>
+    //         </Link>
+    //       </div>
+    //       <div className="overflow-x-auto border">
+    //         <table className="min-w-full divide-y divide-gray-200">
+    //           <thead className="bg-blue-100">
+    //             <tr>
+    //               <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">CREATED ON</th>
+    //               <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">JOB TITLE</th>
+    //               <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">STATUS</th>
+    //               <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">ENGAGEMENT</th>
+    //               <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">ACTIONS</th>
+    //             </tr>
+    //           </thead>
+    //           <tbody className="bg-white divide-y divide-gray-200">
+    //             {data.length > 0 ? (
+    //               data.map((job) => (
+    //                 <tr key={job.job_detail.id}>
+    //                   <td className="px-6 py-4 text-sm text-gray-500">{moment(job.job_detail.created_at).format("MMM Do YYYY")}</td>
+    //                   <td className="px-6 py-4 text-sm font-medium text-green-600">
+    //                     <a href="#">{job.job_detail.job_title || "N/A"}</a>
+    //                     <div className="text-sm text-gray-500">{job.job_detail.experience_id_min || "0"} - {job.job_detail.experience_id_min || "0"} year • {job.cities?.name}, {job.states?.name}, {job.countries?.name}</div>
+    //                   </td>
+    //                   <td className="px-6 py-4 text-sm text-gray-500 "><p className='bg-pink-200 px-2 p-1 rounded-3xl'>{job.job_detail.job_status_id === 1 ? `Published 🖋️` : `Unpublished 🖊`}</p></td>
+    //                   <td className="px-6 py-4 text-sm text-gray-500">
+    //                     <div>4571 Views</div>
+    //                     <Link to={"/employers-list"}><button className='underline text-blue-600'>2143 Applied</button></Link>
+    //                   </td>
+    //                   <td className="px-6 py-4 text-sm font-medium">
+    //                     <div className="flex space-x-2">
+    //                       <FaPen className="w-4 h-4 text-blue-700 cursor-pointer" onClick={() => handleEditClick(job.job_detail.id)} />
                         
-                          <FaTrashAlt className="w-4 h-4 text-violet-400 cursor-pointer" onClick={() => confirmDeleteJob(job.job_detail.id)} />
-                          {job.job_detail.job_status_id === 0 ? (
-                            <FaCheckCircle className="w-4 h-4 text-violet-400 cursor-pointer" onClick={() => handlePublishJob(job.job_detail.id, 0)} />
-                          ) : (
-                            <FaBan className="w-4 h-4 text-red-500 cursor-pointer" onClick={() => handlePublishJob(job.job_detail.id, 1)} />
-                          )}
-                          <FaLinkedinIn className="w-4 h-4 text-violet-400 cursor-pointer" onClick={() => shareJob(job.job_detail.id)} />
-                          <FaFacebook className="w-4 h-4 text-violet-400 cursor-pointer" onClick={() => shareJob(job.job_detail.id)} />
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                                       <td colSpan="5" className="px-6 py-4 text-sm text-gray-500 text-center">No job details available</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-          {showPopup && (
-            <PopupForm
-              jobId={selectedJobId}
-              onClose={closePopup}
-              title={data.find(job => job.job_detail.id === selectedJobId)?.job_detail.job_title}
-              cities={data.find(job => job.job_detail.id === selectedJobId)?.cities?.name}
-              states={data.find(job => job.job_detail.id === selectedJobId)?.states?.name}
-              countries={data.find(job => job.job_detail.id === selectedJobId)?.countries?.name}
-            />
-          )}
+    //                       <FaTrashAlt className="w-4 h-4 text-blue-700 cursor-pointer" onClick={() => confirmDeleteJob(job.job_detail.id)} />
+    //                       {job.job_detail.job_status_id === 0 ? (
+    //                         <FaCheckCircle className="w-4 h-4 text-blue-700 cursor-pointer" onClick={() => handlePublishJob(job.job_detail.id, 0)} />
+    //                       ) : (
+    //                         <FaBan className="w-4 h-4 text-red-500 cursor-pointer" onClick={() => handlePublishJob(job.job_detail.id, 1)} />
+    //                       )}
+    //                       <FaLinkedinIn className="w-4 h-4 text-blue-700 cursor-pointer" onClick={() => shareJob(job.job_detail.id)} />
+    //                       <FaFacebook className="w-4 h-4 text-blue-700 cursor-pointer" onClick={() => shareJob(job.job_detail.id)} />
+    //                     </div>
+    //                   </td>
+    //                 </tr>
+    //               ))
+    //             ) : (
+    //               <tr>
+    //                   <td colSpan="5" className="px-6 py-4 text-sm text-gray-500 text-center">No job details available</td>
+    //               </tr>
+    //             )}
+    //           </tbody>
+    //         </table>
+    //       </div>
+    //       {showPopup && (
+    //         <PopupForm
+    //           jobId={selectedJobId}
+    //           onClose={closePopup}
+    //           title={data.find(job => job.job_detail.id === selectedJobId)?.job_detail.job_title}
+    //           cities={data.find(job => job.job_detail.id === selectedJobId)?.cities?.name}
+    //           states={data.find(job => job.job_detail.id === selectedJobId)?.states?.name}
+    //           countries={data.find(job => job.job_detail.id === selectedJobId)?.countries?.name}
+    //         />
+    //       )}
 
-          {showDeleteConfirm && (
-            <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-              <div className="bg-white p-6 rounded shadow-md">
-                <h2 className="text-lg font-bold">Confirm Deletion</h2>
-                <p>Are you sure you want to delete this job?</p>
-                <div className="flex justify-end space-x-2 mt-4">
-                  <Button onClick={() => setShowDeleteConfirm(false)} className="bg-gray-300">Cancel</Button>
-                  <Button onClick={handleDeleteJob} className="bg-red-600 text-white">Delete</Button>
-                </div>
+    //       {showDeleteConfirm && (
+    //         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+    //           <div className="bg-white p-6 rounded shadow-md">
+    //             <h2 className="text-lg font-bold">Confirm Deletion</h2>
+    //             <p>Are you sure you want to delete this job?</p>
+    //             <div className="flex justify-end space-x-2 mt-4">
+    //               <Button onClick={() => setShowDeleteConfirm(false)} className="bg-gray-300">Cancel</Button>
+    //               <Button onClick={handleDeleteJob} className="bg-red-600 text-white">Delete</Button>
+    //             </div>
+    //           </div>
+    //         </div>
+    //       )}
+    //     </main>
+    //   </div>
+    // </div>
+    <div className="min-h-screen bg-white p-2 relative">
+    <div className="flex flex-col lg:flex-row">
+      <main className="flex-1 pe-2">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2 sm:gap-0">
+          <h1 className="text-2xl font-bold">Job Details</h1>
+          <Link to={"/employers-dashboard/post-jobs"}>
+            <Button className="bg-blue-900 text-white">Post Job</Button>
+          </Link>
+        </div>
+        
+        <div className="w-full overflow-x-auto border">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-blue-100">
+              <tr>
+                <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase whitespace-nowrap">CREATED ON</th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">JOB TITLE</th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">STATUS</th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">ENGAGEMENT</th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {data.length > 0 ? (
+                data.map((job) => (
+                  <tr key={job.job_detail.id}>
+                    <td className="px-6 py-4 text-md text-black font-medium whitespace-nowrap">
+                      {moment(job.job_detail.created_at).format("MMM Do YYYY")}
+                    </td>
+                    <td className="px-6 py-4 text-md font-medium text-green-600">
+                      <a href="#">{job.job_detail.job_title || "N/A"}</a>
+                      <div className="text-md text-gray-500">
+                        {job.job_detail.experience_id_min || "0"} - {job.job_detail.experience_id_min || "0"} year • {job.cities?.name}, {job.states?.name}, {job.countries?.name}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-md text-gray-500">
+                      <p className='bg-pink-200 px-2 p-1 rounded-3xl text-center whitespace-nowrap'>
+                        {job.job_detail.job_status_id === 1 ? `Published 🖋️` : `Unpublished 🖊`}
+                      </p>
+                    </td>
+                    <td className="px-6 py-4 text-md text-gray-700 whitespace-nowrap">
+                      <div>4571 Views</div>
+                      <Link to={"/employers-list"}>
+                        <button className=' text-md underline text-blue-700'>2143 Applied</button>
+                      </Link>
+                    </td>
+                    <td className="px-6 py-4 text-sm font-medium whitespace-nowrap">
+                      <div className="flex space-x-2">
+                        <FaPen 
+                          className="w-4 h-4 text-blue-700 cursor-pointer" 
+                          onClick={() => handleEditClick(job.job_detail.id)} 
+                        />
+                        <FaTrashAlt 
+                          className="w-4 h-4 text-blue-700 cursor-pointer" 
+                          onClick={() => confirmDeleteJob(job.job_detail.id)} 
+                        />
+                        {job.job_detail.job_status_id === 0 ? (
+                          <FaCheckCircle 
+                            className="w-4 h-4 text-blue-700 cursor-pointer" 
+                            onClick={() => handlePublishJob(job.job_detail.id, 0)} 
+                          />
+                        ) : (
+                          <FaBan 
+                            className="w-4 h-4 text-red-500 cursor-pointer" 
+                            onClick={() => handlePublishJob(job.job_detail.id, 1)} 
+                          />
+                        )}
+                        <FaLinkedinIn 
+                          className="w-4 h-4 text-blue-700 cursor-pointer" 
+                          onClick={() => shareJob(job.job_detail.id)} 
+                        />
+                        <FaFacebook 
+                          className="w-4 h-4 text-blue-700 cursor-pointer" 
+                          onClick={() => shareJob(job.job_detail.id)} 
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="px-6 py-4 text-sm text-gray-500 text-center">
+                    No job details available
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {showPopup && (
+          <PopupForm
+            jobId={selectedJobId}
+            onClose={closePopup}
+            title={data.find(job => job.job_detail.id === selectedJobId)?.job_detail.job_title}
+            cities={data.find(job => job.job_detail.id === selectedJobId)?.cities?.name}
+            states={data.find(job => job.job_detail.id === selectedJobId)?.states?.name}
+            countries={data.find(job => job.job_detail.id === selectedJobId)?.countries?.name}
+          />
+        )}
+
+        {showDeleteConfirm && (
+          <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+            <div className="bg-white p-6 rounded shadow-md">
+              <h2 className="text-lg font-bold">Confirm Deletion</h2>
+              <p>Are you sure you want to delete this job?</p>
+              <div className="flex justify-end space-x-2 mt-4">
+                <Button onClick={() => setShowDeleteConfirm(false)} className="bg-gray-300">
+                  Cancel
+                </Button>
+                <Button onClick={handleDeleteJob} className="bg-red-600 text-white">
+                  Delete
+                </Button>
               </div>
             </div>
-          )}
-        </main>
-      </div>
+          </div>
+        )}
+      </main>
     </div>
+  </div>
   );
 }
 
@@ -234,7 +353,7 @@ import { SlUserFemale } from "react-icons/sl";
 import { BiHandicap } from "react-icons/bi";
 import { Switch } from "@/components/ui/switch";
 
-import {  ToastContainer } from "react-toastify";
+// import {  ToastContainer } from "react-toastify";
 
 const tags = [
   { value: "Banking", label: "Banking" },
@@ -751,7 +870,7 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
           </ul>
         )}
       </div>
-<ToastContainer/>
+{/* <ToastContainer/> */}
       <div className="form-group col-lg-12 col-md-12 relative mt-4">
   <label htmlFor="location" className="block text-sm font-medium text-gray-700">
     Location

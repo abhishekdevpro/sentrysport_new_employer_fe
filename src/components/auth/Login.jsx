@@ -46,7 +46,7 @@ const Login = ({ setIsLogin }) => {
     } else toast.error("please fill all the fields");
   };
   return (
-    <Card className="w-[350px] sm:w-[400px] m-auto shadow-lg">
+    <Card className="w-[350px] sm:w-[400px] p-2 m-auto shadow-lg">
       <CardHeader>
         <CardTitle className="text-3xl text-left font-ubuntu">
           Get started for Free
@@ -101,7 +101,7 @@ const Login = ({ setIsLogin }) => {
           <Button
             type="submit"
             size="sm"
-            className="px-3 py-4 w-full duration-300 bg-[#2d1f89] hover:bg-[#e60278]"
+            className="px-3 py-4 w-full duration-300 bg-[#2d1f89] hover:bg-blue-800"
           >
             {loading ? <ActionLoader /> : "Login"}
           </Button>
