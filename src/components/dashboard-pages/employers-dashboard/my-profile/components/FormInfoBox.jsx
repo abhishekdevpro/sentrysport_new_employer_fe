@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Constant } from "@/utils/constant/constant";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import TitleAutocomplete from "./TitleDropdown";
+import LocationSelector from "./LocationSelector";
 
 const FormInfoBox = () => {
   const token = localStorage.getItem(Constant.USER_TOKEN);
@@ -43,9 +44,10 @@ const FormInfoBox = () => {
           designation: data.employeer_detail.designation,
           organization: data.employeer_detail.organization,
           recuiter_type: data.employeer_detail.recuiter_type,
-          logImg :data.employeer_detail.photo
+          logImg: data.employeer_detail.photo,
+          location:data.employeer_detail.location
         });
-      //  setLogImg(data.employeer_detail.photo); // Set initial photo URL
+        //  setLogImg(data.employeer_detail.photo); // Set initial photo URL
         setSelectedCountry(data.employeer_detail.current_country_id || "");
         setSelectedState(data.employeer_detail.current_state_id || "");
         setSelectedCity(data.employeer_detail.current_city_id || "");
@@ -58,74 +60,73 @@ const FormInfoBox = () => {
   }, [token]);
 
   // Handle image upload
-    const logImgHandler = (event) => {
-      const file = event.target.files[0];
-      if (file && file.type.match('image.*')) {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = () => {
-          setLogImg(reader.result); // Store the Base64 string of the file
-        };
-      } else {
-        toast.error("Please upload a valid image file.");
-      }
-    };
+  const logImgHandler = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type.match("image.*")) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setLogImg(reader.result); // Store the Base64 string of the file
+      };
+    } else {
+      toast.error("Please upload a valid image file.");
+    }
+  };
 
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-    
-      const form = e.target;
-      const formData = new FormData();
-    
-      // Convert Base64 to Blob if logImg is a Base64 string
-      if (logImg && logImg.startsWith('data:image/')) {
-        const [metadata, base64Data] = logImg.split(',');
-        const mimeString = metadata.match(/:(.*?);/)[1]; // Extract MIME type
-        const byteString = atob(base64Data); // Decode base64
-        const arrayBuffer = new ArrayBuffer(byteString.length);
-        const uint8Array = new Uint8Array(arrayBuffer);
-        
-        for (let i = 0; i < byteString.length; i++) {
-          uint8Array[i] = byteString.charCodeAt(i);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData();
+
+    // Convert Base64 to Blob if logImg is a Base64 string
+    if (logImg && logImg.startsWith("data:image/")) {
+      const [metadata, base64Data] = logImg.split(",");
+      const mimeString = metadata.match(/:(.*?);/)[1]; // Extract MIME type
+      const byteString = atob(base64Data); // Decode base64
+      const arrayBuffer = new ArrayBuffer(byteString.length);
+      const uint8Array = new Uint8Array(arrayBuffer);
+
+      for (let i = 0; i < byteString.length; i++) {
+        uint8Array[i] = byteString.charCodeAt(i);
+      }
+
+      const blob = new Blob([uint8Array], { type: mimeString });
+      formData.append("photo_upload", blob, "photo.jpg"); // Append Blob as a file
+    }
+  console.log(formValues.location,"location");
+    formData.append("first_name", formValues.first_name);
+    formData.append("last_name", formValues.last_name);
+    formData.append("email", formValues.email);
+    formData.append("phone", formValues.phone);
+    formData.append("website", formValues.website);
+    formData.append("designation", formValues.designation);
+    formData.append("location",formValues.location)
+    formData.append("organization", formValues.organization);
+    formData.append("recuiter_type", formValues.recuiter_type);
+    formData.append("current_country_id", selectedCountry);
+    formData.append("current_state_id", selectedState);
+    formData.append("current_city_id", selectedCity);
+
+    try {
+      const response = await axios.put(
+        `https://api.sentryspot.co.uk/api/employeer/profile`,
+        formData, // Send FormDataF
+        {
+          headers: {
+            Authorization: token,
+            // "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
+          },
         }
-    
-        const blob = new Blob([uint8Array], { type: mimeString });
-        formData.append("photo_upload", blob, 'photo.jpg'); // Append Blob as a file
-      }
-    
-      formData.append("first_name", formValues.first_name);
-      formData.append("last_name", formValues.last_name);
-      formData.append("email", formValues.email);
-      formData.append("phone", formValues.phone);
-      formData.append("website", formValues.website);
-      formData.append("designation", formValues.designation);
-      formData.append("organization", formValues.organization);
-      formData.append("recuiter_type", formValues.recuiter_type);
-      formData.append("current_country_id", selectedCountry);
-      formData.append("current_state_id", selectedState);
-      formData.append("current_city_id", selectedCity);
-    
-      try {
-        const response = await axios.put(
-          `https://api.sentryspot.co.uk/api/employeer/profile`,
-          formData, // Send FormDataF
-          {
-            headers: {
-              Authorization: token,
-              // "Content-Type": "multipart/form-data",
-              "Content-Type": "application/json",
- 
-            },
-          }
-        );
-        console.log(response)
-        toast.success("Personal Details updated successfully!");
-      } catch (error) {
-        toast.error("Failed to update profile.");
-        console.error("Error updating profile:", error);
-      }
-    };
-    
+      );
+      console.log(response);
+      toast.success("Personal Details updated successfully!");
+    } catch (error) {
+      toast.error("Failed to update profile.");
+      console.error("Error updating profile:", error);
+    }
+  };
 
   // Fetch countries
   useEffect(() => {
@@ -198,49 +199,47 @@ const FormInfoBox = () => {
 
   return (
     <form onSubmit={handleSubmit} className="default-form">
-      <ToastContainer />
       <div className="row">
         {/* Profile Picture Upload */}
         <div className="form-group col-lg-6 col-md-12 flex justify-center">
-        <div>
-          <div className="rounded-full border w-32 h-32 flex items-center justify-center overflow-hidden">
-            <input
-              className="uploadButton-input hidden"
-              type="file"
-              name="photo"
-              accept="image/*"
-              id="upload"
-              onChange={logImgHandler}
-            />
-            <label
-              className="uploadButton-button cursor-pointer flex items-center justify-center w-full h-full"
-              htmlFor="upload"
-            >
-              {logImg && logImg.startsWith('data:image/') ? (
-                <img
-                  src={logImg}
-                  alt="Uploaded"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="flex flex-col items-center justify-center text-center w-full h-full">
+          <div>
+            <div className="rounded-full border w-32 h-32 flex items-center justify-center overflow-hidden">
+              <input
+                className="uploadButton-input hidden"
+                type="file"
+                name="photo"
+                accept="image/*"
+                id="upload"
+                onChange={logImgHandler}
+              />
+              <label
+                className="uploadButton-button cursor-pointer flex items-center justify-center w-full h-full"
+                htmlFor="upload"
+              >
+                {logImg && logImg.startsWith("data:image/") ? (
                   <img
-                  src={`https://api.sentryspot.co.uk${formValues.logImg}`}
-                  alt="Uploaded"
-                  
-                />
-                  
-                  <span className="text-sm mt-2">Upload Image</span>
-                </div>
-              )}
-            </label>
-          </div>
-          <div className="bg-blue-800 w-28 mt-2 py-1 ms-2 text-white text-sm text-center rounded-lg">
-            Add Picture
+                    src={logImg}
+                    alt="Uploaded"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-center text-center w-full h-full">
+                    <img
+                      src={`https://api.sentryspot.co.uk${formValues.logImg}`}
+                      alt="Uploaded"
+                    />
+
+                    <span className="text-sm mt-2">Upload Image</span>
+                  </div>
+                )}
+              </label>
+            </div>
+            <div className="bg-blue-800 w-28 mt-2 py-1 ms-2 text-white text-sm text-center rounded-lg">
+              Add Picture
+            </div>
           </div>
         </div>
-      </div>
-{console.log(`https://api.sentryspot.co.uk${formValues.logImg}`)}
+        {console.log(`https://api.sentryspot.co.uk${formValues.logImg}`)}
 
         {/* Form Fields */}
         <div className="form-group col-lg-6 col-md-12">
@@ -279,7 +278,7 @@ const FormInfoBox = () => {
           />
         </div>
         <div className="form-group col-lg-6 col-md-12">
-        <label>Phone</label>
+          <label>Phone</label>
           <input
             type="text"
             name="phone"
@@ -314,7 +313,6 @@ const FormInfoBox = () => {
         {/* <TitleAutocomplete/> */}
         <TitleAutocomplete setFormValues={setFormValues} />
 
-
         <div className="form-group col-lg-12 col-md-12">
           <label>Organization</label>
           <input
@@ -340,7 +338,7 @@ const FormInfoBox = () => {
           </select>
         </div>
 
-        <div className="form-group col-lg-4 col-md-12">
+        {/* <div className="form-group col-lg-4 col-md-12">
           <label>Country</label>
           <select
             name="country"
@@ -389,11 +387,48 @@ const FormInfoBox = () => {
               </option>
             ))}
           </select>
-        </div>
+        </div> */}
+       <LocationSelector setFormValues={setFormValues} />
+        {/* <div className="form-group col-lg-12 col-md-12 relative mt-4">
+          <label
+            htmlFor="location"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Location
+          </label>
+          <input
+            type="text"
+            name="location"
+            placeholder="+ Add location"
+            onChange={handleChange("location")}
+            value={keywords.location}
+            required
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          />
+          
+            <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg">
+              {/* {console.log(locations,">>>locations")}
+              {locations?.length > 0 && (
+                <ul>
+                  {locations.map((item, index) => (
+                    <li
+                      key={index}
+                      onClick={() => handleSelect("location", item)}
+                      className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </ul>
+        </div> */}
       </div>
 
       <div className="form-group col-lg-12">
-        <button type="submit" className="btn bg-blue-800 text-white">Save</button>
+        <button type="submit" className="btn bg-blue-800 text-white">
+          Save
+        </button>
       </div>
     </form>
   );

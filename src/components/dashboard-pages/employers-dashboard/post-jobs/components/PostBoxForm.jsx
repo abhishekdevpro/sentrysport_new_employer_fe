@@ -27,7 +27,7 @@ import { SlUserFemale } from "react-icons/sl";
 import { BiHandicap } from "react-icons/bi";
 import { Switch } from "@/components/ui/switch";
 import { FaCheckCircle } from "react-icons/fa";
-import { toast, ToastContainer } from "react-toastify";
+import { toast} from "react-toastify";
 import SalarySection from "./SalarySection";
 import ScreeningQuestionsForm from "./ScreeningQuestions";
 
@@ -503,7 +503,6 @@ const PostBoxForm = () => {
           </ul>
         )}
       </div> */}
-      {/* <ToastContainer /> */}
       <div className="form-group col-lg-12 col-md-12 relative mt-4">
         <label
           htmlFor="job"

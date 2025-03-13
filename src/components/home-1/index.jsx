@@ -90,7 +90,8 @@ const index = () => {
      <nav className="header" >
  {userToken? <div className="mb-8"> 
   <DashboardHeader />
- </div>: <div className="auto-container mx-auto px-4">
+ </div>:
+  <div className="auto-container mx-auto px-4">
     <div className="header-menu flex  items-center">
       {/* Logo Section */}
       <div className="header-logo flex items-center">
@@ -276,7 +277,7 @@ const index = () => {
 //     </div>
 //   </div>
 // </div>)
-<div className="min-h-screen bg-gray-100 py-8 sm:py-12 lg:py-16">
+<div className="h-auto bg-gray-100 py-8 sm:py-12 lg:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
           {/* Left Content Section */}
