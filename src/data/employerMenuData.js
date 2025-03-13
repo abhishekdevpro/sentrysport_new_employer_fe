@@ -102,7 +102,7 @@ const employerMenu = [
    id: 15,
    name: "Setting",
   icon: "la-gear",
-  routePath: "/employers-dashboard/my-profile",
+  routePath: "/settings/account",
  active: "",
  },
 //  {

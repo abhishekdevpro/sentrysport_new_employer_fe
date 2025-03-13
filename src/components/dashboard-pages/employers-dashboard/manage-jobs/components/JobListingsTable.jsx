@@ -353,7 +353,6 @@ import { SlUserFemale } from "react-icons/sl";
 import { BiHandicap } from "react-icons/bi";
 import { Switch } from "@/components/ui/switch";
 
-// import {  ToastContainer } from "react-toastify";
 
 const tags = [
   { value: "Banking", label: "Banking" },
@@ -870,7 +869,6 @@ console.log("Comma-Separated Tags:", getCommaSeparatedTags());
           </ul>
         )}
       </div>
-{/* <ToastContainer/> */}
       <div className="form-group col-lg-12 col-md-12 relative mt-4">
   <label htmlFor="location" className="block text-sm font-medium text-gray-700">
     Location

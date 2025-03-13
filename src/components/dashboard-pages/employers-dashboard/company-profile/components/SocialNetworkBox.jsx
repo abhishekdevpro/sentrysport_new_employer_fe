@@ -7,7 +7,7 @@ import LogoCoverUploader from "./LogoCoverUploader";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Constant } from "@/utils/constant/constant";
-import { toast, ToastContainer } from "react-toastify";
+import { toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import WatchWhatWeSaySection from "./WTS";
 import TeamMemberManager from "./Teams";
@@ -341,7 +341,6 @@ const SocialNetworkBox = () => {
 
   return (
     <form className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <ToastContainer />
       
       {/* Basic Info Section */}
       <FormSection>

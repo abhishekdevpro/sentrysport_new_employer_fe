@@ -112,7 +112,12 @@ import { Toaster } from "react-hot-toast";
 import SignUpDialog from "./components/auth/SignUp";
 import Showcase from "./pages/showcase/Index";
 import EmployerList from "./pages/employers-list/employers-list";
-import Community from './components/community/index'
+import Community from "./components/community/index";
+import LoginCode from "./components/auth/LoginCode";
+import SettingsLayout from "./components/Settings";
+import Account from "./components/Settings/Account";
+import Notification from "./components/Settings/Notification";
+import Subscription from "./components/Settings/Subscribtion";
 
 function App() {
   useEffect(() => {
@@ -130,6 +135,12 @@ function App() {
             <Routes>
               <Route path="/">
                 <Route index element={<Home />} />
+                <Route path="verify-otp" element={<LoginCode />} />
+                <Route path="/settings" element={<SettingsLayout />}>
+                  <Route path="account" element={<Account />} />
+                  <Route path="notification" element={<Notification />} />
+                  <Route path="subscription" element={<Subscription />} />
+                </Route>
                 {/* <Route path="home-1" element={<HomePage1 />} />
                   <Route path="home-2" element={<HomePage2 />} />
                   <Route path="home-3" element={<HomePage3 />} />
@@ -183,22 +194,24 @@ function App() {
                   element={<JobSingleDynamicV5 />}
                 />
 
-                 <Route
+                <Route
                   path="employers-list-v1"
                   element={<EmployerListPage1 />}
-                /> 
+                />
                 <Route
                   path="employers-list-v2"
                   element={<EmployerListPage2 />}
                 />
-                 <Route
-                  path="employers-list"
-                  element={<EmployerList />}
-                />
-               
+                <Route path="employers-list" element={<EmployerList />} />
 
-                  <Route path="employers-list-v3" element={<EmployerListPage3 />} />
-                  <Route path="employers-list-v4" element={<EmployerListPage4 />} /> 
+                <Route
+                  path="employers-list-v3"
+                  element={<EmployerListPage3 />}
+                />
+                <Route
+                  path="employers-list-v4"
+                  element={<EmployerListPage4 />}
+                />
 
                 <Route
                   path="employers-single-v1/:id"
@@ -255,9 +268,7 @@ function App() {
                 <Route path="register" element={<RegisterPage />} />
                 <Route path="404" element={<NotFoundPage />} />
                 <Route path="*" element={<NotFoundPage />} />
-                <Route 
-                path="community"
-                element={<Community/>}/>
+                <Route path="community" element={<Community />} />
 
                 <Route path="employers-dashboard">
                   <Route
@@ -277,7 +288,7 @@ function App() {
                     path="manage-jobs"
                     element={<ManageJobsEmploeeDBPage />}
                   />
-                   
+
                   <Route
                     path="all-applicants"
                     element={<AllApplicantsEmploeesPage />}
@@ -337,8 +348,8 @@ function App() {
 
           {/* Toastify */}
           <ToastContainer
-            position="bottom-right"
-            autoClose={500}
+            position="top-right"
+            autoClose={3000}
             hideProgressBar={false}
             newestOnTop={false}
             closeOnClick
@@ -346,7 +357,7 @@ function App() {
             pauseOnFocusLoss
             draggable
             pauseOnHover
-            theme="colored"
+            theme="light"
           />
           <SignUpDialog />
           {/* <Toaster /> */}

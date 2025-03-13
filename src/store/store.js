@@ -10,8 +10,9 @@ import candidateSlice from "../features/candidate/candidateSlice";
 import candidateFilterSlice from "../features/filter/candidateFilterSlice";
 import shopSlice from "../features/shop/shopSlice";
 // custom
-import AuthSlice from "./slices/auth";
+// import AuthSlice from "./slices/auth";
 import { Service } from "./slices/service/index";
+import AuthSlice from "./slices/authSlice"
 
 export const store = configureStore({
   reducer: {

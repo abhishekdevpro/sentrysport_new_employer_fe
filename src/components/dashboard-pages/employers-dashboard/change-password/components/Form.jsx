@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Constant } from '@/utils/constant/constant';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast} from 'react-toastify';
 
 const Form = () => {
   // State to manage form input values
@@ -56,7 +56,7 @@ const Form = () => {
   return (
     <form className="default-form" onSubmit={handleSubmit}>
       <div className="row">
-        <ToastContainer/>
+        
         {/* Old Password Input */}
         <div className="form-group col-lg-12 col-md-12">
           <label>Old Password</label>
