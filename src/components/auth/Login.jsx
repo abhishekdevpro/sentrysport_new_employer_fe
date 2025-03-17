@@ -397,7 +397,7 @@ const Login = ({ setIsLogin }) => {
     try {
       console.log("Sending request to API with email:", email);
       const response = await axios.post(
-        "https://api.sentryspot.co.uk/api/user/auth/login-otp", 
+        "https://api.sentryspot.co.uk/api/jobseeker/auth/login-otp", 
         { email },
         {
           headers: {
@@ -423,23 +423,7 @@ const Login = ({ setIsLogin }) => {
     }
   };
    
-  // const handleLogin = async(FormData)=>{
-  //   const {email} = FormData
-  //   if(!email) {
-  //     toast.error("Email is Required")
-  //   }
-  //   try {
-  //     const response = dispatch(sendOtp(email))
-  //     if(response.status == 200){
-  //       toast.success(response.data.message || "OTP Send SuccessFully!")
-  //       localStorage.setItem("userEmail", email);
-  //       navigate("/login/login-code");
-  //     }
-  //   } catch (error) {
-  //     console.error("SendOtp error:", error);
-  //     toast.error(error || "Failed to send OTP");
-  //   }
-  // }
+ 
   const handleManualSubmit = (e) => {
     e.preventDefault();
     console.log("Manual submit triggered");
@@ -453,7 +437,7 @@ const Login = ({ setIsLogin }) => {
   };
   
   const handleGoogleSignin = async () => {
-    const url = `${BASE_URL}/api/user/auth/google`;
+    const url = `${BASE_URL}/api/jobseeker/auth/google`;
 
     try {
       const response = await axios.get(url);
@@ -523,3 +507,22 @@ const Login = ({ setIsLogin }) => {
 };
 
 export default Login;
+
+
+ // const handleLogin = async(FormData)=>{
+  //   const {email} = FormData
+  //   if(!email) {
+  //     toast.error("Email is Required")
+  //   }
+  //   try {
+  //     const response = dispatch(sendOtp(email))
+  //     if(response.status == 200){
+  //       toast.success(response.data.message || "OTP Send SuccessFully!")
+  //       localStorage.setItem("userEmail", email);
+  //       navigate("/login/login-code");
+  //     }
+  //   } catch (error) {
+  //     console.error("SendOtp error:", error);
+  //     toast.error(error || "Failed to send OTP");
+  //   }
+  // }

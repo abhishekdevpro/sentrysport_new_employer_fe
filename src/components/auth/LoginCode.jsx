@@ -50,7 +50,7 @@ const LoginCode = () => {
 
     try {
       const response = await axios.post(
-        `${BASE_URL}/api/user/auth/login-verify-otp`,
+        `${BASE_URL}/api/jobseeker/auth/login-verify-otp`,
         { email, otp }
       );
 
