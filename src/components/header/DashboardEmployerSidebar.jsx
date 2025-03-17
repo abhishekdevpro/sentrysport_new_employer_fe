@@ -75,7 +75,7 @@ const DashboardEmployerSidebar = () => {
   const navigate = useNavigate()
 
   const dispatch = useDispatch();
-
+  const {userInfo} =  useSelector(state =>(state.auth))
   // Menu toggle handler
   const menuToggleHandler = () => {
     dispatch(menuToggle());
@@ -89,8 +89,8 @@ const DashboardEmployerSidebar = () => {
     // window.location.href = "/login";
   };
 
-  const user = JSON.parse(localStorage.getItem(Constant.USER_INFO));
-
+  // const user = JSON.parse(localStorage.getItem(Constant.USER_INFO));
+console.log(userInfo,"userInfo");
   return (
     <div className={`user-sidebar ${menu ? "sidebar_open" : ""}`}>
       {/* Sidebar close icon */}
@@ -102,7 +102,7 @@ const DashboardEmployerSidebar = () => {
 
       <div className="sidebar-inner">
         {/* Dynamic User Profile */}
-        <Link to="/candidates-dashboard/my-profile">
+        <Link to="/employers-dashboard/my-profile">
           <div className="flex gap-4 justify-center items-center p-4 border border-gray-200 mb-2 rounded-lg bg-blue-700 text-white">
             <div className=" w-auto">
               <img
@@ -112,8 +112,8 @@ const DashboardEmployerSidebar = () => {
               />
             </div>
             <div className="text-white flex-1 flex-col">
-              <p className="text-white">{user?.first_name || "Anonymous"}</p>
-              <p className="text-white">{user?.profile || "Employer"}</p>
+              <p className="text-white">{userInfo?.first_name || "Anonymous"}</p>
+              <p className="text-white">{userInfo?.profile || "Employer"}</p>
             </div>
           </div>
         </Link>

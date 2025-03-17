@@ -618,7 +618,7 @@
 // export default WidgetContentBox;
 
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import moment from "moment";
 import { Constant } from "@/utils/constant/constant";
 import { toast } from "react-toastify";
@@ -796,6 +796,7 @@ const WidgetContentBox = () => {
               alt="Profile"
               className="rounded-full h-20 w-20 object-cover"
             />
+            <Link to={`/applicants/${item?.jobskkers_detail?.id}`}>
             <div>
               <h3 className="font-semibold text-lg">
                 {item?.jobskkers_detail?.first_name} {item?.jobskkers_detail?.last_name}
@@ -810,6 +811,7 @@ const WidgetContentBox = () => {
               </p>
               <p className="text-blue-700 cursor-pointer hover:text-blue-900">Cover letter</p>
             </div>
+            </Link>
           </div>
 
           {/* Action Buttons */}
