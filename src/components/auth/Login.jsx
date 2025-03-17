@@ -363,7 +363,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { BASE_URL } from "@/utils/constant/endPoints";
 import { useNavigate } from "react-router-dom";
-import { handleSendOTP } from "@/store/slices/service/authService";
+import { handleGoogleSignIn, handleSendOTP } from "@/store/slices/service/authService";
 import { sendOtp } from "@/store/slices/authSlice";
 
 const Login = ({ setIsLogin }) => {
@@ -383,63 +383,64 @@ const Login = ({ setIsLogin }) => {
     }
   });
 
-  const handleLogin = async (formData) => {
-    console.log("Form submitted:", formData);
-    const { email } = formData;
+  // const handleLogin = async (formData) => {
+  //   console.log("Form submitted:", formData);
+  //   const { email } = formData;
     
-    if (!email) {
-      toast.error("Please provide your email");
-      return;
-    }
-    
-    setSubmitting(true); // Show loading state
-    
-    try {
-      console.log("Sending request to API with email:", email);
-      const response = await axios.post(
-        "https://api.sentryspot.co.uk/api/user/auth/login-otp", 
-        { email },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-      
-      console.log("API response:", response);
-      
-      if (response.status === 200) {
-        toast.success(response.data.message || "OTP sent to your email.");
-        localStorage.setItem("userEmail", email);
-        navigate("/login/login-code");
-      } else {
-        toast.error(response.data.message || "Failed to Send OTP");
-      }
-    } catch (error) {
-      console.error("API error:", error);
-      toast.error(error.response?.data?.message || "An error occurred");
-    } finally {
-      setSubmitting(false); // Hide loading state
-    }
-  };
-   
-  // const handleLogin = async(FormData)=>{
-  //   const {email} = FormData
-  //   if(!email) {
-  //     toast.error("Email is Required")
+  //   if (!email) {
+  //     toast.error("Please provide your email");
+  //     return;
   //   }
+    
+  //   setSubmitting(true); // Show loading state
+    
   //   try {
-  //     const response = dispatch(sendOtp(email))
-  //     if(response.status == 200){
-  //       toast.success(response.data.message || "OTP Send SuccessFully!")
+  //     console.log("Sending request to API with email:", email);
+  //     const response = await axios.post(
+  //       "https://api.sentryspot.co.uk/api/employeer/auth/send-loginotp", 
+  //       { email },
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json'
+  //         }
+  //       }
+  //     );
+      
+  //     console.log("API response:", response);
+      
+  //     if (response.status === 200) {
+  //       toast.success(response.data.message || "OTP sent to your email.");
   //       localStorage.setItem("userEmail", email);
-  //       navigate("/login/login-code");
+  //       navigate("/verify-otp");
+  //     } else {
+  //       toast.error(response.data.message || "Failed to Send OTP");
   //     }
   //   } catch (error) {
-  //     console.error("SendOtp error:", error);
-  //     toast.error(error || "Failed to send OTP");
+  //     console.error("API error:", error);
+  //     toast.error(error.response?.data?.message || "An error occurred");
+  //   } finally {
+  //     setSubmitting(false); // Hide loading state
   //   }
-  // }
+  // };
+   
+ const handleLogin = async(FormData)=>{
+    const {email} = FormData
+    if(!email) {
+      toast.error("Email is Required")
+    }
+    try {
+      const response = await dispatch(sendOtp(email)).unwrap()
+      console.log(response.status,"component response");
+      if(response.status == "success" || response.code ==200 ){
+        toast.success(response.message || "OTP Send SuccessFully!")
+        localStorage.setItem("userEmail", email);
+        navigate("/verify-otp");
+      }
+    } catch (error) {
+      console.error("SendOtp error:", error);
+      toast.error(error || "Failed to send OTP");
+    }
+  }
   const handleManualSubmit = (e) => {
     e.preventDefault();
     console.log("Manual submit triggered");
@@ -452,24 +453,33 @@ const Login = ({ setIsLogin }) => {
     handleLogin({ email });
   };
   
+  // const handleGoogleSignin = async () => {
+  //   const url = `https://api.sentryspot.co.uk/api/employeer/auth/google`;
+
+  //   try {
+  //     const response = await axios.get(url);
+
+  //     if (response.status === 200) {
+  //       console.log("Google sign-in token: ", response.data.data);
+  //       window.open(response.data.data);
+  //     } else {
+  //       toast.error("Google sign-in failed.");
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //     toast.error(`${err.response?.data?.message || "Google sign-in failed"}`);
+  //   }
+  // };
   const handleGoogleSignin = async () => {
-    const url = `${BASE_URL}/api/user/auth/google`;
-
     try {
-      const response = await axios.get(url);
-
-      if (response.status === 200) {
-        console.log("Google sign-in token: ", response.data.data);
-        window.open(response.data.data);
-      } else {
-        toast.error("Google sign-in failed.");
-      }
+      const data = await handleGoogleSignIn();
+      console.log("Google sign-in successful, data:", data);
+      toast.success(data.message ||" Google sign-in successful, data")
     } catch (err) {
-      console.log(err);
-      toast.error(`${err.response?.data?.message || "Google sign-in failed"}`);
+      console.error("Error during Google sign-in:", err.message);
+      toast.error(`${err.message || "Google sign-in failed"}`);
     }
   };
-  
   return (
     <Card className="w-[350px] sm:w-[400px] p-2 m-auto shadow-lg">
       <CardHeader>
@@ -523,3 +533,6 @@ const Login = ({ setIsLogin }) => {
 };
 
 export default Login;
+
+
+ 

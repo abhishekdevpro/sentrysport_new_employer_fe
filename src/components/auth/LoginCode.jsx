@@ -5,12 +5,15 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Constant } from "@/utils/constant/constant";
+import { useDispatch } from "react-redux";
+import { loginWithOtp } from "@/store/slices/authSlice";
 
 const LoginCode = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const BASE_URL = "https://api.sentryspot.co.uk";
+  const dispatch = useDispatch()
 
   const {
     register,
@@ -35,71 +38,112 @@ const LoginCode = () => {
     }
   }, [navigate]);
 
-  const onSubmit = async (data) => {
-    const { otp } = data;
+  // const onSubmit = async (data) => {
+  //   const { otp } = data;
     
-    if (otp.length !== 6) {
-      setError("otp", { 
-        type: "manual", 
-        message: "Please enter a valid 6-digit OTP." 
-      });
-      return;
-    }
+  //   if (otp.length !== 6) {
+  //     setError("otp", { 
+  //       type: "manual", 
+  //       message: "Please enter a valid 6-digit OTP." 
+  //     });
+  //     return;
+  //   }
 
-    setLoading(true);
+  //   setLoading(true);
 
-    try {
-      const response = await axios.post(
-        `${BASE_URL}/api/user/auth/login-verify-otp`,
-        { email, otp }
-      );
+  //   try {
+  //     const response = await axios.post(
+  //       `${BASE_URL}/api/employeer/auth/login-otp`,
+  //       { email, otp }
+  //     );
 
-      const token = response.data?.data?.token;
+  //     const token = response.data?.data?.token;
       
-      if (token) {
-        localStorage.setItem(Constant.USER_TOKEN, token);
-        toast.success("Login successful!");
-        navigate("/employers-dashboard/my-profile");
-      } else {
-        toast.error("Invalid response from server. Token not found.");
+  //     if (token) {
+  //       localStorage.setItem(Constant.USER_TOKEN, token);
+  //       toast.success("Login successful!");
+  //       // navigate("/employers-dashboard/my-profile");
+  //     } else {
+  //       toast.error("Invalid response from server. Token not found.");
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     toast.error(
+  //       error.response?.data?.message || "Invalid OTP. Please try again."
+  //     );
+  //     // Do not redirect on error, allow the user to try again
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  const onSubmit = async(data)=>{
+    const {otp} = data;
+    if(!otp){
+      toast.error("OTP is required")
+    }
+    try {
+      const response = await dispatch(loginWithOtp({email,otp})).unwrap()
+      console.log(response,"comp res");
+      if(response.status == "success" || response.data == 200){
+        toast.success(response.message || "Login Successfull!")
+        navigate("/employers-dashboard/my-profile")
       }
     } catch (error) {
-      console.error(error);
-      toast.error(
-        error.response?.data?.message || "Invalid OTP. Please try again."
-      );
-      // Do not redirect on error, allow the user to try again
-    } finally {
-      setLoading(false);
+      console.error("SendOtp error:", error);
+      toast.error(error || "Failed to Login");
     }
-  };
+  }
+  // const handleResendCode = async () => {
+  //   if (!email) {
+  //     toast.error("Email not found. Please login again.");
+  //     navigate("/");
+  //     return;
+  //   }
 
+  //   try {
+  //     setLoading(true);
+  //     const response = await axios.post(
+  //       `${BASE_URL}/api/user/auth/login-otp`,
+  //       { email }
+  //     );
+      
+  //     if (response.status === 200) {
+  //       toast.success("New OTP sent to your email.");
+  //     } else {
+  //       toast.error("Failed to send new OTP.");
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     toast.error(error.response?.data?.message || "Failed to resend OTP.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const handleResendCode = async () => {
     if (!email) {
-      toast.error("Email not found. Please login again.");
-      navigate("/");
-      return;
+        toast.error("Email not found. Please login again.");
+        navigate("/");
+        return;
     }
 
     try {
-      setLoading(true);
-      const response = await axios.post(
-        `${BASE_URL}/api/user/auth/login-otp`,
-        { email }
-      );
-      
-      if (response.status === 200) {
-        toast.success("New OTP sent to your email.");
-      } else {
-        toast.error("Failed to send new OTP.");
-      }
+        setLoading(true);
+        const response = await dispatch(resendOtpAction(email)).unwrap();
+        console.log("Resend OTP Response:", response);
+
+        if (response?.status === "success" && response?.code === 200) {
+            toast.success(response?.message || "New OTP sent to your email.");
+        } else {
+            throw new Error(response?.message || "Failed to send new OTP.");
+        }
     } catch (error) {
-      console.error(error);
-      toast.error(error.response?.data?.message || "Failed to resend OTP.");
+        console.error("Resend OTP error:", error);
+        toast.error(error.message || "Failed to resend OTP.");
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">

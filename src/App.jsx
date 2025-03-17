@@ -118,6 +118,8 @@ import SettingsLayout from "./components/Settings";
 import Account from "./components/Settings/Account";
 import Notification from "./components/Settings/Notification";
 import Subscription from "./components/Settings/Subscribtion";
+import Gauth from "./components/auth/GAuth";
+import ApplicantDetails from "./pages/employers-dashboard/Single-applicant/ApplicantDetailsPage";
 
 function App() {
   useEffect(() => {
@@ -136,6 +138,7 @@ function App() {
               <Route path="/">
                 <Route index element={<Home />} />
                 <Route path="verify-otp" element={<LoginCode />} />
+                <Route path="gauth" element={<Gauth />} />
                 <Route path="/settings" element={<SettingsLayout />}>
                   <Route path="account" element={<Account />} />
                   <Route path="notification" element={<Notification />} />
@@ -269,7 +272,10 @@ function App() {
                 <Route path="404" element={<NotFoundPage />} />
                 <Route path="*" element={<NotFoundPage />} />
                 <Route path="community" element={<Community />} />
-
+                <Route
+                    path="applicants/:id"
+                    element={<ApplicantDetails />}
+                  />
                 <Route path="employers-dashboard">
                   <Route
                     path="dashboard"
@@ -293,6 +299,7 @@ function App() {
                     path="all-applicants"
                     element={<AllApplicantsEmploeesPage />}
                   />
+                 
                   <Route
                     path="shortlisted-resumes"
                     element={<ShortListedResumeEmploeeDBPage />}
