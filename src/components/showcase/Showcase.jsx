@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoBagHandleOutline, IoPlay } from "react-icons/io5";
 import { CiLocationOn } from "react-icons/ci";
 import { MdOutlineHealthAndSafety, MdPhoto, MdLocalCafe, MdEdit } from "react-icons/md";
@@ -33,6 +33,7 @@ const ShowcaseComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const token = localStorage.getItem(Constant.USER_TOKEN)
   const BASE_IMAGE_URL = "https://api.sentryspot.co.uk"
+  const navigate = useNavigate()
   useEffect(() => {
     const fetchCompanyData = async () => {
       try {
@@ -41,7 +42,7 @@ const ShowcaseComponent = () => {
             Authorization: token
           }
         });
-        setCompanyData(response.data.data);
+        setCompanyData(response.data.data || []);
         setFormData({
           title: response.data.data.title || "Passion for making difference",
           description: response.data.data.about || "We innovate to find a better way—for the clients who depend on us, the customers who rely on them and the communities who count on us all",
@@ -161,7 +162,32 @@ const ShowcaseComponent = () => {
   };
 
   if (!companyData) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center h-64">
+        <div className="bg-gray-100 border border-gray-300 text-gray-700 p-6 rounded-lg shadow-md w-96 text-center">
+          <p className="text-lg font-semibold">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  if (Object.keys(companyData).length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center h-64">
+        <div className="bg-blue-500 border border-red-300 p-6 rounded-lg shadow-md w-6xl text-center ">
+          <p className="text-lg font-semibold text-white">No company data found</p>
+          <p className="text-sm mt-2 text-white">
+            Please add your company details to create a public profile.
+          </p>
+          <button className="mt-4 px-4 py-2 bg-blue-900 text-white rounded-md hover:bg-blue-700"
+           onClick={()=>(navigate('/employers-dashboard/company-profile'))}
+          >
+            
+            Add Company Data
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -227,7 +253,7 @@ const ShowcaseComponent = () => {
                 <input
                   type="text"
                   className="w-full border p-2 rounded"
-                  value={companyData.title}
+                  value={companyData?.title}
                   onChange={(e) =>
                     setCompanyData({ ...companyData, title: e.target.value })
                   }

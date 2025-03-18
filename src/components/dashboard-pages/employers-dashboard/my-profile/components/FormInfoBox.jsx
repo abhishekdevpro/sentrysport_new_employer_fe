@@ -737,9 +737,7 @@ const FormInfoBox = () => {
   const { userInfo, loading, error } = useSelector((state) => state.auth);
 
   const [logImg, setLogImg] = useState(null);
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const [selectedState, setSelectedState] = useState("");
-  const [selectedCity, setSelectedCity] = useState("");
+
 
   const recruiterTypes = [
     { id: 1, name: "Recruitment Firm" },
@@ -761,7 +759,7 @@ const FormInfoBox = () => {
       phone: "",
       website: "",
       designation: "",
-      location: "",
+      location_name: "",
       organization: "",
       recuiter_type: "",
     },
@@ -779,7 +777,7 @@ const FormInfoBox = () => {
         designation: userInfo.designation || "",
         organization: userInfo.organization || "",
         recuiter_type: userInfo.recuiter_type || "",
-        location_name: userInfo.location || "",
+        location_name: userInfo.location_name || "",
       });
 
       // Set location data
@@ -806,6 +804,7 @@ const FormInfoBox = () => {
   };
 
   const onSubmit = async (data) => {
+    console.log("Called on");
     const formData = new FormData();
 
     // Convert Base64 to Blob if logImg is a Base64 string
@@ -973,14 +972,14 @@ const FormInfoBox = () => {
         <LocationSelector
           register={register}
           setValue={setValue}
-          defaultLocation={watch("location")}
+          defaultLocation={watch("location_name")}
         />
       </div>
 
       <div className="form-group col-lg-12">
         <button
           type="submit"
-          className="btn bg-blue-800 text-white"
+          className="py-2 px-4 rounded-md bg-blue-800 text-white"
           disabled={loading}
         >
           {loading ? "Saving..." : "Save"}
