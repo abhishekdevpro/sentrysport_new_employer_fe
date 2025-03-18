@@ -90,7 +90,7 @@ const DashboardEmployerSidebar = () => {
   };
 
   // const user = JSON.parse(localStorage.getItem(Constant.USER_INFO));
-console.log(userInfo,"userInfo");
+// console.log(userInfo,"userInfo");
   return (
     <div className={`user-sidebar ${menu ? "sidebar_open" : ""}`}>
       {/* Sidebar close icon */}

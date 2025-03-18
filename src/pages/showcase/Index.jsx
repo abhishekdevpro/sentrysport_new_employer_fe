@@ -6,6 +6,7 @@ import LoginPopup from "@/components/common/form/login/LoginPopup";
 import DefaulHeader2 from "@/components/header/DefaulHeader2";
 import MobileMenu from "@/components/header/MobileMenu";
 import FooterDefault from "@/components/footer/common-footer";
+import DashboardHeader from "@/components/header/DashboardHeader";
 
 const Showcase = () => {
   return (
@@ -13,7 +14,7 @@ const Showcase = () => {
       {/* <LoginPopup /> */}
       {/* End Login Popup Modal */}
 
-      <DefaulHeader2 />
+      <DashboardHeader />
       {/* End Header with upload cv btn */}
 
       <MobileMenu />

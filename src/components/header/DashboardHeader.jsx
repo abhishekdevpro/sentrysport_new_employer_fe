@@ -147,7 +147,7 @@ import logo from "../../Images/image.png";
 import { useLocation } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import { Constant } from "@/utils/constant/constant";
-import { logout } from "@/store/slices/auth";
+import { logout } from "@/store/slices/authSlice";
 
 const DashboardHeader = () => {
   const { pathname } = useLocation();
@@ -227,7 +227,7 @@ const DashboardHeader = () => {
                         {userInfo?.first_name} {userInfo?.last_name}
                       </p>
                       <p className="text-sm text-white">{userInfo?.email}</p>
-                      <Link to="/public-profile" className="text-white text-sm hover:underline">
+                      <Link to="/showcase/org" className="text-white text-sm hover:underline">
                         View Public Profile
                       </Link>
                     </div>
@@ -251,13 +251,13 @@ const DashboardHeader = () => {
                       <p className="text-sm text-gray-700">Global Postings: 0 Credits</p>
                     </div>
 
-                    <div className="px-4 py-2">
-                      <Link to="/account-settings" className="block text-sm text-gray-800 hover:bg-gray-100 py-2 rounded-lg">
+                    <div className="flex gap-2 flex-col px-2 py-2">
+                      <Link to="/employers-dashboard/my-profile" className="block text-center  text-md bg-blue-700 text-white hover:bg-blue-800 py-2 rounded-lg">
                         Account Settings
                       </Link>
                       <button
                         onClick={logoutHandler}
-                        className="block w-full text-left text-sm text-gray-800 hover:bg-gray-100 py-2 rounded-lg"
+                        className="block w-full text-md text-white bg-red-500 hover:bg-red-700 py-2 px-4 rounded-lg"
                       >
                         Logout
                       </button>

@@ -1,3 +1,4 @@
+import { Constant } from "@/utils/constant/constant";
 import axiosInstance from "./axiosInstance";
 
 // Function to send OTP to the user's email
@@ -56,7 +57,7 @@ export const handleGoogleSignIn = async () => {
  export const sendAuthCode = async (code) => {
    try {
      const response = await axiosInstance.get(`/employeer/auth/callback?code=${code}`);
-     
+     console.log(response);
      if (response.status === 200) {
        const token = response.data.data.token;
  

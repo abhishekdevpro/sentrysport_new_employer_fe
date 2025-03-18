@@ -183,9 +183,17 @@ const LocationSelector = ({ register, setValue, defaultLocation }) => {
           const response = await axios.get(
             `https://api.sentryspot.co.uk/api/jobseeker/locations?locations=${query}`
           );
-          // The API returns an array of location strings, not objects
-          setLocations(response.data.data.location_names);
-          setShowDropdown(true);
+    
+          // console.log("API Response:", response.data); // Debugging API response
+    
+          if (response.data && response.data.data) {
+            setLocations(response.data?.data?.location_names || []); // Ensure it's an array
+            setShowDropdown(true);
+          } else {
+            setLocations([]); // Reset locations if data is missing
+            setShowDropdown(false);
+            // console.warn("API response is missing 'data' field");
+          }
         } catch (error) {
           console.error("Error fetching locations:", error);
           setLocations([]);
@@ -196,6 +204,27 @@ const LocationSelector = ({ register, setValue, defaultLocation }) => {
         setShowDropdown(false);
       }
     };
+    
+    // const fetchLocations = async () => {
+    //   if (query && query.length > 1) {
+    //     try {
+    //       const response = await axios.get(
+    //         `https://api.sentryspot.co.uk/api/jobseeker/locations?locations=${query}`
+    //       );
+    //       // The API returns an array of location strings, not objects
+    //       // console.log(response.data.data,"....");
+    //       setLocations(response.data.data.location_names);
+    //       setShowDropdown(true);
+    //     } catch (error) {
+    //       console.error("Error fetching locations:", error);
+    //       setLocations([]);
+    //       setShowDropdown(false);
+    //     }
+    //   } else {
+    //     setLocations([]);
+    //     setShowDropdown(false);
+    //   }
+    // };
     // Add a slight delay to avoid making API calls on every keystroke
     const timeoutId = setTimeout(() => {
       fetchLocations();

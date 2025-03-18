@@ -24,7 +24,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useDispatch, useSelector } from "react-redux";
-import { logout, toggleSignupDialog } from "@/store/slices/auth";
+import {  toggleSignupDialog } from "@/store/slices/auth";
 import { IoLogOutOutline } from "react-icons/io5";
 import Login from "../auth/Login";
 import ResetPassword from "../auth/ResetPassword";
@@ -36,40 +36,40 @@ import Footer from "./Footer";
 import PeopleSection from "./People-section";
 import CategorySection from "./Category-Section";
 import TestimonialSlider from "./Testimonial-Slider";
+import { logout } from "@/store/slices/authSlice";
+import { Constant } from "@/utils/constant/constant";
 const index = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const { loading, userInfo, userToken, error, success, message } = useSelector(
-    (state) => state.auth
-  );
+  // const userToken = useSelector((state) => state.auth.userToken);
+  const userToken = localStorage.getItem(Constant.USER_TOKEN)
   const [isLogin, setIsLogin] = useState(true);
-
-  const sliderSettings = {
-    centerMode: true,
-    centerPadding: "40px",
-    dots: true,
-    slidesToShow: 3,
-    infinite: true,
-    arrows: false,
-    lazyLoad: "ondemand",
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-          centerMode: false,
-        },
-      },
-      {
-        breakpoint: 767,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
-  };
+  // const sliderSettings = {
+  //   centerMode: true,
+  //   centerPadding: "40px",
+  //   dots: true,
+  //   slidesToShow: 3,
+  //   infinite: true,
+  //   arrows: false,
+  //   lazyLoad: "ondemand",
+  //   responsive: [
+  //     {
+  //       breakpoint: 1024,
+  //       settings: {
+  //         slidesToShow: 2,
+  //         centerMode: false,
+  //       },
+  //     },
+  //     {
+  //       breakpoint: 767,
+  //       settings: {
+  //         slidesToShow: 1,
+  //       },
+  //     },
+  //   ],
+  // };
 
   const handleCheck = (type) => {
     switch (type) {
@@ -152,14 +152,7 @@ const index = () => {
             <IoLogOutOutline size={24} />
           </button>
         ) : (
-          <button
-            className="theme-btn btn-style-three call-modal p-2 text-lg px-3 bg-transparent !text-[#09359c]"
-            onClick={() => {
-              dispatch(toggleSignupDialog());
-            }}
-          >
-            Register
-          </button>
+          <></>
         )}
         <button
           type="button"
