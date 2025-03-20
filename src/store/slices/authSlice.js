@@ -8,7 +8,6 @@ import axios from "axios";
 // Async thunk to send OTP
 export const sendOtp = createAsyncThunk("auth/sendOtp", async (email, { rejectWithValue }) => {
    try {
-      console.log(email,"llllll");
       const response = await handleSendOTP(email);
       return response; // API response data
    } catch (error) {

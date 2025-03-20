@@ -776,7 +776,7 @@ const FormInfoBox = () => {
         website: userInfo.website || "",
         designation: userInfo.designation || "",
         organization: userInfo.organization || "",
-        recuiter_type: userInfo.recuiter_type || "",
+        recuiter_type: userInfo.recruiter_type_id || "",
         location_name: userInfo.location_name || "",
       });
 
@@ -954,21 +954,11 @@ const FormInfoBox = () => {
             label="Recruiter Type"
             options={recruiterTypes}
             error={errors.recuiter_type?.message}
-            {...register("recuiter_type")}
+            {...register("recruiter_type_id")}
           />
         </div>
 
-        {/* Location Selector - passes setValue to update form */}
-        {/* <LocationSelector 
-        register={register}
-          setFormValues={(values) => {
-            if (values.location) {
-              setValue("location", values.location);
-            }
-          }}
-          
-          defaultLocation={watch("location")}
-        /> */}
+       
         <LocationSelector
           register={register}
           setValue={setValue}

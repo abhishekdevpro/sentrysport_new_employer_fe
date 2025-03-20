@@ -29,7 +29,7 @@ import { IoLogOutOutline } from "react-icons/io5";
 import Login from "../auth/Login";
 import ResetPassword from "../auth/ResetPassword";
 import { TypeAnimation } from "react-type-animation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DashboardHeader from "../header/DashboardHeader";
 import { Menu } from "lucide-react";
 import Footer from "./Footer";
@@ -42,6 +42,7 @@ const index = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
 
   // const userToken = useSelector((state) => state.auth.userToken);
   const userToken = localStorage.getItem(Constant.USER_TOKEN)
@@ -83,7 +84,8 @@ const index = () => {
     }
   };
 
-  
+
+ 
   return (
     <>
       

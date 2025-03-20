@@ -13,7 +13,8 @@ import shopSlice from "../features/shop/shopSlice";
 // import AuthSlice from "./slices/auth";
 import { Service } from "./slices/service/index";
 import AuthSlice from "./slices/authSlice"
-
+import DataSlice from './slices/dataSlice'
+import JobPostSlice from "./slices/JobPostSlice"
 export const store = configureStore({
   reducer: {
     job: jobSlice,
@@ -26,6 +27,8 @@ export const store = configureStore({
     shop: shopSlice,
     // custom
     auth: AuthSlice,
+    data:DataSlice,
+    jobPost:JobPostSlice,
     [Service.reducerPath]: Service.reducer,
   },
   middleware: (getDefaultMiddleware) =>
