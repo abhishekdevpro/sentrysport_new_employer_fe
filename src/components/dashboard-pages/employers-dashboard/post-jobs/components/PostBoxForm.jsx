@@ -30,7 +30,9 @@ import { FaCheckCircle } from "react-icons/fa";
 import { toast} from "react-toastify";
 import SalarySection from "./SalarySection";
 import ScreeningQuestionsForm from "./ScreeningQuestions";
-
+import { useDispatch, useSelector } from "react-redux";
+import { fetchJobTypes } from "@/store/slices/dataSlice";
+import { createJobPost } from "@/store/slices/JobPostSlice";
 const tags = [
   { value: "Banking", label: "Banking" },
   { value: "Digital & Creative", label: "Digital & Creative" },
@@ -46,12 +48,12 @@ const PostBoxForm = () => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [jobTitles, setJobTitles] = useState([]);
   const [locations, setLocations] = useState([]);
-  const [experienceYears, setExperienceYears] = useState([]);
-  const [expectedExperienceYears, setExpectedExperienceYears] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [industry, setIndustry] = useState([]);
-  const [functionalTypes, setFunctionalTypes] = useState([]);
-  const [salaryTypes, setSalaryTypes] = useState([]);
+  // const [experienceYears, setExperienceYears] = useState([]);
+  // const [expectedExperienceYears, setExpectedExperienceYears] = useState([]);
+  // const [categories, setCategories] = useState([]);
+  // const [industry, setIndustry] = useState([]);
+  // const [functionalTypes, setFunctionalTypes] = useState([]);
+  // const [salaryTypes, setSalaryTypes] = useState([]);
   const [expectedSalaryTypes, setExpectedSalaryTypes] = useState([]);
   const [batchTypes, setBatchTypes] = useState([]);
   const [selectedTypes, setSelectedTypes] = useState([]);
@@ -59,6 +61,7 @@ const PostBoxForm = () => {
   const [stateId, setStateId] = useState("");
   const [cityId, setCityId] = useState("");
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch()
 
   const [keywords, setKeywords] = useState({ job: "", location: "" });
   const [dropdownVisibility, setDropdownVisibility] = useState({
@@ -72,7 +75,17 @@ const PostBoxForm = () => {
     }
     return Array.isArray(selectedTags) ? selectedTags.join(", ") : "";
   };
-
+  const { 
+    experienceYears,
+    expectedExperienceYears,
+    categories,
+    functionalTypes,
+    salaryTypes,
+    industries,
+    jobTypes,
+    status,
+    error
+  } = useSelector((state) => state.data);
   const [formData, setFormData] = useState({
     job_title: "",
     location: "",
@@ -88,88 +101,8 @@ const PostBoxForm = () => {
     Skills: getCommaSeparatedTags(),
   });
   const [videoFile, setVideoFile] = useState(null);
-
-  const baseurl = "https://api.sentryspot.co.uk/api/employeer/";
   const token = localStorage.getItem(Constant.USER_TOKEN); // Replace with your actual token
-
-  useEffect(() => {
-    axios
-      .get(`${baseurl}experience`, { headers: { Authorization: token } })
-      .then((response) => setExperienceYears(response.data.data))
-      .catch((error) => console.error(error));
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(`${baseurl}experience`, { headers: { Authorization: token } })
-      .then((response) => setExpectedExperienceYears(response.data.data))
-      .catch((error) => console.error(error));
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(`${baseurl}job-categories`, { headers: { Authorization: token } })
-      .then((response) => setCategories(response.data.data))
-      .catch((error) => console.error(error));
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(`${baseurl}functional-area`, { headers: { Authorization: token } })
-      .then((response) => setFunctionalTypes(response.data.data))
-      .catch((error) => console.error(error));
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(`${baseurl}salary-range`, { headers: { Authorization: token } })
-      .then((response) => setSalaryTypes(response.data.data))
-      .catch((error) => console.error(error));
-  }, []);
-  useEffect(() => {
-    axios
-      .get(`https://api.sentryspot.co.uk/api/jobseeker/industries`, {
-        headers: { Authorization: token },
-      })
-      .then((response) => setIndustry(response.data.data))
-      .catch((error) => console.error(error));
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(`${baseurl}salary-range`, { headers: { Authorization: token } })
-      .then((response) => setExpectedSalaryTypes(response.data.data))
-      .catch((error) => console.error(error));
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(`${baseurl}years`, {
-        headers: {
-          Authorization: token,
-        },
-      })
-      .then((response) => {
-        setBatchTypes(response.data.data);
-      })
-      .catch((error) => {
-        toast.error(error.message);
-      });
-  }, []);
-
-  const [jobTypes, setJobTypes] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get("https://api.sentryspot.co.uk/api/employeer/job-types", {
-        headers: {
-          Authorization: token,
-        },
-      })
-      .then((response) => setJobTypes(response.data.data))
-      .catch((error) => console.error("Error fetching job types:", error));
-  }, []);
-
+ 
   const fetchData = async (url, setData, dropdownKey) => {
     try {
       const response = await axios.get(url);
@@ -190,36 +123,12 @@ const PostBoxForm = () => {
     else setDropdownVisibility((prev) => ({ ...prev, job: false }));
   }, [keywords.job]);
 
-  // useEffect(() => {
-  //   if (keywords.location.length > 1)
-  //     fetchData(
-  //       `https://api.sentryspot.co.uk/api/jobseeker/locations`,
-  //       (data) => {
-  //         console.log(data,">>>>>");
-        
-  //         const locationsData = data.locations_names.map((location) => {
-  //           value: location,
-  //           label: location.split(',').slice(1).join(', ')
-  //         });
-  //         setLocations(locationsData);
-  //       },
-  //       "location"
-  //     );
-  //   else setDropdownVisibility((prev) => ({ ...prev, location: false }));
-  // }, [keywords.location]);
-
-  // const handleChange = (key) => (e) =>
-  //setKeywords({ ...keywords, [key]: e.target.value });
   useEffect(() => {
     if (keywords.location && keywords.location.length > 1) {
       fetchData(
         `https://api.sentryspot.co.uk/api/jobseeker/locations?locations=${keywords.location}`,
         (data) => {
-            //  console.log(data,">>>>");
-          // const locationsData = data.location_names.map((location) => ({
-          //   value: location,
-          //   label: location.split(',').slice(1).join(', ')
-          // }));
+           
           const locationsData = data.location_names;
   
           setLocations(locationsData);
@@ -251,9 +160,7 @@ const PostBoxForm = () => {
         ...prevFormData,
         location: selectedItem,
       }));
-      // setCountryId(selectedItem.country_id);
-      // setStateId(selectedItem.state_id);
-      // setCityId(selectedItem.city_id);
+      
     }
 
     setDropdownVisibility((prevVisibility) => ({
@@ -281,10 +188,85 @@ const PostBoxForm = () => {
     return doc.body.textContent || "";
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   // Strip HTML tags from description
+  //   const strippedDescription = stripHtmlTags(formData.description);
+
+  //   // Validate required fields
+  //   if (!strippedDescription.trim()) {
+  //     alert("Please enter a job description.");
+  //     return;
+  //   }
+
+  //   // Get comma-separated tags
+  //   const skills = getCommaSeparatedTags();
+  //   if (!skills) {
+  //     alert("Please select at least one skill.");
+  //     return;
+  //   }
+
+  //   try {
+  //     const formDataToSubmit = new FormData();
+  //     formDataToSubmit.append("job_title", formData.job_title);
+  //     formDataToSubmit.append("location", formData.location);
+  //     formDataToSubmit.append("job_description", strippedDescription); // Strip HTML tags
+  //     formDataToSubmit.append("category_id", formData.category_id);
+  //     formDataToSubmit.append(
+  //       "functional_area_id",
+  //       formData.functional_area_id
+  //     );
+  //     formDataToSubmit.append("experience_year", formData.experience_year);
+  //     formDataToSubmit.append(
+  //       "expected_experience_year",
+  //       formData.expected_experience_year
+  //     );
+  //     formDataToSubmit.append("salary_type", formData.salary_type);
+  //     formDataToSubmit.append(
+  //       "expected_salary_type",
+  //       formData.expected_salary_type
+  //     );
+  //     formDataToSubmit.append("batch_start_year", formData.batch_start_year);
+  //     formDataToSubmit.append("batch_end_year", formData.batch_end_year);
+  //     formDataToSubmit.append("skills", skills);
+  //     // formDataToSubmit.append("country_id", countryId || "");
+  //     // formDataToSubmit.append("state_id", stateId || "");
+  //     // formDataToSubmit.append("city_id", cityId || "");
+
+  //     if (videoFile) {
+  //       formDataToSubmit.append("video_jd_file", videoFile);
+  //     }
+
+  //     // console.log(
+  //     //   "Submitting form data:",
+  //     //   Object.fromEntries(formDataToSubmit)
+  //     // );
+
+  //     const response = await axios.post(
+  //       "https://api.sentryspot.co.uk/api/employeer/job-post",
+  //       formDataToSubmit,
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //           Authorization: token,
+  //         },
+  //       }
+  //     );
+  //     toast.success("Job posted successfully:", response.data);
+  //   } catch (error) {
+  //     if (error.response) {
+  //       toast.error("Error details:", error.response.data);
+  //     } else {
+  //       toast.error("Error posting job:", error);
+  //     }
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Strip HTML tags from description
+    // Strip HTML tags from description (you can use a utility function like stripHtmlTags)
     const strippedDescription = stripHtmlTags(formData.description);
 
     // Validate required fields
@@ -293,72 +275,40 @@ const PostBoxForm = () => {
       return;
     }
 
-    // Get comma-separated tags
+    // Get comma-separated tags (implement getCommaSeparatedTags function)
     const skills = getCommaSeparatedTags();
     if (!skills) {
       alert("Please select at least one skill.");
       return;
     }
 
+    // Prepare form data
+    const formDataToSubmit = new FormData();
+    formDataToSubmit.append("job_title", formData.job_title);
+    formDataToSubmit.append("location", formData.location);
+    formDataToSubmit.append("job_description", strippedDescription);
+    formDataToSubmit.append("category_id", formData.category_id);
+    formDataToSubmit.append("functional_area_id", formData.functional_area_id);
+    formDataToSubmit.append("experience_year", formData.experience_year);
+    formDataToSubmit.append("expected_experience_year", formData.expected_experience_year);
+    formDataToSubmit.append("salary_type", formData.salary_type);
+    formDataToSubmit.append("expected_salary_type", formData.expected_salary_type);
+    formDataToSubmit.append("batch_start_year", formData.batch_start_year);
+    formDataToSubmit.append("batch_end_year", formData.batch_end_year);
+    formDataToSubmit.append("skills", skills);
+    
+    if (videoFile) {
+      formDataToSubmit.append("video_jd_file", videoFile);
+    }
+
+    // Dispatch the create job post action
     try {
-      const formDataToSubmit = new FormData();
-      formDataToSubmit.append("job_title", formData.job_title);
-      formDataToSubmit.append("location", formData.location);
-      formDataToSubmit.append("job_description", strippedDescription); // Strip HTML tags
-      formDataToSubmit.append("category_id", formData.category_id);
-      formDataToSubmit.append(
-        "functional_area_id",
-        formData.functional_area_id
-      );
-      formDataToSubmit.append("experience_year", formData.experience_year);
-      formDataToSubmit.append(
-        "expected_experience_year",
-        formData.expected_experience_year
-      );
-      formDataToSubmit.append("salary_type", formData.salary_type);
-      formDataToSubmit.append(
-        "expected_salary_type",
-        formData.expected_salary_type
-      );
-      formDataToSubmit.append("batch_start_year", formData.batch_start_year);
-      formDataToSubmit.append("batch_end_year", formData.batch_end_year);
-      formDataToSubmit.append("skills", skills);
-      // formDataToSubmit.append("country_id", countryId || "");
-      // formDataToSubmit.append("state_id", stateId || "");
-      // formDataToSubmit.append("city_id", cityId || "");
+      dispatch(createJobPost(formDataToSubmit));
 
-      if (videoFile) {
-        formDataToSubmit.append("video_jd_file", videoFile);
-      }
-
-      // console.log(
-      //   "Submitting form data:",
-      //   Object.fromEntries(formDataToSubmit)
-      // );
-
-      const response = await axios.post(
-        "https://api.sentryspot.co.uk/api/employeer/job-post",
-        formDataToSubmit,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: token,
-          },
-        }
-      );
-      toast.success("Job posted successfully:", response.data);
     } catch (error) {
-      if (error.response) {
-        toast.error("Error details:", error.response.data);
-      } else {
-        toast.error("Error posting job:", error);
-      }
+      toast.error("Error posting job: " + error.message);
     }
   };
-
-  // console.log("Selected Tags:", selectedTags);
-  // console.log("Comma-Separated Tags:", getCommaSeparatedTags());
-
   const handleTypeClick = (id) => {
     setSelectedTypes((prev) =>
       prev.includes(id) ? prev.filter((typeId) => typeId !== id) : [...prev, id]
@@ -730,7 +680,7 @@ const PostBoxForm = () => {
             className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="">Select Indusrty</option>
-            {industry.map((item, index) => (
+            {industries?.map((item, index) => (
               <option key={index} value={item.id}>
                 {item.name}
               </option>
@@ -784,160 +734,7 @@ const PostBoxForm = () => {
           </select>
         </div>
       </div>
-      {/* Category Dropdown */}
-      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
-        <label htmlFor="category_id" className="block text-sm font-medium text-gray-700">
-          Job Category
-        </label>
-        <select
-          name="category_id"
-          value={formData.category_id}
-          onChange={handleFormChange}
-          required
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value="">Select Job Category</option>
-          {categories.map((item, index) => (
-            <option key={index} value={item.id}>
-              {item.name}
-            </option>
-          ))}
-        </select>
-      </div> */}
-
-      {/* Functional Area Dropdown */}
-      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
-        <label htmlFor="functional_area_id" className="block text-sm font-medium text-gray-700">
-          Functional Area
-        </label>
-        <select
-          name="functional_area_id"
-          value={formData.functional_area_id}
-          onChange={handleFormChange}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value="">Select Functional Area</option>
-          {functionalTypes.map((item, index) => (
-            <option key={index} value={item.id}>
-              {item.name}
-            </option>
-          ))}
-        </select>
-      </div> */}
-
-      {/* Salary Type Dropdown */}
-      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
-        <label htmlFor="salary_type" className="block text-sm font-medium text-gray-700">
-          Salary Type
-        </label>
-        <select
-          name="salary_type"
-          value={formData.salary_type}
-          onChange={handleFormChange}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value="">Select Salary Type</option>
-          {salaryTypes.map((item, index) => (
-            <option key={index} value={item.id}>
-              {item.name}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Expected Salary Type Dropdown 
-      <div className="form-group col-lg-12 col-md-12 mt-4">
-        <label htmlFor="expected_salary_type" className="block text-sm font-medium text-gray-700">
-          Expected Salary Type
-        </label>
-        <select
-          name="expected_salary_type"
-          value={formData.expected_salary_type}
-          onChange={handleFormChange}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value="">Select Expected Salary Type</option>
-          {expectedSalaryTypes.map((item, index) => (
-            <option key={index} value={item.id}>
-              {item.name}
-            </option>
-          ))}
-        </select>
-      </div> */}
-
-      <SalarySection />
-
-      {/* Batch Start Year Dropdown */}
-      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
-        <label htmlFor="batch_start_year" className="block text-sm font-medium text-gray-700">
-          Batch Start Year
-        </label>
-        <select
-          name="batch_start_year"
-          value={formData.batch_start_year}
-          onChange={handleFormChange}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value="">Select Batch Start Year</option>
-          {batchTypes.map((item, index) => (
-            <option key={index} value={item.id}>
-              {item.name}
-            </option>
-          ))}
-        </select>
-      </div> */}
-
-      {/* Batch End Year Dropdown */}
-      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
-        <label htmlFor="batch_end_year" className="block text-sm font-medium text-gray-700">
-          Batch End Year
-        </label>
-        <select
-          name="batch_end_year"
-          value={formData.batch_end_year}
-          onChange={handleFormChange}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value="">Select Batch End Year</option>
-          {batchTypes.map((item, index) => (
-            <option key={index} value={item.id}>
-              {item.name}
-            </option>
-          ))}
-        </select>
-      </div> */}
-
-      {/* Video Upload */}
-      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
-        <label htmlFor="video" className="block text-sm font-medium text-gray-700">
-          Upload Video
-        </label>
-        <input
-          type="file"
-          accept="video/*"
-          onChange={handleFileChange}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-        />
-      </div> */}
-      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
-  <label htmlFor="video" className="block text-sm font-medium text-gray-700">
-    Audio/Video JD
-  </label>
-  <p className="text-sm text-gray-500 mb-2">Add a video to tell your brand's story</p>
-  <input
-    type="file"
-    id="video"
-    accept="video/*"
-    onChange={handleFileChange}
-    className="mt-1 max-w-2xl block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-700"
-    placeholder="Paste a Youtube link here"
-  />
-   <input
-          type="text"
-          placeholder="Paste a YouTube link here"
-          className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-700 text-sm"
-        />
-</div> */}
+     
       <div className="form-group col-lg-12 col-md-12 mt-4">
         <label
           htmlFor="video"
@@ -1037,80 +834,9 @@ const PostBoxForm = () => {
         </div>
       </div>
 
-      {/* <div className="form-group col-lg-12 col-md-12 my-3">
-        <label htmlFor="email">Add Screening Questions</label> <br />
-        Candidates will be asked to answer these question before they submit
-        their application. You can add up to 10 questions.
-        <br />
-        <button className="border-1 rounded-md py-2 my-5 border-blue-500">
-          Add Question
-        </button>
-      </div> */}
+  
       <ScreeningQuestionsForm />
-      {/* <div className="form-group col-lg-12 col-md-12">
-          <label htmlFor="diversity_hiring">Diversity hiring !</label>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {Dhiring?.map((item, id) => (
-              <div
-                key={id}
-                className={`relative flex flex-col items-center justify-center border  p-2 text-center cursor-pointer ${
-                  selectedItem === id
-                    ? "  border-blue-500 border-4"
-                    : "border-gray-300"
-                }`}
-                onClick={() => handleSelect1(id)}
-              >
-                {selectedItem === id && (
-                  <FaCheckCircle className="absolute top-0 right-0 text-blue-500 m-1" />
-                )}
-                <div className="text-xl mb-1 flex justify-center items-center">
-                  {item?.icon}
-                </div>
-                <p className="text-sm font-medium">{item?.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {makesUsUnique?.map((item, index) => (
-          <div className="form-group col-lg-12 col-md-12 " key={index}>
-            <div className="flex justify-between items-center mb-2">
-              <label className="text-[15px] font-semibold">{item?.title}</label>
-
-              <Switch
-                className="rounded-xl data-[state=checked]:bg-[#0292e6]"
-                checked={item?.toogle}
-                onCheckedChange={(e) => {
-                  setMakesUsUnique((prev) => {
-                    return prev.map((val) => {
-                      if (val?.key === item?.key) {
-                        return { ...item, toogle: e };
-                      }
-                      return val;
-                    });
-                  });
-                }}
-              />
-            </div>
-            <h3 className="my-4 mt-10 ">{item?.Description}</h3>
-            <h3 className="mb-2">{item?.Description_title}</h3>
-            {item?.toogle && (
-              <input
-                type="text"
-                className="h-40 "
-                style={{ height: "200px" }}
-                placeholder={item?.title}
-              />
-            )}
-          </div>
-        ))}
-        <div className="form-group col-lg-12 col-md-12 text-right">
-          <button className="theme-btn btn-style-one" type="submit" >
-           
-          </button>
-        </div> */}
-
+      
       <button
         type="submit"
         className="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"

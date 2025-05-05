@@ -3,7 +3,7 @@ import "aos/dist/aos.css";
 import "./styles/index.scss";
 import { useEffect } from "react";
 import ScrollToTop from "./components/common/ScrollTop";
-import { Provider, useSelector } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { store } from "./store/store";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
@@ -120,6 +120,7 @@ import Notification from "./components/Settings/Notification";
 import Subscription from "./components/Settings/Subscribtion";
 import Gauth from "./components/auth/GAuth";
 import ApplicantDetails from "./pages/employers-dashboard/Single-applicant/ApplicantDetailsPage";
+import { fetchCategories, fetchExpectedExperienceYears, fetchExperienceYears, fetchFunctionalTypes, fetchIndustries, fetchJobTypes, fetchSalaryTypes } from "./store/slices/dataSlice";
 
 function App() {
   useEffect(() => {
@@ -128,10 +129,31 @@ function App() {
       once: true,
     });
   }, []);
+  const dispatch = useDispatch()
+  const { 
+    experienceYears,
+    expectedExperienceYears,
+    categories,
+    functionalTypes,
+    salaryTypes,
+    industries,
+    jobTypes,
+    status,
+    error
+  } = useSelector((state) => state.data);
+
+  useEffect(() => {
+    dispatch(fetchExperienceYears());
+    dispatch(fetchExpectedExperienceYears());
+    dispatch(fetchCategories());
+    dispatch(fetchFunctionalTypes());
+    dispatch(fetchSalaryTypes());
+    dispatch(fetchIndustries());
+    dispatch(fetchJobTypes());
+  }, [dispatch]);
 
   return (
     <>
-      <Provider store={store}>
         <div className="page-wrapper">
           <BrowserRouter>
             <Routes>
@@ -371,7 +393,6 @@ function App() {
           {/* <!-- Scroll To Top --> */}
           <ScrollToTop />
         </div>
-      </Provider>
     </>
   );
 }

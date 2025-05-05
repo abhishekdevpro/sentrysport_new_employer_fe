@@ -78,7 +78,7 @@ const TeamMemberManager = () => {
       formData.append('name', member.name);
       formData.append('description', member.description);
       if (editSelectedFile) {
-        formData.append('media', editSelectedFile);
+        formData.append('media_upload', editSelectedFile);
       }
 
       const response = await fetch(`${baseUrl}/company-teams/${member.id}`, {
@@ -139,7 +139,7 @@ const TeamMemberManager = () => {
       const formData = new FormData();
       formData.append('name', newMember.name);
       formData.append('description', newMember.description);
-      formData.append('media_uplaod', selectedFile);
+      formData.append('media_upload', selectedFile);
 
       const response = await fetch(`${baseUrl}/company-teams`, {
         method: 'POST',

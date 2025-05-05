@@ -195,6 +195,7 @@ import { Constant } from '@/utils/constant/constant';
 import { IoPlay } from 'react-icons/io5';
 import ReactQuill from 'react-quill';
 import { Card, CardContent } from '@/components/ui/card';
+import { useNavigate } from 'react-router-dom';
 
 const LeadershipTeam = () => {
   const [teamMembers, setTeamMembers] = useState([]);
@@ -206,6 +207,7 @@ const LeadershipTeam = () => {
   const baseUrl = "https://api.sentryspot.co.uk/api/employeer";
   const baseImageUrl = "https://api.sentryspot.co.uk";  
   const token = localStorage.getItem(Constant.USER_TOKEN); 
+  const navigate = useNavigate()
 
   const api = axios.create({
     baseURL: baseUrl,
@@ -228,8 +230,10 @@ const LeadershipTeam = () => {
   };
 
   const handleEdit = (id) => {
-    setEditingId(id);
-    setEditSelectedFile(null);
+    // setEditingId(id);
+    // setEditSelectedFile(null);
+    navigate('/employers-dashboard/company-profile/?edit="team"')
+
   };
 
   const handleFileChange = (e) => {
@@ -262,7 +266,7 @@ const LeadershipTeam = () => {
       setTeamMembers(prev =>
         prev.map(m => m.id === member.id ? { ...m, ...response.data.data } : m)
       );
-
+      fetchTeamMembers()
       setEditingId(null);
       setEditSelectedFile(null);
     } catch (err) {
@@ -336,14 +340,16 @@ const LeadershipTeam = () => {
     <section className="py-12 bg-gray-50" id="leadership">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
-            Meet our Leadership team
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+            Meet our team
           </h2>
+          <div className="w-24 h-1 bg-blue-600 mx-auto mt-4"></div>
+
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {teamMembers.map((member) => (
-            <Card key={member.id} className="overflow-hidden">
+            <div key={member.id} className="overflow-hidden">
               <CardContent className="p-6">
                 <div className="flex flex-col items-center">
                   <div className="relative mb-6">
@@ -369,7 +375,7 @@ const LeadershipTeam = () => {
                         dangerouslySetInnerHTML={{ __html: member.description }}
                       />
                       <button
-                        onClick={() => handleEdit(member.id)}
+                        onClick={() => handleEdit()}
                         className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                       >
                         Edit Profile
@@ -378,7 +384,7 @@ const LeadershipTeam = () => {
                   )}
                 </div>
               </CardContent>
-            </Card>
+            </div>
           ))}
         </div>
 
