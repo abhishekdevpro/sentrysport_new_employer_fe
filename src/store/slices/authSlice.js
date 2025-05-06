@@ -4,6 +4,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { handleSendOTP, resendOtp, sendAuthCode, verifyOtpLogin } from "./service/authService";
 import { Constant } from "@/utils/constant/constant";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 // Async thunk to send OTP
 export const sendOtp = createAsyncThunk("auth/sendOtp", async (email, { rejectWithValue }) => {
@@ -77,7 +78,6 @@ const initialState = {
    loading: false,
    error: null,
 };
-
 const authSlice = createSlice({
    name: "auth",
    initialState,
@@ -87,6 +87,7 @@ const authSlice = createSlice({
          state.userToken = null;
          state.status = false;
          localStorage.removeItem("userInfo");
+         localStorage.removeItem(Constant.USER_INFO);
          localStorage.removeItem(Constant.USER_TOKEN);
       },
       

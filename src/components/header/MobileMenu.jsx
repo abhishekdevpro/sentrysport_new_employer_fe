@@ -6,13 +6,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout, toggleSignupDialog } from "@/store/slices/auth";
 import { Button } from "../ui/button";
 import { IoLogOutOutline } from "react-icons/io5";
+import { Constant } from "@/utils/constant/constant";
 
 const MobileMenu = () => {
   const dispatch = useDispatch();
 
-  const { loading, userInfo, userToken, error, success, message } = useSelector(
+  const { loading, userInfo, error, success, message } = useSelector(
     (state) => state.auth
   );
+  const userToken = localStorage.getItem(Constant.USER_TOKEN)
   return (
     // <!-- Main Header-->
     <header className="main-header main-header-mobile z-10"  >

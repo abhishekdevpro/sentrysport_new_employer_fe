@@ -302,6 +302,7 @@ const PostBoxForm = () => {
     }
 
     // Dispatch the create job post action
+    
     try {
       dispatch(createJobPost(formDataToSubmit));
 

@@ -738,8 +738,8 @@ const FormInfoBox = () => {
 
   const [logImg, setLogImg] = useState(null);
 
-
   const recruiterTypes = [
+    { id: "", name: "Select the type" },
     { id: 1, name: "Recruitment Firm" },
     { id: 2, name: "Direct Employer" },
   ];
@@ -881,9 +881,14 @@ const FormInfoBox = () => {
                 )}
               </label>
             </div>
-            <div className="bg-blue-800 w-28 mt-2 py-1 ms-2 text-white text-sm text-center rounded-lg">
+
+            {/* Make this a <label> instead of a <div> */}
+            <label
+              htmlFor="upload"
+              className="bg-blue-800 w-28 mt-2 py-1 ms-2 text-white text-sm text-center rounded-lg cursor-pointer"
+            >
               Add Picture
-            </div>
+            </label>
           </div>
         </div>
 
@@ -928,8 +933,9 @@ const FormInfoBox = () => {
 
         <div className="form-group col-lg-6 col-md-12">
           <Input
+            type="url"
             label="Website"
-            placeholder="e.g. www.example.com"
+            placeholder="e.g. https://www.example.com"
             className="mb-4"
             {...register("website")}
           />
@@ -958,7 +964,6 @@ const FormInfoBox = () => {
           />
         </div>
 
-       
         <LocationSelector
           register={register}
           setValue={setValue}

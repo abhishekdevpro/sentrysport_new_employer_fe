@@ -176,6 +176,7 @@ const DashboardHeader = () => {
   };
 
   const logoutHandler = () => {
+    console.log("called");
     dispatch(logout());
     navigate("/");
   };
