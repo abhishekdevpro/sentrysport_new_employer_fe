@@ -92,8 +92,8 @@ const PostBoxForm = () => {
     description: "",
     category_id: "",
     functional_area_id: "",
-    experience_year: "",
-    expected_experience_year: "",
+    experience_id_min: "",
+    experience_id_max: "",
     salary_type: "",
     expected_salary_type: "",
     batch_start_year: "",
@@ -182,86 +182,12 @@ const PostBoxForm = () => {
     setVideoFile(e.target.files[0]);
   };
 
+  console.log(videoFile,"Vfffxx");
   // Utility function to strip HTML tags
   const stripHtmlTags = (html) => {
     const doc = new DOMParser().parseFromString(html, "text/html");
     return doc.body.textContent || "";
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   // Strip HTML tags from description
-  //   const strippedDescription = stripHtmlTags(formData.description);
-
-  //   // Validate required fields
-  //   if (!strippedDescription.trim()) {
-  //     alert("Please enter a job description.");
-  //     return;
-  //   }
-
-  //   // Get comma-separated tags
-  //   const skills = getCommaSeparatedTags();
-  //   if (!skills) {
-  //     alert("Please select at least one skill.");
-  //     return;
-  //   }
-
-  //   try {
-  //     const formDataToSubmit = new FormData();
-  //     formDataToSubmit.append("job_title", formData.job_title);
-  //     formDataToSubmit.append("location", formData.location);
-  //     formDataToSubmit.append("job_description", strippedDescription); // Strip HTML tags
-  //     formDataToSubmit.append("category_id", formData.category_id);
-  //     formDataToSubmit.append(
-  //       "functional_area_id",
-  //       formData.functional_area_id
-  //     );
-  //     formDataToSubmit.append("experience_year", formData.experience_year);
-  //     formDataToSubmit.append(
-  //       "expected_experience_year",
-  //       formData.expected_experience_year
-  //     );
-  //     formDataToSubmit.append("salary_type", formData.salary_type);
-  //     formDataToSubmit.append(
-  //       "expected_salary_type",
-  //       formData.expected_salary_type
-  //     );
-  //     formDataToSubmit.append("batch_start_year", formData.batch_start_year);
-  //     formDataToSubmit.append("batch_end_year", formData.batch_end_year);
-  //     formDataToSubmit.append("skills", skills);
-  //     // formDataToSubmit.append("country_id", countryId || "");
-  //     // formDataToSubmit.append("state_id", stateId || "");
-  //     // formDataToSubmit.append("city_id", cityId || "");
-
-  //     if (videoFile) {
-  //       formDataToSubmit.append("video_jd_file", videoFile);
-  //     }
-
-  //     // console.log(
-  //     //   "Submitting form data:",
-  //     //   Object.fromEntries(formDataToSubmit)
-  //     // );
-
-  //     const response = await axios.post(
-  //       "https://api.sentryspot.co.uk/api/employeer/job-post",
-  //       formDataToSubmit,
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //           Authorization: token,
-  //         },
-  //       }
-  //     );
-  //     toast.success("Job posted successfully:", response.data);
-  //   } catch (error) {
-  //     if (error.response) {
-  //       toast.error("Error details:", error.response.data);
-  //     } else {
-  //       toast.error("Error posting job:", error);
-  //     }
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -288,17 +214,20 @@ const PostBoxForm = () => {
     formDataToSubmit.append("location", formData.location);
     formDataToSubmit.append("job_description", strippedDescription);
     formDataToSubmit.append("category_id", formData.category_id);
+    formDataToSubmit.append("industry_id", formData.industry_id);
     formDataToSubmit.append("functional_area_id", formData.functional_area_id);
-    formDataToSubmit.append("experience_year", formData.experience_year);
-    formDataToSubmit.append("expected_experience_year", formData.expected_experience_year);
-    formDataToSubmit.append("salary_type", formData.salary_type);
-    formDataToSubmit.append("expected_salary_type", formData.expected_salary_type);
-    formDataToSubmit.append("batch_start_year", formData.batch_start_year);
-    formDataToSubmit.append("batch_end_year", formData.batch_end_year);
+    formDataToSubmit.append("experience_id_min", formData.experience_id_min);
+    formDataToSubmit.append("experience_id_max", formData.experience_id_max);
+    
+    // formDataToSubmit.append("salary_type", formData.salary_type);
+    // formDataToSubmit.append("expected_salary_type", formData.expected_salary_type);
+    // formDataToSubmit.append("batch_start_year", formData.batch_start_year);
+    // formDataToSubmit.append("batch_end_year", formData.batch_end_year);
+    formDataToSubmit.append("job_type_id", formData.selectedTypes || 0);
     formDataToSubmit.append("skills", skills);
     
     if (videoFile) {
-      formDataToSubmit.append("video_jd_file", videoFile);
+      formDataToSubmit.append("video_jd_file", videoFile)
     }
 
     // Dispatch the create job post action
@@ -316,6 +245,7 @@ const PostBoxForm = () => {
     );
   };
 
+  // console.log(selectedTypes,"selectedTypes");
   const getIcon = (jobTypeName) => {
     switch (jobTypeName.toLowerCase()) {
       case "full-time":
@@ -516,60 +446,7 @@ const PostBoxForm = () => {
     </ul>
   )}
 </div>
-      {/* <div className="relative mb-4">
-        <label
-          htmlFor="location"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Location
-        </label>
-        <input
-          type="text"
-          name="location"
-          placeholder="+ Add location"
-          onChange={handleChange("location")}
-          value={keywords.location}
-          required
-          className="mt-1 block w-full px-3 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-        />
-        {dropdownVisibility.location && (
-          <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
-            {locations.map((item, index) => (
-              <li
-                key={index}
-                onClick={() => handleSelect("location", item)}
-                className="cursor-pointer px-4 py-2 hover:bg-gray-100"
-              >
-                {item.city}, {item.state}, {item.country}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div> */}
-
-      {/* Description Editor */}
-      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
-  <div className="flex justify-between">
-    <label htmlFor="description" className="pt-4 font-semibold">
-      Job Description
-    </label>
-    <button
-      className="border-1 border-blue-700 rounded-md py-2 px-2 m-2 font-semibold"
-      onClick={handleAiAssist}
-    >
-      AI Assist +
-    </button>
-  </div>
-  <ReactQuill
-    value={formData.description}
-    onChange={handleDescriptionChange}
-    className={`mt-1 border border-gray-300 h- rounded-md shadow-sm ${!formData.description ? 'border-red-500' : ''}`}
-    placeholder="Enter job description..."
-  />
-  {!formData.description && (
-    <p className="text-red-500 text-sm mt-1">Job description is required.</p>
-  )}
-</div> */}
+     
       <div>
         <div className="flex justify-between items-center">
           <label
@@ -578,13 +455,7 @@ const PostBoxForm = () => {
           >
             Job Description
           </label>
-          {/* <button
-            type="button"
-            onClick={handleAiAssist}
-            className="px-4 py-2 bg-blue-900 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            AI Assist +
-          </button> */}
+         
            <button
       type="button"
       onClick={handleAiAssist}
@@ -621,14 +492,14 @@ const PostBoxForm = () => {
         {/* Min Experience Year Dropdown */}
         <div className="flex-1">
           <label
-            htmlFor="experience_year"
+            htmlFor="experience_id_min"
             className="block text-sm font-medium text-gray-700"
           >
             Min Experience Year
           </label>
           <select
-            name="experience_year"
-            value={formData.experience_year}
+            name="experience_id_min"
+            value={formData.experience_id_min}
             onChange={handleFormChange}
             className="mt-1 block w-full p-3 border-3 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           >
@@ -644,14 +515,14 @@ const PostBoxForm = () => {
         {/* Max Experience Year Dropdown */}
         <div className="flex-1">
           <label
-            htmlFor="expected_experience_year"
+            htmlFor="experience_id_max"
             className="block text-sm font-medium text-gray-700"
           >
             Max Experience Year
           </label>
           <select
-            name="expected_experience_year"
-            value={formData.expected_experience_year}
+            name="experience_id_max"
+            value={formData.experience_id_max}
             onChange={handleFormChange}
             className="mt-1 block w-full p-3 border-3 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           >
@@ -669,14 +540,14 @@ const PostBoxForm = () => {
         {/* Job indusrty dropdown  */}
         <div className="flex-1">
           <label
-            htmlFor="functional_area_id"
+            htmlFor="industry_id"
             className="block text-sm font-medium text-gray-700"
           >
             Industry
           </label>
           <select
-            name="functional_area_id"
-            value={formData.functional_area_id}
+            name="industry_id"
+            value={formData.industry_id}
             onChange={handleFormChange}
             className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           >
