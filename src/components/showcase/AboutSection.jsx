@@ -218,6 +218,7 @@
 // export default AboutSection;
 
 
+import { Edit } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { MdPhoto, MdEdit } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
@@ -262,7 +263,7 @@ const AboutSection = ({ companyData = {},userInfo, onSave }) => {
   };
 
   const handleEditClick = () => {
-    navigate('/employers-dashboard/company-profile/?edit="basic"')
+    navigate('/employers-dashboard/company-profile/?edit=about')
   };
 
   const handleImageChange = (e) => {
@@ -301,7 +302,7 @@ const AboutSection = ({ companyData = {},userInfo, onSave }) => {
   };
 
   return (
-    <div className='pt-8 mb-2  mx-auto'>
+    <div className='py-8  mx-auto'>
 
 <section className="py-16 about-section" id="about">
       <div className="auto-container max-w-7xl mx-auto px-4">
@@ -320,12 +321,15 @@ const AboutSection = ({ companyData = {},userInfo, onSave }) => {
                   <p>We are a dedicated team committed to excellence and innovation in everything we do.</p>
                 )}
               </div>
-              {  <button 
-                className="text-white bg-blue-950 border p-2 rounded-lg px-4 flex gap-2 items-center hover:bg-blue-900 transition-colors"
-                onClick={handleEditClick}
-              >
-                <MdEdit size={20} /> Edit
-              </button> }
+              <div className="mt-6">
+                <button
+                  className="text-white bg-blue-700 hover:bg-blue-800 transition-colors duration-200 font-medium rounded-md px-5 py-2.5 flex items-center gap-2"
+                  onClick={() => handleEditClick()}
+                >
+                  <Edit  />
+                  Edit 
+                </button>
+              </div>
             </div>
           </div>
 

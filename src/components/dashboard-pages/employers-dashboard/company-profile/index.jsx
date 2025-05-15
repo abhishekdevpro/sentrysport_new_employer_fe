@@ -36,17 +36,17 @@ const index = () => {
           <div className="row">
             <div className="col-lg-12">
               {/* <!-- Ls widget --> */}
-              <div className="ls-widget">
-                <div className="tabs-box">
-                  <div className="widget-title">
-                    <h4>Company Profile</h4>
-                  </div>
+              {/* <div className="ls-widget"> */}
+                {/* <div className="tabs-box"> */}
+                  {/* <div className="widget-title">
+                    <h4>Company Profileeee</h4>
+                  </div> */}
 
                   <div className="widget-content">
                     <SocialNetworkBox />
                   </div>
-                </div>
-              </div>
+                {/* </div> */}
+              {/* </div> */}
             </div>
           </div>
         </div>

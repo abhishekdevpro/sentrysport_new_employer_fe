@@ -273,6 +273,7 @@ const PostBoxForm = () => {
     console.log('Form Data:', formDataObj);
 
     // Dispatch the create job post action
+    
     try {
       dispatch(createJobPost(formDataToSubmit));
     } catch (error) {

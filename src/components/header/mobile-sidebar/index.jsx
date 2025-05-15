@@ -78,15 +78,18 @@
 import React from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SidebarHeader from "./SidebarHeader";
+import { Constant } from "@/utils/constant/constant";
+import { logout } from "@/store/slices/authSlice";
 
 const Index = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   
   // Get user token from Redux store
-  const userToken = useSelector((state) => state.auth.userToken);
+  const userToken = localStorage.getItem(Constant.USER_TOKEN);
 
   // Define menu items based on authentication status
   const menuItems = userToken
@@ -107,7 +110,9 @@ const Index = () => {
   // Handle logout
   const handleLogout = () => {
     // Dispatch logout action here (e.g., dispatch(logout()));
-    navigate("/login");
+    // navigate("/login");
+    dispatch(logout());
+
   };
 
   return (
@@ -131,10 +136,11 @@ const Index = () => {
           ))}
 
           {/* "Post a Job" as a Button */}
-          {userToken && (
+         <div className="flex flex-col gap-2 px-2">
+         {userToken && (
             <button
               onClick={() => navigate("/post-job")}
-              className="mt-4 px-4 py-2 bg-blue-500 text-white w-full text-lg font-semibold rounded-md"
+              className=" px-4 py-2 bg-blue-500 text-white text-lg font-semibold rounded-md"
             >
               Post a Job
             </button>
@@ -144,11 +150,12 @@ const Index = () => {
           {userToken && (
             <button
               onClick={handleLogout}
-              className="mt-4 px-4 py-2 bg-red-500 text-white w-full text-lg font-semibold rounded-md"
+              className="px-4 py-2 bg-red-500 text-white  text-lg font-semibold rounded-md"
             >
               Logout
             </button>
           )}
+         </div>
         </Menu>
       </Sidebar>
     </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { IoBagHandleOutline } from 'react-icons/io5';
 import { CiLocationOn } from 'react-icons/ci';
 import { Constant } from '@/utils/constant/constant';
+import { useNavigate } from 'react-router-dom';
 
 const JobListings = ({ companyData }) => {
   const [jobs, setJobs] = useState([]);
@@ -9,6 +10,7 @@ const JobListings = ({ companyData }) => {
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState('ALL');
  const token = localStorage.getItem(Constant.USER_TOKEN)
+ const navigate = useNavigate()
     useEffect(() => {
       const fetchData = async () => {
         try {
@@ -138,7 +140,7 @@ const JobListings = ({ companyData }) => {
                         <div className="mt-4 sm:mt-0">
                           <button 
                             className="border border-amber-300 bg-amber-50 p-1 px-4 font-medium text-amber-800 rounded-md text-md hover:bg-amber-100 transition-colors"
-                            onClick={() => window.location.href = `/jobs/${job.job_detail.id || index}`}
+                            onClick={() => navigate('/employers-list-v2')}
                           >
                             View Job
                           </button>
