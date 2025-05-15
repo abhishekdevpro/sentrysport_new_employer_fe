@@ -48,8 +48,8 @@ const PostBoxForm = () => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [jobTitles, setJobTitles] = useState([]);
   const [locations, setLocations] = useState([]);
-  // const [experienceYears, setExperienceYears] = useState([]);
-  // const [expectedExperienceYears, setExpectedExperienceYears] = useState([]);
+  const [experienceYears, setExperienceYears] = useState([]);
+  const [expectedExperienceYears, setExpectedExperienceYears] = useState([]);
   // const [categories, setCategories] = useState([]);
   // const [industry, setIndustry] = useState([]);
   // const [functionalTypes, setFunctionalTypes] = useState([]);
@@ -69,23 +69,32 @@ const PostBoxForm = () => {
     location: false,
   });
 
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedCategoryNames, setSelectedCategoryNames] = useState([]);
+
   const getCommaSeparatedTags = () => {
     if (selectedTags.length === 0) {
       return "";
     }
     return Array.isArray(selectedTags) ? selectedTags.join(", ") : "";
   };
+
+  const getCommaSeparatedCategories = () => {
+    if (selectedCategories.length === 0) {
+      return "";
+    }
+    return Array.isArray(selectedCategories) ? selectedCategories.join(", ") : "";
+  };
+
   const { 
-    experienceYears,
-    expectedExperienceYears,
-    categories,
-    functionalTypes,
     salaryTypes,
-    industries,
-    jobTypes,
     status,
-    error
+    error,
+    jobTypes
   } = useSelector((state) => state.data);
+  const [industries, setIndustries] = useState([]);
+  const [functionalAreas, setFunctionalAreas] = useState([]);
+  const [jobCategories, setJobCategories] = useState([]);
   const [formData, setFormData] = useState({
     job_title: "",
     location: "",
@@ -188,85 +197,10 @@ const PostBoxForm = () => {
     return doc.body.textContent || "";
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   // Strip HTML tags from description
-  //   const strippedDescription = stripHtmlTags(formData.description);
-
-  //   // Validate required fields
-  //   if (!strippedDescription.trim()) {
-  //     alert("Please enter a job description.");
-  //     return;
-  //   }
-
-  //   // Get comma-separated tags
-  //   const skills = getCommaSeparatedTags();
-  //   if (!skills) {
-  //     alert("Please select at least one skill.");
-  //     return;
-  //   }
-
-  //   try {
-  //     const formDataToSubmit = new FormData();
-  //     formDataToSubmit.append("job_title", formData.job_title);
-  //     formDataToSubmit.append("location", formData.location);
-  //     formDataToSubmit.append("job_description", strippedDescription); // Strip HTML tags
-  //     formDataToSubmit.append("category_id", formData.category_id);
-  //     formDataToSubmit.append(
-  //       "functional_area_id",
-  //       formData.functional_area_id
-  //     );
-  //     formDataToSubmit.append("experience_year", formData.experience_year);
-  //     formDataToSubmit.append(
-  //       "expected_experience_year",
-  //       formData.expected_experience_year
-  //     );
-  //     formDataToSubmit.append("salary_type", formData.salary_type);
-  //     formDataToSubmit.append(
-  //       "expected_salary_type",
-  //       formData.expected_salary_type
-  //     );
-  //     formDataToSubmit.append("batch_start_year", formData.batch_start_year);
-  //     formDataToSubmit.append("batch_end_year", formData.batch_end_year);
-  //     formDataToSubmit.append("skills", skills);
-  //     // formDataToSubmit.append("country_id", countryId || "");
-  //     // formDataToSubmit.append("state_id", stateId || "");
-  //     // formDataToSubmit.append("city_id", cityId || "");
-
-  //     if (videoFile) {
-  //       formDataToSubmit.append("video_jd_file", videoFile);
-  //     }
-
-  //     // console.log(
-  //     //   "Submitting form data:",
-  //     //   Object.fromEntries(formDataToSubmit)
-  //     // );
-
-  //     const response = await axios.post(
-  //       "https://api.sentryspot.co.uk/api/employeer/job-post",
-  //       formDataToSubmit,
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //           Authorization: token,
-  //         },
-  //       }
-  //     );
-  //     toast.success("Job posted successfully:", response.data);
-  //   } catch (error) {
-  //     if (error.response) {
-  //       toast.error("Error details:", error.response.data);
-  //     } else {
-  //       toast.error("Error posting job:", error);
-  //     }
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Strip HTML tags from description (you can use a utility function like stripHtmlTags)
+    // Strip HTML tags from description
     const strippedDescription = stripHtmlTags(formData.description);
 
     // Validate required fields
@@ -275,10 +209,22 @@ const PostBoxForm = () => {
       return;
     }
 
-    // Get comma-separated tags (implement getCommaSeparatedTags function)
+    // Get comma-separated tags
     const skills = getCommaSeparatedTags();
     if (!skills) {
       alert("Please select at least one skill.");
+      return;
+    }
+
+    // Validate categories
+    if (selectedCategories.length === 0) {
+      alert("Please select at least one job category.");
+      return;
+    }
+
+    // Validate job types
+    if (selectedTypes.length === 0) {
+      alert("Please select at least one job type.");
       return;
     }
 
@@ -287,7 +233,13 @@ const PostBoxForm = () => {
     formDataToSubmit.append("job_title", formData.job_title);
     formDataToSubmit.append("location", formData.location);
     formDataToSubmit.append("job_description", strippedDescription);
-    formDataToSubmit.append("category_id", formData.category_id);
+    
+    // Append categories as a single array
+    formDataToSubmit.append("category_id", JSON.stringify(selectedCategories));
+    
+    // Append job types as a single array
+    formDataToSubmit.append("job_type_id", JSON.stringify(selectedTypes));
+
     formDataToSubmit.append("functional_area_id", formData.functional_area_id);
     formDataToSubmit.append("experience_year", formData.experience_year);
     formDataToSubmit.append("expected_experience_year", formData.expected_experience_year);
@@ -301,11 +253,29 @@ const PostBoxForm = () => {
       formDataToSubmit.append("video_jd_file", videoFile);
     }
 
+    // Log the form data in a readable format
+    const formDataObj = {
+      job_title: formData.job_title,
+      location: formData.location,
+      job_description: strippedDescription,
+      category_id: selectedCategories,
+      job_type_id: selectedTypes,
+      functional_area_id: formData.functional_area_id,
+      experience_year: formData.experience_year,
+      expected_experience_year: formData.expected_experience_year,
+      salary_type: formData.salary_type,
+      expected_salary_type: formData.expected_salary_type,
+      batch_start_year: formData.batch_start_year,
+      batch_end_year: formData.batch_end_year,
+      skills: skills
+    };
+
+    console.log('Form Data:', formDataObj);
+
     // Dispatch the create job post action
     
     try {
       dispatch(createJobPost(formDataToSubmit));
-
     } catch (error) {
       toast.error("Error posting job: " + error.message);
     }
@@ -386,7 +356,7 @@ const PostBoxForm = () => {
     const requestBody = {
       keyword: "Job Description",
       title: cleanJobTitle,
-      company: "SVAP Infotech",
+      // company: "SVAP Infotech",
       location: cleanLocation,
     };
 
@@ -424,6 +394,42 @@ const PostBoxForm = () => {
   const handleChange = (key) => (e) => {
     setKeywords({ ...keywords, [key]: e.target.value });
   };
+
+  useEffect(() => {
+    const fetchAllData = async () => {
+      try {
+        // Fetch experience levels
+        const experienceResponse = await axios.get('https://api.sentryspot.co.uk/api/jobseeker/experience-level');
+        if (experienceResponse.data && experienceResponse.data.data) {
+          setExperienceYears(experienceResponse.data.data);
+          setExpectedExperienceYears(experienceResponse.data.data);
+        }
+
+        // Fetch industries
+        const industriesResponse = await axios.get('https://api.sentryspot.co.uk/api/jobseeker/industries');
+        if (industriesResponse.data && industriesResponse.data.data) {
+          setIndustries(industriesResponse.data.data);
+        }
+
+        // Fetch functional areas
+        const functionalAreasResponse = await axios.get('https://api.sentryspot.co.uk/api/jobseeker/functional-area');
+        if (functionalAreasResponse.data && functionalAreasResponse.data.data) {
+          setFunctionalAreas(functionalAreasResponse.data.data);
+        }
+
+        // Fetch job categories
+        const jobCategoriesResponse = await axios.get('https://api.sentryspot.co.uk/api/employeer/job-categories');
+        if (jobCategoriesResponse.data && jobCategoriesResponse.data.data) {
+          setJobCategories(jobCategoriesResponse.data.data);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        toast.error('Failed to fetch some data');
+      }
+    };
+
+    fetchAllData();
+  }, []);
 
   return (
     <form className="default-form" onSubmit={handleSubmit}>
@@ -633,8 +639,8 @@ const PostBoxForm = () => {
             className="mt-1 block w-full p-3 border-3 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="">Min Experience Year</option>
-            {experienceYears.map((item, index) => (
-              <option key={index} value={item.id}>
+            {experienceYears.map((item) => (
+              <option key={item.id} value={item.id}>
                 {item.name}
               </option>
             ))}
@@ -656,8 +662,8 @@ const PostBoxForm = () => {
             className="mt-1 block w-full p-3 border-3 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="">Max Experience Year</option>
-            {expectedExperienceYears.map((item, index) => (
-              <option key={index} value={item.id}>
+            {expectedExperienceYears.map((item) => (
+              <option key={item.id} value={item.id}>
                 {item.name}
               </option>
             ))}
@@ -666,51 +672,30 @@ const PostBoxForm = () => {
       </div>
 
       <div className="flex flex-wrap gap-4 mt-4">
-        {/* Job indusrty dropdown  */}
+        {/* Job Industry dropdown */}
         <div className="flex-1">
           <label
-            htmlFor="functional_area_id"
+            htmlFor="industry_id"
             className="block text-sm font-medium text-gray-700"
           >
             Industry
           </label>
           <select
-            name="functional_area_id"
-            value={formData.functional_area_id}
+            name="industry_id"
+            value={formData.industry_id}
             onChange={handleFormChange}
             className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           >
-            <option value="">Select Indusrty</option>
-            {industries?.map((item, index) => (
-              <option key={index} value={item.id}>
+            <option value="">Select Industry</option>
+            {industries.map((item) => (
+              <option key={item.id} value={item.id}>
                 {item.name}
               </option>
             ))}
           </select>
         </div>
-        {/* Job Category Dropdown */}
-        <div className="flex-1">
-          <label
-            htmlFor="category_id"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Job Category
-          </label>
-          <select
-            name="category_id"
-            value={formData.category_id}
-            onChange={handleFormChange}
-            required
-            className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-          >
-            <option value="">Select Job Category</option>
-            {categories.map((item, index) => (
-              <option key={index} value={item.id}>
-                {item.name}
-              </option>
-            ))}
-          </select>
-        </div>
+
+       
 
         {/* Functional Area Dropdown */}
         <div className="flex-1">
@@ -727,8 +712,8 @@ const PostBoxForm = () => {
             className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="">Select Functional Area</option>
-            {functionalTypes.map((item, index) => (
-              <option key={index} value={item.id}>
+            {functionalAreas.map((item) => (
+              <option key={item.id} value={item.id}>
                 {item.name}
               </option>
             ))}
@@ -736,6 +721,46 @@ const PostBoxForm = () => {
         </div>
       </div>
      
+      {/* Job Category Dropdown */}
+      <div className="flex-1">
+          <label
+            htmlFor="category_id"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Job Category
+          </label>
+          <MultiSelector
+            values={selectedCategoryNames}
+            onValuesChange={(selectedNames) => {
+              setSelectedCategoryNames(selectedNames);
+              // Map the selected names back to their IDs
+              const selectedIds = selectedNames.map(name => {
+                const category = jobCategories.find(cat => cat.name === name);
+                return category ? category.id : null;
+              }).filter(id => id !== null);
+              setSelectedCategories(selectedIds);
+            }}
+            className="w-full relative"
+            name="category_id"
+          >
+            <MultiSelectorTrigger className="w-full px-3 py-3 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+              <MultiSelectorInput placeholder="Select job categories" />
+            </MultiSelectorTrigger>
+            <MultiSelectorContent>
+              <MultiSelectorList className="bg-white absolute z-10 w-full mt-1 border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                {jobCategories.map((item) => (
+                  <MultiSelectorItem
+                    value={item.name}
+                    key={item.id}
+                    className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
+                  >
+                    {item.name}
+                  </MultiSelectorItem>
+                ))}
+              </MultiSelectorList>
+            </MultiSelectorContent>
+          </MultiSelector>
+        </div>
       <div className="form-group col-lg-12 col-md-12 mt-4">
         <label
           htmlFor="video"

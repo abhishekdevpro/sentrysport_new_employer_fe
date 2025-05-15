@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-const ScreeningQuestionsForm = () => {
+const ScreeningQuestionsForm = ({ onQuestionsChange = () => {} }) => {
   const [questions, setQuestions] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const dropdownRef = useRef(null);
 
   const questionTypes = [
     "Multi choice",
@@ -10,6 +11,31 @@ const ScreeningQuestionsForm = () => {
     "Yes / No Question",
     "Short Answer"
   ];
+
+  // Notify parent component when questions change
+  useEffect(() => {
+    if (typeof onQuestionsChange === 'function') {
+      const formattedQuestions = questions.map(q => ({
+        question: q.questionText,
+        options: q.options
+      }));
+      onQuestionsChange(formattedQuestions);
+    }
+  }, [questions, onQuestionsChange]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const QuestionForm = () => {
     const [questionType, setQuestionType] = useState(questionTypes[0]);
@@ -28,27 +54,47 @@ const ScreeningQuestionsForm = () => {
       setOptions(newOptions);
     };
 
+    const handleQuestionTextChange = (e) => {
+      setQuestionText(e.target.value);
+    };
+
     const handleSubmit = () => {
+      if (!questionText.trim()) {
+        alert("Please enter a question text");
+        return;
+      }
+
+      if (questionType.includes("choice") && options.filter(opt => opt.trim() !== "").length < 2) {
+        alert("Please add at least two options for choice questions");
+        return;
+      }
+
       const newQuestion = {
         type: questionType,
         mandatory,
         questionText,
-        options: questionType.includes("choice") ? options : []
+        options: questionType.includes("choice") ? options.filter(opt => opt.trim() !== "") : []
       };
       setQuestions([...questions, newQuestion]);
       setShowForm(false);
+      // Reset form
+      setQuestionType(questionTypes[0]);
+      setMandatory(false);
+      setQuestionText("");
+      setOptions(["", ""]);
     };
 
     return (
-      <div className="border border-gray-200 rounded-lg p-4 mt-4">
+      <div className="border border-gray-200 rounded-lg p-4 mt-4 bg-white shadow-sm">
         <div className="flex justify-between items-center mb-4">
           {/* Question Type Dropdown */}
-          <div className="relative">
+          <div className="relative" ref={dropdownRef}>
             <button 
+              type="button"
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="border border-gray-300 rounded-md px-4 py-2 w-48 text-left flex justify-between items-center"
+              className="border border-gray-300 rounded-md px-4 py-2 w-48 text-left flex justify-between items-center bg-white hover:bg-gray-50"
             >
-              {questionType}
+              <span>{questionType}</span>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
               </svg>
@@ -59,11 +105,18 @@ const ScreeningQuestionsForm = () => {
                 {questionTypes.map((type) => (
                   <button
                     key={type}
+                    type="button"
                     onClick={() => {
                       setQuestionType(type);
                       setDropdownOpen(false);
+                      // Reset options if switching to non-choice type
+                      if (!type.includes("choice")) {
+                        setOptions([]);
+                      } else if (options.length === 0) {
+                        setOptions(["", ""]);
+                      }
                     }}
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
                   >
                     {type}
                   </button>
@@ -74,8 +127,9 @@ const ScreeningQuestionsForm = () => {
 
           {/* Mandatory Toggle */}
           <div className="flex items-center">
-            <span className="mr-2">Mandatory</span>
+            <span className="mr-2 text-sm text-gray-600">Mandatory</span>
             <button
+              type="button"
               onClick={() => setMandatory(!mandatory)}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                 mandatory ? 'bg-violet-500' : 'bg-gray-200'
@@ -92,12 +146,13 @@ const ScreeningQuestionsForm = () => {
 
         {/* Question Text */}
         <div className="mb-4">
-          <label className="block mb-2">Question Text*</label>
+          <label className="block mb-2 text-sm font-medium text-gray-700">Question Text*</label>
           <textarea
             value={questionText}
-            onChange={(e) => setQuestionText(e.target.value)}
-            className="w-full border border-gray-300 rounded-md p-2 min-h-[100px]"
+            onChange={handleQuestionTextChange}
+            className="w-full border border-gray-300 rounded-md p-2 min-h-[100px] focus:ring-violet-500 focus:border-violet-500 resize-y"
             placeholder="What would you like to ask?"
+            style={{ minHeight: '100px' }}
           />
         </div>
 
@@ -105,20 +160,22 @@ const ScreeningQuestionsForm = () => {
         {questionType.includes("choice") && (
           <div className="mb-4">
             {options.map((option, index) => (
-              <input
-                key={index}
-                type="text"
-                value={option}
-                onChange={(e) => handleOptionChange(index, e.target.value)}
-                className="w-full border border-gray-300 rounded-md p-2 mb-2"
-                placeholder={`Option ${index + 1}`}
-              />
+              <div key={index} className="mb-2">
+                <input
+                  type="text"
+                  value={option}
+                  onChange={(e) => handleOptionChange(index, e.target.value)}
+                  className="w-full border border-gray-300 rounded-md p-2 focus:ring-violet-500 focus:border-violet-500"
+                  placeholder={`Option ${index + 1}`}
+                />
+              </div>
             ))}
             <button
+              type="button"
               onClick={handleAddOption}
-              className="text-violet-500 hover:text-violet-600"
+              className="text-violet-500 hover:text-violet-600 text-sm font-medium"
             >
-              Add option
+              + Add option
             </button>
           </div>
         )}
@@ -126,14 +183,16 @@ const ScreeningQuestionsForm = () => {
         {/* Action Buttons */}
         <div className="flex gap-2">
           <button
+            type="button"
             onClick={handleSubmit}
-            className="bg-gray-200 hover:bg-gray-300 rounded-md px-4 py-2"
+            className="bg-violet-500 text-white hover:bg-violet-600 rounded-md px-4 py-2 text-sm font-medium"
           >
-            Add
+            Add Question
           </button>
           <button
+            type="button"
             onClick={() => setShowForm(false)}
-            className="text-gray-500 hover:text-gray-600 px-4 py-2"
+            className="text-gray-500 hover:text-gray-600 px-4 py-2 text-sm font-medium"
           >
             Cancel
           </button>
@@ -144,19 +203,19 @@ const ScreeningQuestionsForm = () => {
 
   return (
     <div className="form-group col-lg-12 col-md-12 my-3">
-      <label htmlFor="email">Add Screening Questions</label>
-      <br />
-      <div className="text-sm text-gray-600">
-        Candidates will be asked to answer these question before they submit
+      <label className="block text-sm font-medium text-gray-700 mb-2">Add Screening Questions</label>
+      <div className="text-sm text-gray-600 mb-4">
+        Candidates will be asked to answer these questions before they submit
         their application. You can add up to 10 questions.
       </div>
-      <br />
+      
       {!showForm && questions.length < 10 && (
         <button
+          type="button"
           onClick={() => setShowForm(true)}
-          className="border border-violet-500 rounded-md py-2 px-4  text-violet-500 hover:bg-violet-50"
+          className="border border-violet-500 rounded-md py-2 px-4 text-violet-500 hover:bg-violet-50 text-sm font-medium"
         >
-          Add Question
+          + Add Question
         </button>
       )}
       
@@ -164,18 +223,18 @@ const ScreeningQuestionsForm = () => {
       
       {/* Display added questions */}
       {questions.map((question, index) => (
-        <div key={index} className="border border-gray-200 rounded-lg p-4 mt-4">
+        <div key={index} className="border border-gray-200 rounded-lg p-4 mt-4 bg-white shadow-sm">
           <div className="flex justify-between items-center mb-2">
-            <span className="font-medium">{question.type}</span>
-            <span className={question.mandatory ? "text-violet-500" : "text-gray-500"}>
+            <span className="font-medium text-sm text-gray-700">{question.type}</span>
+            <span className={`text-sm ${question.mandatory ? "text-violet-500" : "text-gray-500"}`}>
               {question.mandatory ? "Mandatory" : "Optional"}
             </span>
           </div>
-          <p>{question.questionText}</p>
+          <p className="text-gray-800">{question.questionText}</p>
           {question.options.length > 0 && (
-            <ul className="mt-2">
+            <ul className="mt-2 space-y-1">
               {question.options.map((option, idx) => (
-                <li key={idx} className="ml-4">• {option}</li>
+                <li key={idx} className="ml-4 text-sm text-gray-600">• {option}</li>
               ))}
             </ul>
           )}
