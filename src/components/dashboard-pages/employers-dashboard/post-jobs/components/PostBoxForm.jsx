@@ -69,12 +69,23 @@ const PostBoxForm = () => {
     location: false,
   });
 
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedCategoryNames, setSelectedCategoryNames] = useState([]);
+
   const getCommaSeparatedTags = () => {
     if (selectedTags.length === 0) {
       return "";
     }
     return Array.isArray(selectedTags) ? selectedTags.join(", ") : "";
   };
+
+  const getCommaSeparatedCategories = () => {
+    if (selectedCategories.length === 0) {
+      return "";
+    }
+    return Array.isArray(selectedCategories) ? selectedCategories.join(", ") : "";
+  };
+
   const { 
     salaryTypes,
     status,
@@ -205,12 +216,30 @@ const PostBoxForm = () => {
       return;
     }
 
+    // Validate categories
+    if (selectedCategories.length === 0) {
+      alert("Please select at least one job category.");
+      return;
+    }
+
+    // Validate job types
+    if (selectedTypes.length === 0) {
+      alert("Please select at least one job type.");
+      return;
+    }
+
     // Prepare form data
     const formDataToSubmit = new FormData();
     formDataToSubmit.append("job_title", formData.job_title);
     formDataToSubmit.append("location", formData.location);
     formDataToSubmit.append("job_description", strippedDescription);
-    formDataToSubmit.append("category_id", formData.category_id);
+    
+    // Append categories as a single array
+    formDataToSubmit.append("category_id", JSON.stringify(selectedCategories));
+    
+    // Append job types as a single array
+    formDataToSubmit.append("job_type_id", JSON.stringify(selectedTypes));
+
     formDataToSubmit.append("functional_area_id", formData.functional_area_id);
     formDataToSubmit.append("experience_year", formData.experience_year);
     formDataToSubmit.append("expected_experience_year", formData.expected_experience_year);
@@ -224,10 +253,28 @@ const PostBoxForm = () => {
       formDataToSubmit.append("video_jd_file", videoFile);
     }
 
+    // Log the form data in a readable format
+    const formDataObj = {
+      job_title: formData.job_title,
+      location: formData.location,
+      job_description: strippedDescription,
+      category_id: selectedCategories,
+      job_type_id: selectedTypes,
+      functional_area_id: formData.functional_area_id,
+      experience_year: formData.experience_year,
+      expected_experience_year: formData.expected_experience_year,
+      salary_type: formData.salary_type,
+      expected_salary_type: formData.expected_salary_type,
+      batch_start_year: formData.batch_start_year,
+      batch_end_year: formData.batch_end_year,
+      skills: skills
+    };
+
+    console.log('Form Data:', formDataObj);
+
     // Dispatch the create job post action
     try {
       dispatch(createJobPost(formDataToSubmit));
-
     } catch (error) {
       toast.error("Error posting job: " + error.message);
     }
@@ -308,7 +355,7 @@ const PostBoxForm = () => {
     const requestBody = {
       keyword: "Job Description",
       title: cleanJobTitle,
-      company: "SVAP Infotech",
+      // company: "SVAP Infotech",
       location: cleanLocation,
     };
 
@@ -647,29 +694,7 @@ const PostBoxForm = () => {
           </select>
         </div>
 
-        {/* Job Category Dropdown */}
-        <div className="flex-1">
-          <label
-            htmlFor="category_id"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Job Category
-          </label>
-          <select
-            name="category_id"
-            value={formData.category_id}
-            onChange={handleFormChange}
-            required
-            className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-          >
-            <option value="">Select Job Category</option>
-            {jobCategories.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.name}
-              </option>
-            ))}
-          </select>
-        </div>
+       
 
         {/* Functional Area Dropdown */}
         <div className="flex-1">
@@ -695,6 +720,46 @@ const PostBoxForm = () => {
         </div>
       </div>
      
+      {/* Job Category Dropdown */}
+      <div className="flex-1">
+          <label
+            htmlFor="category_id"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Job Category
+          </label>
+          <MultiSelector
+            values={selectedCategoryNames}
+            onValuesChange={(selectedNames) => {
+              setSelectedCategoryNames(selectedNames);
+              // Map the selected names back to their IDs
+              const selectedIds = selectedNames.map(name => {
+                const category = jobCategories.find(cat => cat.name === name);
+                return category ? category.id : null;
+              }).filter(id => id !== null);
+              setSelectedCategories(selectedIds);
+            }}
+            className="w-full relative"
+            name="category_id"
+          >
+            <MultiSelectorTrigger className="w-full px-3 py-3 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+              <MultiSelectorInput placeholder="Select job categories" />
+            </MultiSelectorTrigger>
+            <MultiSelectorContent>
+              <MultiSelectorList className="bg-white absolute z-10 w-full mt-1 border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                {jobCategories.map((item) => (
+                  <MultiSelectorItem
+                    value={item.name}
+                    key={item.id}
+                    className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
+                  >
+                    {item.name}
+                  </MultiSelectorItem>
+                ))}
+              </MultiSelectorList>
+            </MultiSelectorContent>
+          </MultiSelector>
+        </div>
       <div className="form-group col-lg-12 col-md-12 mt-4">
         <label
           htmlFor="video"
