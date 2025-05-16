@@ -17,8 +17,11 @@ const ScreeningQuestionsForm = ({ onQuestionsChange = () => {} }) => {
     if (typeof onQuestionsChange === 'function') {
       const formattedQuestions = questions.map(q => ({
         question: q.questionText,
-        options: q.options
+        type: q.type,
+        mandatory: q.mandatory,
+        options: q.options || []
       }));
+      console.log('ScreeningQuestions - Sending to parent:', formattedQuestions);
       onQuestionsChange(formattedQuestions);
     }
   }, [questions, onQuestionsChange]);
@@ -132,7 +135,7 @@ const ScreeningQuestionsForm = ({ onQuestionsChange = () => {} }) => {
               type="button"
               onClick={() => setMandatory(!mandatory)}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                mandatory ? 'bg-violet-500' : 'bg-gray-200'
+                mandatory ? 'bg-blue-600' : 'bg-gray-200'
               }`}
             >
               <span
@@ -150,7 +153,7 @@ const ScreeningQuestionsForm = ({ onQuestionsChange = () => {} }) => {
           <textarea
             value={questionText}
             onChange={handleQuestionTextChange}
-            className="w-full border border-gray-300 rounded-md p-2 min-h-[100px] focus:ring-violet-500 focus:border-violet-500 resize-y"
+            className="w-full border border-gray-300 rounded-md p-2 min-h-[100px] focus:ring-blue-500 focus:border-blue-500 resize-y"
             placeholder="What would you like to ask?"
             style={{ minHeight: '100px' }}
           />
@@ -165,7 +168,7 @@ const ScreeningQuestionsForm = ({ onQuestionsChange = () => {} }) => {
                   type="text"
                   value={option}
                   onChange={(e) => handleOptionChange(index, e.target.value)}
-                  className="w-full border border-gray-300 rounded-md p-2 focus:ring-violet-500 focus:border-violet-500"
+                  className="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder={`Option ${index + 1}`}
                 />
               </div>
@@ -173,7 +176,7 @@ const ScreeningQuestionsForm = ({ onQuestionsChange = () => {} }) => {
             <button
               type="button"
               onClick={handleAddOption}
-              className="text-violet-500 hover:text-violet-600 text-sm font-medium"
+              className="text-blue-600 hover:text-blue-700 text-sm font-medium"
             >
               + Add option
             </button>
@@ -185,7 +188,7 @@ const ScreeningQuestionsForm = ({ onQuestionsChange = () => {} }) => {
           <button
             type="button"
             onClick={handleSubmit}
-            className="bg-violet-500 text-white hover:bg-violet-600 rounded-md px-4 py-2 text-sm font-medium"
+            className="bg-blue-600 text-white hover:bg-blue-700 rounded-md px-4 py-2 text-sm font-medium"
           >
             Add Question
           </button>
@@ -202,44 +205,45 @@ const ScreeningQuestionsForm = ({ onQuestionsChange = () => {} }) => {
   };
 
   return (
-    <div className="form-group col-lg-12 col-md-12 my-3">
-      <label className="block text-sm font-medium text-gray-700 mb-2">Add Screening Questions</label>
-      <div className="text-sm text-gray-600 mb-4">
-        Candidates will be asked to answer these questions before they submit
-        their application. You can add up to 10 questions.
-      </div>
-      
+    <div>
       {!showForm && questions.length < 10 && (
         <button
           type="button"
           onClick={() => setShowForm(true)}
-          className="border border-violet-500 rounded-md py-2 px-4 text-violet-500 hover:bg-violet-50 text-sm font-medium"
+          className="inline-flex items-center px-4 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
-          + Add Question
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Add Question
         </button>
       )}
       
       {showForm && <QuestionForm />}
       
       {/* Display added questions */}
-      {questions.map((question, index) => (
-        <div key={index} className="border border-gray-200 rounded-lg p-4 mt-4 bg-white shadow-sm">
-          <div className="flex justify-between items-center mb-2">
-            <span className="font-medium text-sm text-gray-700">{question.type}</span>
-            <span className={`text-sm ${question.mandatory ? "text-violet-500" : "text-gray-500"}`}>
-              {question.mandatory ? "Mandatory" : "Optional"}
-            </span>
-          </div>
-          <p className="text-gray-800">{question.questionText}</p>
-          {question.options.length > 0 && (
-            <ul className="mt-2 space-y-1">
-              {question.options.map((option, idx) => (
-                <li key={idx} className="ml-4 text-sm text-gray-600">• {option}</li>
-              ))}
-            </ul>
-          )}
+      {questions.length > 0 && (
+        <div className="mt-6 space-y-4">
+          {questions.map((question, index) => (
+            <div key={index} className="border border-gray-200 rounded-lg p-4 bg-white shadow-sm">
+              <div className="flex justify-between items-center mb-2">
+                <span className="font-medium text-sm text-gray-700">{question.type}</span>
+                <span className={`text-sm ${question.mandatory ? "text-blue-600" : "text-gray-500"}`}>
+                  {question.mandatory ? "Mandatory" : "Optional"}
+                </span>
+              </div>
+              <p className="text-gray-800">{question.questionText}</p>
+              {question.options.length > 0 && (
+                <ul className="mt-2 space-y-1">
+                  {question.options.map((option, idx) => (
+                    <li key={idx} className="ml-4 text-sm text-gray-600">• {option}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))}
         </div>
-      ))}
+      )}
     </div>
   );
 };

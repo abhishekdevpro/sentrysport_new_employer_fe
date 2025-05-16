@@ -319,7 +319,7 @@ const PostBoxForm = () => {
         formDataToSend,
         {
           headers: {
-            'Authorization':token,
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'multipart/form-data',
           },
         }
