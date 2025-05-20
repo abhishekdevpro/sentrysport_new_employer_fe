@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 
 const ScreeningQuestionsForm = ({ onQuestionsChange = () => {} }) => {
@@ -248,4 +249,3 @@ const ScreeningQuestionsForm = ({ onQuestionsChange = () => {} }) => {
   );
 };
 
-export default ScreeningQuestionsForm;

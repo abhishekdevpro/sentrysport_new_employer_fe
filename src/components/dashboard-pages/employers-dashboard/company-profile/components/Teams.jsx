@@ -349,4 +349,3 @@ const TeamMemberManager = () => {
   );
 };
 
-export default TeamMemberManager;

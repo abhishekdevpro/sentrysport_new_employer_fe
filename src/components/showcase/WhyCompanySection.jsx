@@ -1,3 +1,4 @@
+
 // import { useState, useEffect } from 'react';
 // import { MdEdit } from 'react-icons/md';
 // import ReactQuill from 'react-quill';
@@ -244,4 +245,5 @@ export default function WhyChooseUsSection({ companyData, setCompanyData }) {
       )}
     </section>
   );
+
 }
