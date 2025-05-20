@@ -1,3 +1,4 @@
+
 // import { useState, useEffect } from 'react';
 // import { MdPhoto, MdEdit } from 'react-icons/md';
 
@@ -432,4 +433,3 @@ const AboutSection = ({ companyData = {},userInfo, onSave }) => {
   );
 };
 
-export default AboutSection;
