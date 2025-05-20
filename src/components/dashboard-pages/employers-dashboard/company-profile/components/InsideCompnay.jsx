@@ -357,3 +357,4 @@ const InsideCompanyImages = ({ token, BASE_IMAGE_URL, companyData }) => {
   )
 }
 
+export default InsideCompanyImages

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { IoBagHandleOutline } from 'react-icons/io5';
 import { CiLocationOn } from 'react-icons/ci';
@@ -158,6 +157,5 @@ const JobListings = ({ companyData }) => {
     </section>
   );
 };
-
 
 export default JobListings;

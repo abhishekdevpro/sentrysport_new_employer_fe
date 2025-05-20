@@ -1,4 +1,5 @@
 
+
 import { useEffect, useState } from "react"
 import { useForm, FormProvider } from "react-hook-form"
 import axios from "axios"
@@ -267,3 +268,5 @@ const SocialNetworkBox = () => {
     </FormProvider>
   )
 }
+
+export default SocialNetworkBox
