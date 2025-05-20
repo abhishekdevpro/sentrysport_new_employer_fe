@@ -180,7 +180,7 @@ const TeamMemberManager = () => {
 
   return (
     <div className="md:max-w-5xl md:mx-auto md:p-4">
-      <h1 className="text-2xl font-bold mb-4">Team Member Manager</h1>
+      <h1 className="text-2xl font-bold mb-4">Team Members</h1>
 
       {error && (
         <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">

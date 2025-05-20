@@ -111,7 +111,79 @@ const PostBoxForm = () => {
   });
   const [videoFile, setVideoFile] = useState(null);
   const token = localStorage.getItem(Constant.USER_TOKEN); // Replace with your actual token
- 
+  const [screeningQuestions, setScreeningQuestions] = useState([]);
+  const [showScreeningForm, setShowScreeningForm] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState({
+    type: "Multi choice",
+    mandatory: false,
+    questionText: "",
+    options: ["", ""]
+  });
+
+  const questionTypes = [
+    "Multi choice",
+    "Single choice",
+    "Yes / No Question",
+    "Short Answer"
+  ];
+
+  const handleAddScreeningQuestion = () => {
+    if (!currentQuestion.questionText.trim()) {
+      toast.error("Please enter a question text");
+      return;
+    }
+
+    if (currentQuestion.type.includes("choice") && 
+        currentQuestion.options.filter(opt => opt.trim() !== "").length < 2) {
+      toast.error("Please add at least two options for choice questions");
+      return;
+    }
+
+    const newQuestion = {
+      ...currentQuestion,
+      options: currentQuestion.type.includes("choice") 
+        ? currentQuestion.options.filter(opt => opt.trim() !== "") 
+        : []
+    };
+
+    console.log('Adding new question:', newQuestion);
+    setScreeningQuestions(prev => {
+      const updated = [...prev, newQuestion];
+      console.log('Updated screening questions:', updated);
+      return updated;
+    });
+    setShowScreeningForm(false);
+    setCurrentQuestion({
+      type: "Multi choice",
+      mandatory: false,
+      questionText: "",
+      options: ["", ""]
+    });
+  };
+
+  const handleAddOption = () => {
+    setCurrentQuestion(prev => ({
+      ...prev,
+      options: [...prev.options, ""]
+    }));
+  };
+
+  const handleOptionChange = (index, value) => {
+    setCurrentQuestion(prev => {
+      const newOptions = [...prev.options];
+      newOptions[index] = value;
+      return { ...prev, options: newOptions };
+    });
+  };
+
+  const handleQuestionTypeChange = (type) => {
+    setCurrentQuestion(prev => ({
+      ...prev,
+      type,
+      options: type.includes("choice") ? (prev.options.length ? prev.options : ["", ""]) : []
+    }));
+  };
+
   const fetchData = async (url, setData, dropdownKey) => {
     try {
       const response = await axios.get(url);
@@ -199,84 +271,70 @@ const PostBoxForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    // Strip HTML tags from description
-    const strippedDescription = stripHtmlTags(formData.description);
-
-    // Validate required fields
-    if (!strippedDescription.trim()) {
-      alert("Please enter a job description.");
-      return;
-    }
-
-    // Get comma-separated tags
-    const skills = getCommaSeparatedTags();
-    if (!skills) {
-      alert("Please select at least one skill.");
-      return;
-    }
-
-    // Validate categories
-    if (selectedCategories.length === 0) {
-      alert("Please select at least one job category.");
-      return;
-    }
-
-    // Validate job types
-    if (selectedTypes.length === 0) {
-      alert("Please select at least one job type.");
-      return;
-    }
-
-    // Prepare form data
-    const formDataToSubmit = new FormData();
-    formDataToSubmit.append("job_title", formData.job_title);
-    formDataToSubmit.append("location", formData.location);
-    formDataToSubmit.append("job_description", strippedDescription);
-    
-    // Append categories as a single array
-    formDataToSubmit.append("category_id", JSON.stringify(selectedCategories));
-    
-    // Append job types as a single array
-    formDataToSubmit.append("job_type_id", JSON.stringify(selectedTypes));
-
-    formDataToSubmit.append("functional_area_id", formData.functional_area_id);
-    formDataToSubmit.append("experience_year", formData.experience_year);
-    formDataToSubmit.append("expected_experience_year", formData.expected_experience_year);
-    formDataToSubmit.append("salary_type", formData.salary_type);
-    formDataToSubmit.append("expected_salary_type", formData.expected_salary_type);
-    formDataToSubmit.append("batch_start_year", formData.batch_start_year);
-    formDataToSubmit.append("batch_end_year", formData.batch_end_year);
-    formDataToSubmit.append("skills", skills);
-    
-    if (videoFile) {
-      formDataToSubmit.append("video_jd_file", videoFile);
-    }
-
-    // Log the form data in a readable format
-    const formDataObj = {
-      job_title: formData.job_title,
-      location: formData.location,
-      job_description: strippedDescription,
-      category_id: selectedCategories,
-      job_type_id: selectedTypes,
-      functional_area_id: formData.functional_area_id,
-      experience_year: formData.experience_year,
-      expected_experience_year: formData.expected_experience_year,
-      salary_type: formData.salary_type,
-      expected_salary_type: formData.expected_salary_type,
-      batch_start_year: formData.batch_start_year,
-      batch_end_year: formData.batch_end_year,
-      skills: skills
-    };
-
-    console.log('Form Data:', formDataObj);
-
-    // Dispatch the create job post action
     try {
-      dispatch(createJobPost(formDataToSubmit));
+      const formDataToSend = new FormData();
+      
+      // Add basic form fields
+      formDataToSend.append("job_title", formData.job_title);
+      formDataToSend.append("location", formData.location);
+      formDataToSend.append("job_description", formData.description);
+      formDataToSend.append("category_id", JSON.stringify(selectedCategories));
+      formDataToSend.append("job_type_id", JSON.stringify(selectedTypes));
+      formDataToSend.append("functional_area_id", formData.functional_area_id);
+      formDataToSend.append("experience_year", formData.experience_year);
+      formDataToSend.append("expected_experience_year", formData.expected_experience_year);
+      formDataToSend.append("salary_type", formData.salary_type);
+      formDataToSend.append("expected_salary_type", formData.expected_salary_type);
+      formDataToSend.append("batch_start_year", formData.batch_start_year);
+      formDataToSend.append("batch_end_year", formData.batch_end_year);
+      formDataToSend.append("skills", getCommaSeparatedTags());
+
+      console.log('Current screening questions:', screeningQuestions);
+
+      // Add screening questions to the payload
+      if (screeningQuestions && screeningQuestions.length > 0) {
+        const formattedQuestions = screeningQuestions.map(q => ({
+          question: q.questionText,
+          options: q.type.includes("choice") ? q.options : ["Yes", "No"]
+        }));
+        console.log('Formatted questions for payload:', formattedQuestions);
+        formDataToSend.append('screening_questions', JSON.stringify(formattedQuestions));
+      }
+
+      // Log all FormData entries
+      console.log('FormData entries:');
+      for (let pair of formDataToSend.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+
+      // Add video file if exists
+      if (videoFile) {
+        formDataToSend.append('video_jd_file', videoFile);
+      }
+
+      const response = await axios.post(
+        'https://api.sentryspot.co.uk/api/employer/job-post',
+        formDataToSend,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      if (response.data.status === 200) {
+        toast.success('Job posted successfully!');
+      } else {
+        toast.error(response.data.message || 'Failed to post job');
+      }
     } catch (error) {
-      toast.error("Error posting job: " + error.message);
+      console.error('Error posting job:', error);
+      toast.error(error.response?.data?.message || 'Failed to post job');
+    } finally {
+      setLoading(false);
     }
   };
   const handleTypeClick = (id) => {
@@ -432,33 +490,6 @@ const PostBoxForm = () => {
 
   return (
     <form className="default-form" onSubmit={handleSubmit}>
-      {/* <div className="form-group col-lg-12 col-md-12  mt-4">
-        <label htmlFor="job" className="block text-sm font-medium text-gray-700">
-          Job Title
-        </label>
-        <input
-          type="text"
-          name="job"
-          placeholder="Type job title"
-          onChange={handleChange("job")}
-          value={keywords.job}
-          required
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-        />
-        {dropdownVisibility.job && (
-          <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg">
-            {jobTitles.map((item, index) => (
-              <li
-                key={index}
-                onClick={() => handleSelect("job", item.name)}
-                className="cursor-pointer px-4 py-2 hover:bg-gray-100"
-              >
-                {item.name}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div> */}
       <div className="form-group col-lg-12 col-md-12 relative mt-4">
         <label
           htmlFor="job"
@@ -521,60 +552,6 @@ const PostBoxForm = () => {
     </ul>
   )}
 </div>
-      {/* <div className="relative mb-4">
-        <label
-          htmlFor="location"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Location
-        </label>
-        <input
-          type="text"
-          name="location"
-          placeholder="+ Add location"
-          onChange={handleChange("location")}
-          value={keywords.location}
-          required
-          className="mt-1 block w-full px-3 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-        />
-        {dropdownVisibility.location && (
-          <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
-            {locations.map((item, index) => (
-              <li
-                key={index}
-                onClick={() => handleSelect("location", item)}
-                className="cursor-pointer px-4 py-2 hover:bg-gray-100"
-              >
-                {item.city}, {item.state}, {item.country}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div> */}
-
-      {/* Description Editor */}
-      {/* <div className="form-group col-lg-12 col-md-12 mt-4">
-  <div className="flex justify-between">
-    <label htmlFor="description" className="pt-4 font-semibold">
-      Job Description
-    </label>
-    <button
-      className="border-1 border-blue-700 rounded-md py-2 px-2 m-2 font-semibold"
-      onClick={handleAiAssist}
-    >
-      AI Assist +
-    </button>
-  </div>
-  <ReactQuill
-    value={formData.description}
-    onChange={handleDescriptionChange}
-    className={`mt-1 border border-gray-300 h- rounded-md shadow-sm ${!formData.description ? 'border-red-500' : ''}`}
-    placeholder="Enter job description..."
-  />
-  {!formData.description && (
-    <p className="text-red-500 text-sm mt-1">Job description is required.</p>
-  )}
-</div> */}
       <div>
         <div className="flex justify-between items-center">
           <label
@@ -583,13 +560,6 @@ const PostBoxForm = () => {
           >
             Job Description
           </label>
-          {/* <button
-            type="button"
-            onClick={handleAiAssist}
-            className="px-4 py-2 bg-blue-900 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            AI Assist +
-          </button> */}
            <button
       type="button"
       onClick={handleAiAssist}
@@ -620,7 +590,6 @@ const PostBoxForm = () => {
           </p>
         )}
       </div>
-
 
       <div className="flex flex-wrap gap-4 mt-4">
         {/* Min Experience Year Dropdown */}
@@ -797,12 +766,6 @@ const PostBoxForm = () => {
           >
             Skills
           </label>
-          {/* <button
-            type="button"
-            className="px-4 py-2 bg-blue-900 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            AI Assist +
-          </button> */}
         </div>
         <MultiSelector
           values={selectedTags}
@@ -859,9 +822,148 @@ const PostBoxForm = () => {
         </div>
       </div>
 
-  
-      <ScreeningQuestionsForm />
-      
+      {/* Screening Questions Section */}
+      <div className="form-group col-lg-12 col-md-12 mt-6">
+        <div className="flex justify-between items-center mb-4">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900">Screening Questions</h3>
+            <p className="text-sm text-gray-600 mt-1">
+              Add questions that candidates must answer when applying for this job
+            </p>
+          </div>
+        </div>
+        
+        <div className="bg-white rounded-lg border border-gray-200 p-4">
+          {!showScreeningForm && screeningQuestions.length < 10 && (
+            <button
+              type="button"
+              onClick={() => setShowScreeningForm(true)}
+              className="inline-flex items-center px-4 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+              </svg>
+              Add Question
+            </button>
+          )}
+          
+          {showScreeningForm && (
+            <div className="border border-gray-200 rounded-lg p-4 mt-4 bg-white shadow-sm">
+              <div className="flex justify-between items-center mb-4">
+                {/* Question Type Dropdown */}
+                <div className="relative">
+                  <select
+                    value={currentQuestion.type}
+                    onChange={(e) => handleQuestionTypeChange(e.target.value)}
+                    className="border border-gray-300 rounded-md px-4 py-2 w-48 text-left bg-white hover:bg-gray-50"
+                  >
+                    {questionTypes.map((type) => (
+                      <option key={type} value={type}>{type}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Mandatory Toggle */}
+                <div className="flex items-center">
+                  <span className="mr-2 text-sm text-gray-600">Mandatory</span>
+                  <button
+                    type="button"
+                    onClick={() => setCurrentQuestion(prev => ({ ...prev, mandatory: !prev.mandatory }))}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                      currentQuestion.mandatory ? 'bg-blue-600' : 'bg-gray-200'
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        currentQuestion.mandatory ? 'translate-x-6' : 'translate-x-1'
+                      }`}
+                    />
+                  </button>
+                </div>
+              </div>
+
+              {/* Question Text */}
+              <div className="mb-4">
+                <label className="block mb-2 text-sm font-medium text-gray-700">Question Text*</label>
+                <textarea
+                  value={currentQuestion.questionText}
+                  onChange={(e) => setCurrentQuestion(prev => ({ ...prev, questionText: e.target.value }))}
+                  className="w-full border border-gray-300 rounded-md p-2 min-h-[100px] focus:ring-blue-500 focus:border-blue-500 resize-y"
+                  placeholder="What would you like to ask?"
+                  style={{ minHeight: '100px' }}
+                />
+              </div>
+
+              {/* Options (for Multi/Single choice) */}
+              {currentQuestion.type.includes("choice") && (
+                <div className="mb-4">
+                  {currentQuestion.options.map((option, index) => (
+                    <div key={index} className="mb-2">
+                      <input
+                        type="text"
+                        value={option}
+                        onChange={(e) => handleOptionChange(index, e.target.value)}
+                        className="w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder={`Option ${index + 1}`}
+                      />
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={handleAddOption}
+                    className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                  >
+                    + Add option
+                  </button>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={handleAddScreeningQuestion}
+                  className="bg-blue-600 text-white hover:bg-blue-700 rounded-md px-4 py-2 text-sm font-medium"
+                >
+                  Add Question
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowScreeningForm(false)}
+                  className="text-gray-500 hover:text-gray-600 px-4 py-2 text-sm font-medium"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
+          
+          {/* Display added questions */}
+          {screeningQuestions.length > 0 && (
+            <div className="mt-6 space-y-4">
+              {screeningQuestions.map((question, index) => (
+                <div key={index} className="border border-gray-200 rounded-lg p-4 bg-white shadow-sm">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-medium text-sm text-gray-700">{question.type}</span>
+                    <span className={`text-sm ${question.mandatory ? "text-blue-600" : "text-gray-500"}`}>
+                      {question.mandatory ? "Mandatory" : "Optional"}
+                    </span>
+                  </div>
+                  <p className="text-gray-800">{question.questionText}</p>
+                  {question.options.length > 0 && (
+                    <ul className="mt-2 space-y-1">
+                      {question.options.map((option, idx) => (
+                        <li key={idx} className="ml-4 text-sm text-gray-600">• {option}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
       <button
         type="submit"
         className="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"

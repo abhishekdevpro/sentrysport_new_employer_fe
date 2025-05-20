@@ -129,7 +129,7 @@ export default function WhyChooseUsSection({ companyData, setCompanyData }) {
     alert('Content saved successfully!');
   };
   const handleEditClick =()=>{
-    navigate('/employers-dashboard/company-profile/?edit="about"')
+    navigate('/employers-dashboard/company-profile/?edit=about')
 
   }
 

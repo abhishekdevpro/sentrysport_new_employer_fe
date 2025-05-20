@@ -246,7 +246,7 @@ export default function JobListingsTable() {
                     <td className="px-6 py-4 text-md font-medium text-green-600">
                       <a href="#">{job.job_detail.job_title || "N/A"}</a>
                       <div className="text-md text-gray-500">
-                        {job.job_detail.experience_id_min || "0"} - {job.job_detail.experience_id_min || "0"} year • {job.cities?.name}, {job.states?.name}, {job.countries?.name}
+                        {job.job_detail.experience_id_min || "0"} - {job.job_detail.location}
                       </div>
                     </td>
                     <td className="px-6 py-4 text-md text-gray-500">

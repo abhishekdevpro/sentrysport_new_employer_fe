@@ -9,7 +9,7 @@ const SocialMediaLinks = () => {
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Facebook</label>
         <input
-          type="text"
+          type="url"
           {...register("facebook_link")}
           className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
           placeholder="Facebook profile URL"
@@ -18,7 +18,7 @@ const SocialMediaLinks = () => {
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">LinkedIn</label>
         <input
-          type="text"
+          type="url"
           {...register("linkedin_link")}
           className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
           placeholder="LinkedIn profile URL"
@@ -27,7 +27,7 @@ const SocialMediaLinks = () => {
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Twitter</label>
         <input
-          type="text"
+          type="url"
           {...register("twitter_link")}
           className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
           placeholder="Twitter profile URL"
@@ -36,7 +36,7 @@ const SocialMediaLinks = () => {
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Website</label>
         <input
-          type="text"
+          type="url"
           {...register("website_link")}
           className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
           placeholder="Company website URL"

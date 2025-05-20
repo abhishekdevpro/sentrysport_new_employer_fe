@@ -699,6 +699,7 @@ import {
 } from "@/components/ui/dialog";
 import { Constant } from "@/utils/constant/constant";
 import { useNavigate } from "react-router-dom";
+import { Edit } from "lucide-react";
 
 const InsideCompany = ({ companyData }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -864,7 +865,7 @@ const InsideCompany = ({ companyData }) => {
     return null;
   }
   const handleEditClick =()=>{
-    navigate('/employers-dashboard/company-profile/?edit="images"')
+    navigate('/employers-dashboard/company-profile/?edit=images')
 
   }
 
@@ -878,12 +879,14 @@ const InsideCompany = ({ companyData }) => {
         </div>
 
         <div className="flex justify-end mb-4">
-          <button 
-            onClick={handleEditClick} 
-            className="text-white bg-blue-950 border p-2 rounded-lg px-4 hover:bg-blue-800 transition-colors"
-          >
-            Edit
-          </button>
+       
+                <button
+                  className="text-white bg-blue-700 hover:bg-blue-800 transition-colors duration-200 font-medium rounded-md px-5 py-2.5 flex items-center gap-2"
+                  onClick={() => handleEditClick()}
+                >
+                  <Edit />
+                  Edit 
+                </button>
         </div>
 
         {tabsToShow.length > 0 && (

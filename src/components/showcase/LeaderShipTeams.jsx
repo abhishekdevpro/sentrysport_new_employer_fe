@@ -196,6 +196,7 @@ import { IoPlay } from 'react-icons/io5';
 import ReactQuill from 'react-quill';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
+import { Edit } from 'lucide-react';
 
 const LeadershipTeam = () => {
   const [teamMembers, setTeamMembers] = useState([]);
@@ -229,10 +230,8 @@ const LeadershipTeam = () => {
     }
   };
 
-  const handleEdit = (id) => {
-    // setEditingId(id);
-    // setEditSelectedFile(null);
-    navigate('/employers-dashboard/company-profile/?edit="team"')
+  const handleEdit = () => {
+    navigate('/employers-dashboard/company-profile/?edit=team')
 
   };
 
@@ -346,6 +345,15 @@ const LeadershipTeam = () => {
           <div className="w-24 h-1 bg-blue-600 mx-auto mt-4"></div>
 
         </div>
+        <div className="flex justify-end mb-4">
+                <button
+                  className="text-white bg-blue-700 hover:bg-blue-800 transition-colors duration-200 font-medium rounded-md px-5 py-2.5 flex items-center gap-2"
+                  onClick={() => handleEdit()}
+                >
+                  <Edit />
+                  Edit 
+                </button>
+              </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {teamMembers.map((member) => (
@@ -374,12 +382,7 @@ const LeadershipTeam = () => {
                         className="text-gray-600 prose prose-sm max-w-none"
                         dangerouslySetInnerHTML={{ __html: member.description }}
                       />
-                      <button
-                        onClick={() => handleEdit()}
-                        className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                      >
-                        Edit Profile
-                      </button>
+                      
                     </div>
                   )}
                 </div>

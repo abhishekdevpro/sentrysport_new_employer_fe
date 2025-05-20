@@ -31,6 +31,7 @@ import WhyChooseUsSection from "./WhyCompanySection";
 import CompanyBenefits from "./CompanyBenefits";
 import JobListings from "./HiringSection";
 import { useSelector } from "react-redux";
+import SocialFooter from "./Footer";
 
 const ShowcaseComponent = () => {
   const [companyData, setCompanyData] = useState(null);
@@ -241,10 +242,11 @@ const ShowcaseComponent = () => {
       <section id="inside-cognizant">
         <InsideCognizant companyData={companyData} userInfo={userInfo} />
       </section>
-
+      <CompanyBenefits companyData={companyData} />
+      <LeadershipTeam />
       <JobListings companyData={companyData} userInfo={userInfo} />
 
-      <div className="items-center justify-center text-center bg-gray-500 h-60">
+      {/* <div className="items-center justify-center text-center bg-gray-500 h-60">
         <h3 className="text-white font-semibold text-3xl pt-5 mb-6">
           Follow us
         </h3>
@@ -285,7 +287,8 @@ const ShowcaseComponent = () => {
         <h3 className="text-white font-semibold text-sm pt-5 ">
           All rights reserved © {companyData.company_name}
         </h3>
-      </div>
+      </div> */}
+      <SocialFooter companyData={companyData} />
     </>
   );
 };
