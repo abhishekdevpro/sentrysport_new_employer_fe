@@ -72,6 +72,9 @@ const PostBoxForm = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedCategoryNames, setSelectedCategoryNames] = useState([]);
 
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const getCommaSeparatedTags = () => {
     if (selectedTags.length === 0) {
       return "";
@@ -269,8 +272,76 @@ const PostBoxForm = () => {
     return doc.body.textContent || "";
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+    
+    // Job Title validation
+    if (!formData.job_title.trim()) {
+      newErrors.job_title = 'Job title is required';
+    }
+
+    // Location validation
+    if (!formData.location.trim()) {
+      newErrors.location = 'Location is required';
+    }
+
+    // Description validation
+    if (!formData.description.trim()) {
+      newErrors.description = 'Job description is required';
+    }
+
+    // Experience validation
+    if (!formData.experience_year) {
+      newErrors.experience_year = 'Minimum experience is required';
+    }
+    if (!formData.expected_experience_year) {
+      newErrors.expected_experience_year = 'Maximum experience is required';
+    }
+    if (formData.experience_year && formData.expected_experience_year) {
+      if (parseInt(formData.experience_year) > parseInt(formData.expected_experience_year)) {
+        newErrors.experience_year = 'Minimum experience cannot be greater than maximum experience';
+      }
+    }
+
+    // Industry validation
+    if (!formData.industry_id) {
+      newErrors.industry_id = 'Industry is required';
+    }
+
+    // Functional Area validation
+    if (!formData.functional_area_id) {
+      newErrors.functional_area_id = 'Functional area is required';
+    }
+
+    // Job Categories validation
+    if (selectedCategories.length === 0) {
+      newErrors.category_id = 'At least one job category is required';
+    }
+
+    // Job Types validation
+    if (selectedTypes.length === 0) {
+      newErrors.job_type = 'At least one job type is required';
+    }
+
+    // Skills validation
+    if (selectedTags.length === 0) {
+      newErrors.skills = 'At least one skill is required';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+
+    if (!validateForm()) {
+      setIsSubmitting(false);
+      toast.error('Please fill in all required fields correctly');
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -335,6 +406,7 @@ const PostBoxForm = () => {
       toast.error(error.response?.data?.message || 'Failed to post job');
     } finally {
       setLoading(false);
+      setIsSubmitting(false);
     }
   };
   const handleTypeClick = (id) => {
@@ -495,7 +567,7 @@ const PostBoxForm = () => {
           htmlFor="job"
           className="block text-sm font-medium text-gray-700"
         >
-          Job Title
+          Job Title <span className="text-red-500">*</span>
         </label>
         <input
           type="text"
@@ -504,8 +576,13 @@ const PostBoxForm = () => {
           onChange={handleChange("job")}
           value={keywords.job}
           required
-          className="mt-1 block w-full px-3 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          className={`mt-1 block w-full px-3 py-3 bg-white border ${
+            errors.job_title ? 'border-red-500' : 'border-gray-300'
+          } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
         />
+        {errors.job_title && (
+          <p className="mt-1 text-sm text-red-600">{errors.job_title}</p>
+        )}
         {dropdownVisibility.job && (
           <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
             {jobTitles.map((item, index) => (
@@ -521,90 +598,95 @@ const PostBoxForm = () => {
         )}
       </div>
       <div className="form-group col-lg-12 col-md-12 relative mt-4">
-  <label htmlFor="location" className="block text-sm font-medium text-gray-700">
-    Location
-  </label>
-  <input
-    type="text"
-    name="location"
-    placeholder="+ Add location"
-    onChange={handleChange("location")}
-    value={keywords.location}
-    required
-    className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-  />
-  {dropdownVisibility.location && (
-    <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg">
-      {/* {console.log(locations,">>>locations")} */}
-      {locations?.length > 0 && (
-  <ul>
-    {locations.map((item, index) => (
-      <li
-        key={index}
-        onClick={() => handleSelect("location", item)}
-        className="cursor-pointer px-4 py-2 hover:bg-gray-100"
-      >
-        {item}
-      </li>
-    ))}
-  </ul>
-)}
-    </ul>
-  )}
-</div>
+        <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+          Location <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          name="location"
+          placeholder="+ Add location"
+          onChange={handleChange("location")}
+          value={keywords.location}
+          required
+          className={`mt-1 block w-full p-2 border ${
+            errors.location ? 'border-red-500' : 'border-gray-300'
+          } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+        />
+        {errors.location && (
+          <p className="mt-1 text-sm text-red-600">{errors.location}</p>
+        )}
+        {dropdownVisibility.location && (
+          <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg">
+            {locations?.length > 0 && (
+              <ul>
+                {locations.map((item, index) => (
+                  <li
+                    key={index}
+                    onClick={() => handleSelect("location", item)}
+                    className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </ul>
+        )}
+      </div>
       <div>
         <div className="flex justify-between items-center">
           <label
             htmlFor="description"
             className="block text-sm font-medium text-gray-700"
           >
-            Job Description
+            Job Description <span className="text-red-500">*</span>
           </label>
-           <button
-      type="button"
-      onClick={handleAiAssist}
-      disabled={loading}
-      className={`px-4 py-2 bg-blue-900 text-white text-sm font-medium rounded-md 
-        hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 
-        ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
-    >
-      {loading ? (
-        <div className="flex items-center space-x-2">
-          <Loader2 className="w-5 h-5 animate-spin" /> {/* Lucide Loader */}
-          <span>Loading...</span>
-        </div>
-      ) : (
-        "AI Assist +"
-      )}
-    </button>
+          <button
+            type="button"
+            onClick={handleAiAssist}
+            disabled={loading}
+            className={`px-4 py-2 bg-blue-900 text-white text-sm font-medium rounded-md 
+              hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 
+              ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+          >
+            {loading ? (
+              <div className="flex items-center space-x-2">
+                <Loader2 className="w-5 h-5 animate-spin" /> {/* Lucide Loader */}
+                <span>Loading...</span>
+              </div>
+            ) : (
+              "AI Assist +"
+            )}
+          </button>
         </div>
         <ReactQuill
           value={formData.description}
           onChange={handleDescriptionChange}
-          className="mt-1 block w-full"
+          className={`mt-1 block w-full ${
+            errors.description ? 'border-red-500' : ''
+          }`}
           theme="snow"
         />
-        {!formData.description && (
-          <p className="mt-2 text-sm text-red-600">
-            Job description is required.
-          </p>
+        {errors.description && (
+          <p className="mt-2 text-sm text-red-600">{errors.description}</p>
         )}
       </div>
 
       <div className="flex flex-wrap gap-4 mt-4">
-        {/* Min Experience Year Dropdown */}
         <div className="flex-1">
           <label
             htmlFor="experience_year"
             className="block text-sm font-medium text-gray-700"
           >
-            Min Experience Year
+            Min Experience Year <span className="text-red-500">*</span>
           </label>
           <select
             name="experience_year"
             value={formData.experience_year}
             onChange={handleFormChange}
-            className="mt-1 block w-full p-3 border-3 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className={`mt-1 block w-full p-3 border-3 ${
+              errors.experience_year ? 'border-red-500' : 'border-gray-300'
+            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
           >
             <option value="">Min Experience Year</option>
             {experienceYears.map((item) => (
@@ -613,21 +695,25 @@ const PostBoxForm = () => {
               </option>
             ))}
           </select>
+          {errors.experience_year && (
+            <p className="mt-1 text-sm text-red-600">{errors.experience_year}</p>
+          )}
         </div>
 
-        {/* Max Experience Year Dropdown */}
         <div className="flex-1">
           <label
             htmlFor="expected_experience_year"
             className="block text-sm font-medium text-gray-700"
           >
-            Max Experience Year
+            Max Experience Year <span className="text-red-500">*</span>
           </label>
           <select
             name="expected_experience_year"
             value={formData.expected_experience_year}
             onChange={handleFormChange}
-            className="mt-1 block w-full p-3 border-3 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className={`mt-1 block w-full p-3 border-3 ${
+              errors.expected_experience_year ? 'border-red-500' : 'border-gray-300'
+            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
           >
             <option value="">Max Experience Year</option>
             {expectedExperienceYears.map((item) => (
@@ -636,23 +722,27 @@ const PostBoxForm = () => {
               </option>
             ))}
           </select>
+          {errors.expected_experience_year && (
+            <p className="mt-1 text-sm text-red-600">{errors.expected_experience_year}</p>
+          )}
         </div>
       </div>
 
       <div className="flex flex-wrap gap-4 mt-4">
-        {/* Job Industry dropdown */}
         <div className="flex-1">
           <label
             htmlFor="industry_id"
             className="block text-sm font-medium text-gray-700"
           >
-            Industry
+            Industry <span className="text-red-500">*</span>
           </label>
           <select
             name="industry_id"
             value={formData.industry_id}
             onChange={handleFormChange}
-            className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className={`mt-1 block w-full p-3 border ${
+              errors.industry_id ? 'border-red-500' : 'border-gray-300'
+            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
           >
             <option value="">Select Industry</option>
             {industries.map((item) => (
@@ -661,23 +751,25 @@ const PostBoxForm = () => {
               </option>
             ))}
           </select>
+          {errors.industry_id && (
+            <p className="mt-1 text-sm text-red-600">{errors.industry_id}</p>
+          )}
         </div>
 
-       
-
-        {/* Functional Area Dropdown */}
         <div className="flex-1">
           <label
             htmlFor="functional_area_id"
             className="block text-sm font-medium text-gray-700"
           >
-            Functional Area
+            Functional Area <span className="text-red-500">*</span>
           </label>
           <select
             name="functional_area_id"
             value={formData.functional_area_id}
             onChange={handleFormChange}
-            className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className={`mt-1 block w-full p-3 border ${
+              errors.functional_area_id ? 'border-red-500' : 'border-gray-300'
+            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
           >
             <option value="">Select Functional Area</option>
             {functionalAreas.map((item) => (
@@ -686,49 +778,57 @@ const PostBoxForm = () => {
               </option>
             ))}
           </select>
+          {errors.functional_area_id && (
+            <p className="mt-1 text-sm text-red-600">{errors.functional_area_id}</p>
+          )}
         </div>
       </div>
-     
-      {/* Job Category Dropdown */}
+
       <div className="flex-1">
-          <label
-            htmlFor="category_id"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Job Category
-          </label>
-          <MultiSelector
-            values={selectedCategoryNames}
-            onValuesChange={(selectedNames) => {
-              setSelectedCategoryNames(selectedNames);
-              // Map the selected names back to their IDs
-              const selectedIds = selectedNames.map(name => {
-                const category = jobCategories.find(cat => cat.name === name);
-                return category ? category.id : null;
-              }).filter(id => id !== null);
-              setSelectedCategories(selectedIds);
-            }}
-            className="w-full relative"
-            name="category_id"
-          >
-            <MultiSelectorTrigger className="w-full px-3 py-3 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
-              <MultiSelectorInput placeholder="Select job categories" />
-            </MultiSelectorTrigger>
-            <MultiSelectorContent>
-              <MultiSelectorList className="bg-white absolute z-10 w-full mt-1 border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
-                {jobCategories.map((item) => (
-                  <MultiSelectorItem
-                    value={item.name}
-                    key={item.id}
-                    className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
-                  >
-                    {item.name}
-                  </MultiSelectorItem>
-                ))}
-              </MultiSelectorList>
-            </MultiSelectorContent>
-          </MultiSelector>
-        </div>
+        <label
+          htmlFor="category_id"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Job Category <span className="text-red-500">*</span>
+        </label>
+        <MultiSelector
+          values={selectedCategoryNames}
+          onValuesChange={(selectedNames) => {
+            setSelectedCategoryNames(selectedNames);
+            const selectedIds = selectedNames.map(name => {
+              const category = jobCategories.find(cat => cat.name === name);
+              return category ? category.id : null;
+            }).filter(id => id !== null);
+            setSelectedCategories(selectedIds);
+            if (selectedIds.length > 0) {
+              setErrors(prev => ({ ...prev, category_id: '' }));
+            }
+          }}
+          className={`w-full relative ${errors.category_id ? 'border-red-500' : ''}`}
+          name="category_id"
+        >
+          <MultiSelectorTrigger className="w-full px-3 py-3 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+            <MultiSelectorInput placeholder="Select job categories" />
+          </MultiSelectorTrigger>
+          <MultiSelectorContent>
+            <MultiSelectorList className="bg-white absolute z-10 w-full mt-1 border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+              {jobCategories.map((item) => (
+                <MultiSelectorItem
+                  value={item.name}
+                  key={item.id}
+                  className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
+                >
+                  {item.name}
+                </MultiSelectorItem>
+              ))}
+            </MultiSelectorList>
+          </MultiSelectorContent>
+        </MultiSelector>
+        {errors.category_id && (
+          <p className="mt-1 text-sm text-red-600">{errors.category_id}</p>
+        )}
+      </div>
+
       <div className="form-group col-lg-12 col-md-12 mt-4">
         <label
           htmlFor="video"
@@ -757,23 +857,24 @@ const PostBoxForm = () => {
         </div>
       </div>
 
-      
       <div>
         <div className="flex justify-between items-center">
           <label
             htmlFor="tags"
             className="block text-sm font-medium text-gray-700"
           >
-            Skills
+            Skills <span className="text-red-500">*</span>
           </label>
         </div>
         <MultiSelector
           values={selectedTags}
           onValuesChange={(e) => {
-            // console.log("Updated Tags:", e);
             setSelectedTags(e);
+            if (e.length > 0) {
+              setErrors(prev => ({ ...prev, skills: '' }));
+            }
           }}
-          className="w-full relative "
+          className={`w-full relative ${errors.skills ? 'border-red-500' : ''}`}
           name="tags"
         >
           <MultiSelectorTrigger className="w-full px-3 py-3 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
@@ -793,12 +894,16 @@ const PostBoxForm = () => {
             </MultiSelectorList>
           </MultiSelectorContent>
         </MultiSelector>
+        {errors.skills && (
+          <p className="mt-1 text-sm text-red-600">{errors.skills}</p>
+        )}
       </div>
 
-      {/* Course Type Section */}
       <div className="form-group col-lg-12 col-md-12">
-        <label htmlFor="job_type">Job Type</label>
-        <div className="flex flex-wrap gap-4 mt-2">
+        <label htmlFor="job_type" className="block text-sm font-medium text-gray-700">
+          Job Type <span className="text-red-500">*</span>
+        </label>
+        <div className={`flex flex-wrap gap-4 mt-2 ${errors.job_type ? 'border-red-500' : ''}`}>
           {jobTypes.map((jobType) => (
             <div
               key={jobType.id}
@@ -820,9 +925,11 @@ const PostBoxForm = () => {
             </div>
           ))}
         </div>
+        {errors.job_type && (
+          <p className="mt-1 text-sm text-red-600">{errors.job_type}</p>
+        )}
       </div>
 
-      {/* Screening Questions Section */}
       <div className="form-group col-lg-12 col-md-12 mt-6">
         <div className="flex justify-between items-center mb-4">
           <div>
@@ -966,9 +1073,12 @@ const PostBoxForm = () => {
 
       <button
         type="submit"
-        className="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        disabled={isSubmitting}
+        className={`mt-6 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+          isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+        }`}
       >
-        Submit
+        {isSubmitting ? 'Submitting...' : 'Submit'}
       </button>
     </form>
   );
