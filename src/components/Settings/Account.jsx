@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Constant } from "../../utils/constant/constant";
 
 const Account = () => {
   const [userData, setUserData] = useState(null);
@@ -10,26 +11,47 @@ const Account = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem(Constant.USER_TOKEN);
+        console.log("Token from localStorage:", token);
+        
         if (!token) {
           throw new Error("Unauthorized. Please log in.");
         }
 
+        console.log("Making API call to:", "https://api.sentryspot.co.uk/api/jobseeker/user-profile");
         const response = await axios.get(
-          "https://api.sentryspot.co.uk/api/jobseeker/user-profile",
+          "https://api.sentryspot.co.uk/api/employeer/user-profile",
           {
-            headers: { Authorization: token },
+            headers: { 
+              Authorization: token,
+              
+            },
           }
         );
+        console.log("API Response:", response.data);
+
+        if (!response.data) {
+          throw new Error("No data received from the server");
+        }
 
         if (response.data?.status === "success" && response.data.data?.personal_details) {
           setUserData(response.data.data.personal_details);
         } else {
-          throw new Error("Failed to load user data.");
+          throw new Error(response.data?.message || "Failed to load user data.");
         }
       } catch (err) {
         console.error("Error fetching user profile:", err);
-        setError(err.message || "Failed to load user data.");
+        if (err.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          setError(err.response.data?.message || `Server error: ${err.response.status}`);
+        } else if (err.request) {
+          // The request was made but no response was received
+          setError("No response from server. Please check your internet connection.");
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          setError(err.message || "Failed to load user data.");
+        }
       } finally {
         setLoading(false);
       }

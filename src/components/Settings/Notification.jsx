@@ -33,7 +33,7 @@ export default function Notification() {
         }
 
         const response = await axios.get(
-          "https://api.sentryspot.co.uk/api/jobseeker/notification-permission",
+          "https://api.sentryspot.co.uk/api/employeer/notification-permission",
           {
             headers: { Authorization: token },
           }
