@@ -232,4 +232,3 @@ const AboutCompany = ({ token, BASE_IMAGE_URL, companyData }) => {
   )
 }
 
-export default AboutCompany
