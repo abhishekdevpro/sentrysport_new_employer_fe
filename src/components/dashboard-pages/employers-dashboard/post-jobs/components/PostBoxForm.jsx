@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ReactQuill from "react-quill";
@@ -785,7 +784,7 @@ const PostBoxForm = () => {
         </div>
       </div>
 
-      <div className="flex-1">
+      <div className="flex-1 mt-4">
         <label
           htmlFor="category_id"
           className="block text-sm font-medium text-gray-700"

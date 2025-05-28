@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react"
 import { useFormContext } from "react-hook-form"
 import ReactQuill from "react-quill"
@@ -120,9 +119,9 @@ const AboutCompany = ({ token, BASE_IMAGE_URL, companyData }) => {
   }
 
   return (
-    <div className="space-y-6 flex flex-col justify-between gap-4 md:gap-2">
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Company Title</label>
+    <div className="flex flex-col gap-2">
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-gray-700">Company Title</label>
         <Input
           type="text"
           {...register("title")}
@@ -131,44 +130,47 @@ const AboutCompany = ({ token, BASE_IMAGE_URL, companyData }) => {
           placeholder="Enter Company title"
         />
       </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">summery</label>
-        <div className="quill-container" style={{ minHeight: "200px" }}>
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-gray-700">Summary</label>
+        <div className="quill-container" style={{ minHeight: "150px" }}>
           <ReactQuill 
             theme="snow" 
             value={quillsummery} 
             onChange={handlesummeryChange} 
-            className="h-auto mb-6" 
+            className="h-auto" 
           />
         </div>
       </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-        <div className="quill-container" style={{ minHeight: "200px" }}>
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-gray-700">Description</label>
+        <div className="quill-container" style={{ minHeight: "150px" }}>
           <ReactQuill 
             theme="snow" 
             value={quillAbout} 
             onChange={handleAboutChange} 
-            className="h-auto mb-6" 
+            className="h-auto" 
           />
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className="space-y-4">
         <label className="block text-sm font-medium text-gray-700">Images (Max: 3)</label>
         
         {/* Display existing images */}
-        {existingImages.length > 0 && (
-          <div className="mt-2">
-            <p className="text-sm text-gray-500 mb-2">Existing Images:</p>
-            <div className="flex items-center space-x-2 mb-4">
+        {existingImages.length > 0 ? (
+          <div className="space-y-2">
+            <p className="text-sm text-gray-500">Existing Images:</p>
+            <div className="flex items-center gap-4">
               {existingImages.map((image, index) => (
                 <div key={`existing-${index}`} className="relative w-24 h-24">
-              
                   <img
                     src={`${BASE_IMAGE_URL}${image}`}
                     alt="Company"
                     className="w-full h-full object-cover rounded-lg"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "/placeholder.svg?height=150&width=150";
+                    }}
                   />
                   <button
                     type="button"
@@ -181,19 +183,38 @@ const AboutCompany = ({ token, BASE_IMAGE_URL, companyData }) => {
               ))}
             </div>
           </div>
+        ) : (
+          <div className="space-y-2">
+            <p className="text-sm text-gray-500">No existing images</p>
+            <div className="flex items-center gap-4">
+              {[1, 2, 3].map((_, index) => (
+                <div key={`placeholder-${index}`} className="relative w-24 h-24">
+                  <img
+                    src="/placeholder.svg?height=150&width=150"
+                    alt="Placeholder"
+                    className="w-full h-full object-cover rounded-lg bg-gray-100"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         )}
         
         {/* Display newly selected images */}
         {selectedImages.length > 0 && (
-          <div className="mt-2">
-            <p className="text-sm text-gray-500 mb-2">New Images:</p>
-            <div className="flex items-center space-x-2">
+          <div className="space-y-2">
+            <p className="text-sm text-gray-500">New Images:</p>
+            <div className="flex items-center gap-4">
               {selectedImages.map((image, index) => (
                 <div key={`new-${index}`} className="relative w-24 h-24">
                   <img
                     src={URL.createObjectURL(image)}
                     alt="Upload Preview"
                     className="w-full h-full object-cover rounded-lg"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "/placeholder.svg?height=150&width=150";
+                    }}
                   />
                   <button
                     type="button"
@@ -214,21 +235,22 @@ const AboutCompany = ({ token, BASE_IMAGE_URL, companyData }) => {
             type="file" 
             accept="image/*" 
             onChange={handleImageUpload} 
-            className="mt-4" 
+            className="mt-2" 
             multiple 
           />
         )}
       </div>
-      <div className="flex justify-start mt-4">
+      <div className="flex justify-start">
         <button
           type="button"
           onClick={handleAboutSave}
           className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
         >
-         {loading ?"Saving...":" Save About Section"}
+         {loading ? "Saving..." : "Save About Section"}
         </button>
       </div>
     </div>
   )
 }
 
+export default AboutCompany

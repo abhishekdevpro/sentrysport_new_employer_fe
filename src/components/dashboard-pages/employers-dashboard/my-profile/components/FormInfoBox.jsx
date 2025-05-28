@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
@@ -62,7 +61,13 @@ const FormInfoBox = () => {
 
       // Handle profile image
       if (userInfo.photo) {
-        setLogImg(`https://api.sentryspot.co.uk${userInfo.photo}`);
+        // Check if the photo is already a full URL
+        if (userInfo.photo.startsWith('http')) {
+          setLogImg(userInfo.photo);
+        } else {
+          // Construct the full URL
+          setLogImg(`https://api.sentryspot.co.uk${userInfo.photo}`);
+        }
       }
     }
   }, [userInfo, reset]);
@@ -140,23 +145,21 @@ const FormInfoBox = () => {
                 className="uploadButton-button cursor-pointer flex items-center justify-center w-full h-full"
                 htmlFor="upload"
               >
-                {logImg && logImg.startsWith("data:image/") ? (
+                {logImg ? (
                   <img
                     src={logImg}
-                    alt="Uploaded"
+                    alt="Profile"
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      console.error("Image failed to load:", logImg);
+                      e.target.onerror = null; // Prevent infinite loop
+                      setLogImg(null); // Reset image on error
+                      toast.error("Failed to load profile image");
+                    }}
                   />
                 ) : (
                   <div className="flex flex-col items-center justify-center text-center w-full h-full">
-                    {logImg ? (
-                      <img
-                        src={logImg}
-                        alt="Profile"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <span className="text-sm mt-2">Upload Image</span>
-                    )}
+                    <span className="text-sm mt-2">Upload Image</span>
                   </div>
                 )}
               </label>

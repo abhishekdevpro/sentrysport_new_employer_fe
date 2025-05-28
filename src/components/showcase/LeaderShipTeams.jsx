@@ -1,4 +1,3 @@
-
 // import React, { useState, useEffect } from 'react';
 // import axios from 'axios';
 // import { Constant } from '@/utils/constant/constant';
@@ -409,6 +408,5 @@ const LeadershipTeam = () => {
     </section>
   );
 };
-
 
 export default LeadershipTeam;
