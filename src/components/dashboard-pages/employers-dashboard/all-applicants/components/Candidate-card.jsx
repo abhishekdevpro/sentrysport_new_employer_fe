@@ -1,4 +1,3 @@
-
 "use client"
 import { Link } from "react-router-dom"
 import moment from "moment"
@@ -179,3 +178,4 @@ const CandidateCard = ({ candidate, onShortlistReject, onSave, onReview, onMessa
 }
 
 export default CandidateCard
+

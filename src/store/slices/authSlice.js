@@ -1,4 +1,5 @@
 
+
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { handleSendOTP, resendOtp, sendAuthCode, verifyOtpLogin } from "./service/authService";
 import { Constant } from "@/utils/constant/constant";
@@ -187,4 +188,3 @@ const authSlice = createSlice({
 
 export const { logout } = authSlice.actions;
 export default authSlice.reducer;
-
