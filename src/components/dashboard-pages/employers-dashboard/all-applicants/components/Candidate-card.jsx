@@ -4,6 +4,7 @@ import moment from "moment"
 import { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
 import { Constant } from "@/utils/constant/constant"
+import toast from "react-hot-toast"
 
 const CandidateCard = ({ candidate, onShortlistReject, onSave, onReview, onMessage }) => {
   const [showMessageModal, setShowMessageModal] = useState(false)
@@ -26,6 +27,7 @@ const CandidateCard = ({ candidate, onShortlistReject, onSave, onReview, onMessa
 
       ws.onerror = (error) => {
         console.error('WebSocket error:', error)
+        toast.error('Failed to connect to messaging service')
       }
 
       ws.onclose = () => {
@@ -41,7 +43,10 @@ const CandidateCard = ({ candidate, onShortlistReject, onSave, onReview, onMessa
   }, [showMessageModal])
 
   const handleSendMessage = () => {
-    if (message.trim() === '' || !userInfo?.id) return
+    if (message.trim() === '' || !userInfo?.id) {
+      toast.error('Please enter a message')
+      return
+    }
 
     const data = {
       message: message,
@@ -52,11 +57,34 @@ const CandidateCard = ({ candidate, onShortlistReject, onSave, onReview, onMessa
     if (socket && socket.readyState === WebSocket.OPEN) {
       socket.send(JSON.stringify(data))
       console.log('Message sent:', data)
+      toast.success('Message sent successfully')
       setMessage("")
       setShowMessageModal(false)
     } else {
       console.error('WebSocket is not open')
+      toast.error('Failed to send message. Please try again.')
     }
+  }
+
+  const handleShortlistReject = (id, shortlist, reject) => {
+    onShortlistReject(id, shortlist, reject)
+    if (shortlist === 1) {
+      toast.success('Candidate shortlisted successfully')
+    } else if (reject === 1) {
+      toast.success('Candidate rejected successfully')
+    }
+  }
+
+  const handleSave = (id) => {
+    onSave(id)
+    toast.success('Candidate saved successfully')
+  }
+
+  const handleReview = (id) => {
+    onReview(id)
+    toast('Opening candidate review', {
+      icon: '📋',
+    })
   }
 
   return (
@@ -97,7 +125,7 @@ const CandidateCard = ({ candidate, onShortlistReject, onSave, onReview, onMessa
                     ? "bg-blue-700 text-white hover:bg-blue-900"
                     : "bg-gray-400 text-gray-200 cursor-not-allowed"
                 }`}
-                onClick={() => onShortlistReject(candidate?.id, 1, 0)}
+                onClick={() => handleShortlistReject(candidate?.id, 1, 0)}
                 disabled={candidate?.job_seeker_shortlisted !== 0}
               >
                 {candidate?.job_seeker_shortlisted === 0 ? "Shortlist" : "Shortlisted"}
@@ -108,7 +136,7 @@ const CandidateCard = ({ candidate, onShortlistReject, onSave, onReview, onMessa
                     ? "bg-red-600 text-white hover:bg-red-700"
                     : "bg-gray-400 text-gray-200 cursor-not-allowed"
                 }`}
-                onClick={() => onShortlistReject(candidate?.id, 0, 1)}
+                onClick={() => handleShortlistReject(candidate?.id, 0, 1)}
                 disabled={candidate?.job_seeker_rejected !== 0}
               >
                 {candidate?.job_seeker_rejected === 0 ? "Reject" : "Rejected"}
@@ -124,7 +152,7 @@ const CandidateCard = ({ candidate, onShortlistReject, onSave, onReview, onMessa
             </button>
 
             <button
-              onClick={() => onSave(candidate?.id)}
+              onClick={() => handleSave(candidate?.id)}
               className={`${
                 candidate?.job_seeker_fav_id === 0 ? "bg-blue-700 hover:bg-blue-900" : "bg-gray-400"
               } text-white px-4 py-1 rounded-lg w-full my-2`}
@@ -135,7 +163,7 @@ const CandidateCard = ({ candidate, onShortlistReject, onSave, onReview, onMessa
 
             <button
               className="bg-white border border-blue-900 text-blue-900 w-full px-4 py-1 rounded-lg hover:bg-blue-50"
-              onClick={() => onReview(candidate?.id)}
+              onClick={() => handleReview(candidate?.id)}
             >
               Review
             </button>

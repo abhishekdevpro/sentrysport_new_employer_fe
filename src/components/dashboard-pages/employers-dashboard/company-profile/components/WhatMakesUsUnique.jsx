@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form"
 import { Switch } from "@/components/ui/switch"
 
 const WhatMakesUsUnique = () => {
-  const { register, watch, setValue } = useFormContext()
+  const { register, watch, setValue, formState: { errors } } = useFormContext()
 
   // Define unique features
   const uniqueFeatures = [
@@ -57,17 +57,35 @@ const WhatMakesUsUnique = () => {
                 checked={isEnabled}
                 onCheckedChange={(checked) => {
                   setValue(feature.toggleKey, checked)
+                  if (!checked) {
+                    setValue(feature.valueKey, "") // Clear the value when disabled
+                  }
                 }}
                 className="data-[state=checked]:bg-blue-600"
               />
             </div>
             {isEnabled && (
-              <input
-                type="text"
-                {...register(feature.valueKey)}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                placeholder={`Describe ${feature.title}`}
-              />
+              <div>
+                <input
+                  type="text"
+                  {...register(feature.valueKey, {
+                    required: `${feature.title} description is required`,
+                    minLength: {
+                      value: 10,
+                      message: "Description must be at least 10 characters"
+                    },
+                    maxLength: {
+                      value: 500,
+                      message: "Description must not exceed 500 characters"
+                    }
+                  })}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  placeholder={`Describe ${feature.title}`}
+                />
+                {errors[feature.valueKey] && (
+                  <p className="mt-1 text-sm text-red-600">{errors[feature.valueKey].message}</p>
+                )}
+              </div>
             )}
           </div>
         )

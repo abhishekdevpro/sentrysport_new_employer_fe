@@ -1,9 +1,7 @@
-
-
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { handleSendOTP, resendOtp, sendAuthCode, verifyOtpLogin } from "./service/authService";
 import { Constant } from "@/utils/constant/constant";
-import axios from "axios";
+import axiosInstance from "@/utils/axiosInterceptor";
 import { useNavigate } from "react-router-dom";
 
 // Async thunk to send OTP
@@ -52,13 +50,11 @@ export const updateUserProfile = createAsyncThunk(
    "auth/updateUserProfile",
    async (formData, { rejectWithValue }) => {
       try {
-         const token = localStorage.getItem(Constant.USER_TOKEN);
-         const response = await axios.put(
+         const response = await axiosInstance.put(
             "https://api.sentryspot.co.uk/api/employeer/profile",
             formData,
             {
                headers: {
-                  Authorization: token,
                   "Content-Type": "multipart/form-data",
                },
             }
@@ -73,7 +69,7 @@ export const updateUserProfile = createAsyncThunk(
 
 const initialState = {
    userInfo: JSON.parse(localStorage.getItem("userInfo")) || null,
-   userToken: localStorage.getItem("usertoken") || null,
+   userToken: localStorage.getItem(Constant.USER_TOKEN) || null,
    status: false,
    loading: false,
    error: null,
@@ -90,7 +86,14 @@ const authSlice = createSlice({
          localStorage.removeItem(Constant.USER_INFO);
          localStorage.removeItem(Constant.USER_TOKEN);
       },
-      
+      clearAuth: (state) => {
+         state.userInfo = null;
+         state.userToken = null;
+         state.status = false;
+         localStorage.removeItem("userInfo");
+         localStorage.removeItem(Constant.USER_INFO);
+         localStorage.removeItem(Constant.USER_TOKEN);
+      }
    },
    extraReducers: (builder) => {
       builder
@@ -186,5 +189,5 @@ const authSlice = createSlice({
    },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, clearAuth } = authSlice.actions;
 export default authSlice.reducer;

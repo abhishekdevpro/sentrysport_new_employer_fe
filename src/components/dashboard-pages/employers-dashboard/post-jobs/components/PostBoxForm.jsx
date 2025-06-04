@@ -72,6 +72,9 @@ const PostBoxForm = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedCategoryNames, setSelectedCategoryNames] = useState([]);
 
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const getCommaSeparatedTags = () => {
     if (selectedTags.length === 0) {
       return "";
@@ -209,9 +212,7 @@ const PostBoxForm = () => {
       fetchData(
         `https://api.sentryspot.co.uk/api/jobseeker/locations?locations=${keywords.location}`,
         (data) => {
-           
           const locationsData = data.location_names;
-  
           setLocations(locationsData);
         },
         "location"
@@ -225,23 +226,21 @@ const PostBoxForm = () => {
     if (key === "job") {
       setKeywords((prevKeywords) => ({
         ...prevKeywords,
-        [key]: selectedItem, // Assuming selectedItem is a string
+        [key]: selectedItem,
       }));
       setFormData((prevFormData) => ({
         ...prevFormData,
-        job_title: selectedItem, // Ensure selectedItem contains the correct job title
+        job_title: selectedItem,
       }));
     } else if (key === "location") {
       setKeywords((prevKeywords) => ({
         ...prevKeywords,
         [key]: selectedItem,
       }));
-      // {console.log(selectedItem,">>>")}
       setFormData((prevFormData) => ({
         ...prevFormData,
         location: selectedItem,
       }));
-      
     }
 
     setDropdownVisibility((prevVisibility) => ({
@@ -250,13 +249,32 @@ const PostBoxForm = () => {
     }));
   };
 
-  const handleFormChange = (e) => {
+  const handleFieldChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData(prev => ({ ...prev, [name]: value }));
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+  };
+
+  const handleFormChange = (e) => {
+    handleFieldChange(e);
   };
 
   const handleDescriptionChange = (value) => {
-    setFormData({ ...formData, description: value });
+    setFormData(prev => ({ ...prev, description: value }));
+    if (errors.description) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors.description;
+        return newErrors;
+      });
+    }
   };
 
   const handleFileChange = (e) => {
@@ -269,8 +287,146 @@ const PostBoxForm = () => {
     return doc.body.textContent || "";
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+    
+    // Required Field Validation
+    const requiredFields = {
+      job_title: 'Job title',
+      location: 'Location',
+      description: 'Job description',
+      experience_year: 'Minimum experience',
+      expected_experience_year: 'Maximum experience',
+      industry_id: 'Industry',
+      functional_area_id: 'Functional area',
+      salary_type: 'Salary type',
+      expected_salary_type: 'Expected salary type',
+      batch_start_year: 'Batch start year',
+      batch_end_year: 'Batch end year'
+    };
+
+    // Check required fields
+    Object.entries(requiredFields).forEach(([field, label]) => {
+      if (!formData[field] || formData[field].trim() === '') {
+        newErrors[field] = `${label} is required`;
+      }
+    });
+
+    // Length Validation
+    if (formData.job_title && formData.job_title.length < 3) {
+      newErrors.job_title = 'Job title must be at least 3 characters long';
+    }
+    if (formData.job_title && formData.job_title.length > 100) {
+      newErrors.job_title = 'Job title cannot exceed 100 characters';
+    }
+
+    // Data Type Validation for Numbers
+    if (formData.batch_start_year) {
+      const startYear = parseInt(formData.batch_start_year);
+      if (isNaN(startYear)) {
+        newErrors.batch_start_year = 'Batch start year must be a valid number';
+      } else if (startYear < 1900 || startYear > new Date().getFullYear()) {
+        newErrors.batch_start_year = `Batch start year must be between 1900 and ${new Date().getFullYear()}`;
+      }
+    }
+
+    if (formData.batch_end_year) {
+      const endYear = parseInt(formData.batch_end_year);
+      if (isNaN(endYear)) {
+        newErrors.batch_end_year = 'Batch end year must be a valid number';
+      } else if (endYear < 1900 || endYear > new Date().getFullYear() + 10) {
+        newErrors.batch_end_year = `Batch end year must be between 1900 and ${new Date().getFullYear() + 10}`;
+      }
+    }
+
+    // Matching Fields Validation (Experience Years)
+    if (formData.experience_year && formData.expected_experience_year) {
+      const minExp = parseInt(formData.experience_year);
+      const maxExp = parseInt(formData.expected_experience_year);
+      if (minExp > maxExp) {
+        newErrors.experience_year = 'Minimum experience cannot be greater than maximum experience';
+        newErrors.expected_experience_year = 'Maximum experience must be greater than minimum experience';
+      }
+    }
+
+    // Matching Fields Validation (Batch Years)
+    if (formData.batch_start_year && formData.batch_end_year) {
+      const startYear = parseInt(formData.batch_start_year);
+      const endYear = parseInt(formData.batch_end_year);
+      if (startYear > endYear) {
+        newErrors.batch_start_year = 'Batch start year cannot be greater than end year';
+        newErrors.batch_end_year = 'Batch end year must be greater than start year';
+      }
+    }
+
+    // Pattern Validation for Location (alphanumeric with spaces and special characters)
+    if (formData.location) {
+      const locationPattern = /^[a-zA-Z0-9\s\-.,()]+$/;
+      if (!locationPattern.test(formData.location)) {
+        newErrors.location = 'Location contains invalid characters';
+      }
+    }
+
+    // Description Length Validation
+    if (formData.description) {
+      const plainText = stripHtmlTags(formData.description);
+      if (plainText.length < 50) {
+        newErrors.description = 'Job description must be at least 50 characters long';
+      }
+      if (plainText.length > 5000) {
+        newErrors.description = 'Job description cannot exceed 5000 characters';
+      }
+    }
+
+    // Job Categories Validation
+    if (!selectedCategories || selectedCategories.length === 0) {
+      newErrors.category_id = 'At least one job category is required';
+    }
+
+    // Job Types Validation
+    if (!selectedTypes || selectedTypes.length === 0) {
+      newErrors.job_type = 'At least one job type is required';
+    }
+
+    // Skills Validation
+    if (!selectedTags || selectedTags.length === 0) {
+      newErrors.skills = 'At least one skill is required';
+    }
+
+    return newErrors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+
+    // Clear previous errors
+    setErrors({});
+
+    // Validate form and get new errors
+    const newErrors = validateForm();
+    
+    // Set errors immediately
+    setErrors(newErrors);
+    
+    // Check if there are any errors
+    if (Object.keys(newErrors).length > 0) {
+      setIsSubmitting(false);
+      // Show toast with number of errors
+      const errorCount = Object.keys(newErrors).length;
+      toast.error(`Please fix ${errorCount} error${errorCount > 1 ? 's' : ''} in the form`);
+      
+      // Scroll to the first error
+      setTimeout(() => {
+        const firstErrorField = document.querySelector('.border-red-500');
+        if (firstErrorField) {
+          firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
+      
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -291,22 +447,13 @@ const PostBoxForm = () => {
       formDataToSend.append("batch_end_year", formData.batch_end_year);
       formDataToSend.append("skills", getCommaSeparatedTags());
 
-      console.log('Current screening questions:', screeningQuestions);
-
       // Add screening questions to the payload
       if (screeningQuestions && screeningQuestions.length > 0) {
         const formattedQuestions = screeningQuestions.map(q => ({
           question: q.questionText,
           options: q.type.includes("choice") ? q.options : ["Yes", "No"]
         }));
-        console.log('Formatted questions for payload:', formattedQuestions);
         formDataToSend.append('screening_questions', JSON.stringify(formattedQuestions));
-      }
-
-      // Log all FormData entries
-      console.log('FormData entries:');
-      for (let pair of formDataToSend.entries()) {
-        console.log(pair[0], pair[1]);
       }
 
       // Add video file if exists
@@ -315,11 +462,11 @@ const PostBoxForm = () => {
       }
 
       const response = await axios.post(
-        'https://api.sentryspot.co.uk/api/employer/job-post',
+        'https://api.sentryspot.co.uk/api/employeer/job-post',
         formDataToSend,
         {
           headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': ` ${token}`,
             'Content-Type': 'multipart/form-data',
           },
         }
@@ -327,6 +474,27 @@ const PostBoxForm = () => {
 
       if (response.data.status === 200) {
         toast.success('Job posted successfully!');
+        // Reset form after successful submission
+        setFormData({
+          job_title: "",
+          location: "",
+          description: "",
+          category_id: "",
+          functional_area_id: "",
+          experience_year: "",
+          expected_experience_year: "",
+          salary_type: "",
+          expected_salary_type: "",
+          batch_start_year: "",
+          batch_end_year: "",
+          Skills: "",
+        });
+        setSelectedTags([]);
+        setSelectedCategories([]);
+        setSelectedTypes([]);
+        setScreeningQuestions([]);
+        setVideoFile(null);
+        setErrors({}); // Clear all errors
       } else {
         toast.error(response.data.message || 'Failed to post job');
       }
@@ -335,8 +503,10 @@ const PostBoxForm = () => {
       toast.error(error.response?.data?.message || 'Failed to post job');
     } finally {
       setLoading(false);
+      setIsSubmitting(false);
     }
   };
+
   const handleTypeClick = (id) => {
     setSelectedTypes((prev) =>
       prev.includes(id) ? prev.filter((typeId) => typeId !== id) : [...prev, id]
@@ -492,20 +662,27 @@ const PostBoxForm = () => {
     <form className="default-form" onSubmit={handleSubmit}>
       <div className="form-group col-lg-12 col-md-12 relative mt-4">
         <label
-          htmlFor="job"
+          htmlFor="job_title"
           className="block text-sm font-medium text-gray-700"
         >
-          Job Title
+          Job Title <span className="text-red-500">*</span>
         </label>
         <input
           type="text"
-          name="job"
+          name="job_title"
           placeholder="Type job title"
-          onChange={handleChange("job")}
-          value={keywords.job}
-          required
-          className="mt-1 block w-full px-3 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          onChange={(e) => {
+            handleChange("job")(e);
+            handleFormChange(e);
+          }}
+          value={formData.job_title}
+          className={`mt-1 block w-full px-3 py-3 bg-white border ${
+            errors.job_title ? 'border-red-500' : 'border-gray-300'
+          } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
         />
+        {errors.job_title && (
+          <div className="mt-1 text-sm text-red-600">{errors.job_title}</div>
+        )}
         {dropdownVisibility.job && (
           <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
             {jobTitles.map((item, index) => (
@@ -520,91 +697,100 @@ const PostBoxForm = () => {
           </ul>
         )}
       </div>
+
       <div className="form-group col-lg-12 col-md-12 relative mt-4">
-  <label htmlFor="location" className="block text-sm font-medium text-gray-700">
-    Location
-  </label>
-  <input
-    type="text"
-    name="location"
-    placeholder="+ Add location"
-    onChange={handleChange("location")}
-    value={keywords.location}
-    required
-    className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-  />
-  {dropdownVisibility.location && (
-    <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg">
-      {/* {console.log(locations,">>>locations")} */}
-      {locations?.length > 0 && (
-  <ul>
-    {locations.map((item, index) => (
-      <li
-        key={index}
-        onClick={() => handleSelect("location", item)}
-        className="cursor-pointer px-4 py-2 hover:bg-gray-100"
-      >
-        {item}
-      </li>
-    ))}
-  </ul>
-)}
-    </ul>
-  )}
-</div>
-      <div>
+        <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+          Location <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          name="location"
+          placeholder="+ Add location"
+          onChange={(e) => {
+            handleChange("location")(e);
+            handleFormChange(e);
+          }}
+          value={formData.location}
+          className={`mt-1 block w-full p-2 border ${
+            errors.location ? 'border-red-500' : 'border-gray-300'
+          } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+        />
+        {errors.location && (
+          <div className="mt-1 text-sm text-red-600">{errors.location}</div>
+        )}
+        {dropdownVisibility.location && (
+          <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg">
+            {locations?.length > 0 && (
+              <ul>
+                {locations.map((item, index) => (
+                  <li
+                    key={index}
+                    onClick={() => handleSelect("location", item)}
+                    className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </ul>
+        )}
+      </div>
+
+      <div className="mt-4">
         <div className="flex justify-between items-center">
           <label
             htmlFor="description"
             className="block text-sm font-medium text-gray-700"
           >
-            Job Description
+            Job Description <span className="text-red-500">*</span>
           </label>
-           <button
-      type="button"
-      onClick={handleAiAssist}
-      disabled={loading}
-      className={`px-4 py-2 bg-blue-900 text-white text-sm font-medium rounded-md 
-        hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 
-        ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
-    >
-      {loading ? (
-        <div className="flex items-center space-x-2">
-          <Loader2 className="w-5 h-5 animate-spin" /> {/* Lucide Loader */}
-          <span>Loading...</span>
+          <button
+            type="button"
+            onClick={handleAiAssist}
+            disabled={loading}
+            className={`px-4 py-2 bg-blue-900 text-white text-sm font-medium rounded-md 
+              hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 
+              ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+          >
+            {loading ? (
+              <div className="flex items-center space-x-2">
+                <Loader2 className="w-5 h-5 animate-spin" />
+                <span>Loading...</span>
+              </div>
+            ) : (
+              "AI Assist +"
+            )}
+          </button>
         </div>
-      ) : (
-        "AI Assist +"
-      )}
-    </button>
+        <div className={`mt-1 ${errors.description ? 'border border-red-500 rounded-md' : ''}`}>
+          <ReactQuill
+            value={formData.description}
+            onChange={handleDescriptionChange}
+            className="w-full"
+            theme="snow"
+          />
         </div>
-        <ReactQuill
-          value={formData.description}
-          onChange={handleDescriptionChange}
-          className="mt-1 block w-full"
-          theme="snow"
-        />
-        {!formData.description && (
-          <p className="mt-2 text-sm text-red-600">
-            Job description is required.
-          </p>
+        {errors.description && (
+          <div className="mt-2 text-sm text-red-600">{errors.description}</div>
         )}
       </div>
 
       <div className="flex flex-wrap gap-4 mt-4">
-        {/* Min Experience Year Dropdown */}
         <div className="flex-1">
           <label
             htmlFor="experience_year"
             className="block text-sm font-medium text-gray-700"
           >
-            Min Experience Year
+            Min Experience Year <span className="text-red-500">*</span>
           </label>
           <select
             name="experience_year"
             value={formData.experience_year}
             onChange={handleFormChange}
-            className="mt-1 block w-full p-3 border-3 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className={`mt-1 block w-full p-3 border ${
+              errors.experience_year ? 'border-red-500' : 'border-gray-300'
+            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
           >
             <option value="">Min Experience Year</option>
             {experienceYears.map((item) => (
@@ -613,21 +799,25 @@ const PostBoxForm = () => {
               </option>
             ))}
           </select>
+          {errors.experience_year && (
+            <div className="mt-1 text-sm text-red-600">{errors.experience_year}</div>
+          )}
         </div>
 
-        {/* Max Experience Year Dropdown */}
         <div className="flex-1">
           <label
             htmlFor="expected_experience_year"
             className="block text-sm font-medium text-gray-700"
           >
-            Max Experience Year
+            Max Experience Year <span className="text-red-500">*</span>
           </label>
           <select
             name="expected_experience_year"
             value={formData.expected_experience_year}
             onChange={handleFormChange}
-            className="mt-1 block w-full p-3 border-3 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className={`mt-1 block w-full p-3 border ${
+              errors.expected_experience_year ? 'border-red-500' : 'border-gray-300'
+            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
           >
             <option value="">Max Experience Year</option>
             {expectedExperienceYears.map((item) => (
@@ -636,23 +826,27 @@ const PostBoxForm = () => {
               </option>
             ))}
           </select>
+          {errors.expected_experience_year && (
+            <div className="mt-1 text-sm text-red-600">{errors.expected_experience_year}</div>
+          )}
         </div>
       </div>
 
       <div className="flex flex-wrap gap-4 mt-4">
-        {/* Job Industry dropdown */}
         <div className="flex-1">
           <label
             htmlFor="industry_id"
             className="block text-sm font-medium text-gray-700"
           >
-            Industry
+            Industry <span className="text-red-500">*</span>
           </label>
           <select
             name="industry_id"
             value={formData.industry_id}
             onChange={handleFormChange}
-            className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className={`mt-1 block w-full p-3 border ${
+              errors.industry_id ? 'border-red-500' : 'border-gray-300'
+            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
           >
             <option value="">Select Industry</option>
             {industries.map((item) => (
@@ -661,23 +855,25 @@ const PostBoxForm = () => {
               </option>
             ))}
           </select>
+          {errors.industry_id && (
+            <div className="mt-1 text-sm text-red-600">{errors.industry_id}</div>
+          )}
         </div>
 
-       
-
-        {/* Functional Area Dropdown */}
         <div className="flex-1">
           <label
             htmlFor="functional_area_id"
             className="block text-sm font-medium text-gray-700"
           >
-            Functional Area
+            Functional Area <span className="text-red-500">*</span>
           </label>
           <select
             name="functional_area_id"
             value={formData.functional_area_id}
             onChange={handleFormChange}
-            className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className={`mt-1 block w-full p-3 border ${
+              errors.functional_area_id ? 'border-red-500' : 'border-gray-300'
+            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
           >
             <option value="">Select Functional Area</option>
             {functionalAreas.map((item) => (
@@ -686,94 +882,73 @@ const PostBoxForm = () => {
               </option>
             ))}
           </select>
-        </div>
-      </div>
-     
-      {/* Job Category Dropdown */}
-      <div className="flex-1">
-          <label
-            htmlFor="category_id"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Job Category
-          </label>
-          <MultiSelector
-            values={selectedCategoryNames}
-            onValuesChange={(selectedNames) => {
-              setSelectedCategoryNames(selectedNames);
-              // Map the selected names back to their IDs
-              const selectedIds = selectedNames.map(name => {
-                const category = jobCategories.find(cat => cat.name === name);
-                return category ? category.id : null;
-              }).filter(id => id !== null);
-              setSelectedCategories(selectedIds);
-            }}
-            className="w-full relative"
-            name="category_id"
-          >
-            <MultiSelectorTrigger className="w-full px-3 py-3 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
-              <MultiSelectorInput placeholder="Select job categories" />
-            </MultiSelectorTrigger>
-            <MultiSelectorContent>
-              <MultiSelectorList className="bg-white absolute z-10 w-full mt-1 border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
-                {jobCategories.map((item) => (
-                  <MultiSelectorItem
-                    value={item.name}
-                    key={item.id}
-                    className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
-                  >
-                    {item.name}
-                  </MultiSelectorItem>
-                ))}
-              </MultiSelectorList>
-            </MultiSelectorContent>
-          </MultiSelector>
-        </div>
-      <div className="form-group col-lg-12 col-md-12 mt-4">
-        <label
-          htmlFor="video"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Audio/Video JD
-        </label>
-        <p className="text-sm text-gray-500 mb-2">
-          Add a video to tell your brand's story
-        </p>
-        <div className="flex gap-4">
-          {" "}
-          {/* Flex container with gap between inputs */}
-          <input
-            type="file"
-            id="video"
-            accept="video/*"
-            onChange={handleFileChange}
-            className="mt-1 flex-1 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-700"
-          />
-          <input
-            type="text"
-            placeholder="Paste a YouTube link here"
-            className="flex-1 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
-          />
+          {errors.functional_area_id && (
+            <div className="mt-1 text-sm text-red-600">{errors.functional_area_id}</div>
+          )}
         </div>
       </div>
 
-      
-      <div>
-        <div className="flex justify-between items-center">
-          <label
-            htmlFor="tags"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Skills
-          </label>
-        </div>
+      <div className="flex-1 mt-4">
+        <label
+          htmlFor="category_id"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Job Category <span className="text-red-500">*</span>
+        </label>
+        <MultiSelector
+          values={selectedCategoryNames}
+          onValuesChange={(selectedNames) => {
+            setSelectedCategoryNames(selectedNames);
+            const selectedIds = selectedNames.map(name => {
+              const category = jobCategories.find(cat => cat.name === name);
+              return category ? category.id : null;
+            }).filter(id => id !== null);
+            setSelectedCategories(selectedIds);
+            if (selectedIds.length > 0) {
+              setErrors(prev => ({ ...prev, category_id: '' }));
+            }
+          }}
+          className={`w-full relative ${errors.category_id ? 'border-red-500' : ''}`}
+          name="category_id"
+        >
+          <MultiSelectorTrigger className="w-full px-3 py-3 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+            <MultiSelectorInput placeholder="Select job categories" />
+          </MultiSelectorTrigger>
+          <MultiSelectorContent>
+            <MultiSelectorList className="bg-white absolute z-10 w-full mt-1 border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+              {jobCategories.map((item) => (
+                <MultiSelectorItem
+                  value={item.name}
+                  key={item.id}
+                  className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
+                >
+                  {item.name}
+                </MultiSelectorItem>
+              ))}
+            </MultiSelectorList>
+          </MultiSelectorContent>
+        </MultiSelector>
+        {errors.category_id && (
+          <div className="mt-1 text-sm text-red-600">{errors.category_id}</div>
+        )}
+      </div>
+
+      <div className="form-group col-lg-12 col-md-12 mt-4">
+        <label
+          htmlFor="tags"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Skills <span className="text-red-500">*</span>
+        </label>
         <MultiSelector
           values={selectedTags}
           onValuesChange={(e) => {
-            // console.log("Updated Tags:", e);
             setSelectedTags(e);
+            if (e.length > 0) {
+              setErrors(prev => ({ ...prev, skills: '' }));
+            }
           }}
-          className="w-full relative "
+          className={`w-full relative ${errors.skills ? 'border-red-500' : ''}`}
           name="tags"
         >
           <MultiSelectorTrigger className="w-full px-3 py-3 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
@@ -785,7 +960,7 @@ const PostBoxForm = () => {
                 <MultiSelectorItem
                   value={item.value}
                   key={item.value}
-                  className="px-4 py-2 hover:bg-blue-100  cursor-pointer"
+                  className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
                 >
                   {item.label}
                 </MultiSelectorItem>
@@ -793,21 +968,24 @@ const PostBoxForm = () => {
             </MultiSelectorList>
           </MultiSelectorContent>
         </MultiSelector>
+        {errors.skills && (
+          <div className="mt-1 text-sm text-red-600">{errors.skills}</div>
+        )}
       </div>
 
-      {/* Course Type Section */}
-      <div className="form-group col-lg-12 col-md-12">
-        <label htmlFor="job_type">Job Type</label>
-        <div className="flex flex-wrap gap-4 mt-2">
+      <div className="form-group col-lg-12 col-md-12 mt-4">
+        <label htmlFor="job_type" className="block text-sm font-medium text-gray-700">
+          Job Type <span className="text-red-500">*</span>
+        </label>
+        <div className={`flex flex-wrap gap-4 mt-2 ${errors.job_type ? 'border border-red-500 rounded-md p-2' : ''}`}>
           {jobTypes.map((jobType) => (
             <div
               key={jobType.id}
               className={`relative cursor-pointer p-2 rounded-lg flex flex-col items-center justify-center w-40 h-36 text-center 
-          ${
-            selectedTypes.includes(jobType.id)
-              ? "shadow-inner shadow-blue-700 border-2 border-blue-700"
-              : "border "
-          }`}
+                ${selectedTypes.includes(jobType.id)
+                  ? "shadow-inner shadow-blue-700 border-2 border-blue-700"
+                  : "border"
+                }`}
               onClick={() => handleTypeClick(jobType.id)}
             >
               <div className="text-center">
@@ -820,9 +998,11 @@ const PostBoxForm = () => {
             </div>
           ))}
         </div>
+        {errors.job_type && (
+          <div className="mt-1 text-sm text-red-600">{errors.job_type}</div>
+        )}
       </div>
 
-      {/* Screening Questions Section */}
       <div className="form-group col-lg-12 col-md-12 mt-6">
         <div className="flex justify-between items-center mb-4">
           <div>
@@ -964,11 +1144,116 @@ const PostBoxForm = () => {
         </div>
       </div>
 
+      <div className="flex flex-wrap gap-4 mt-4">
+        <div className="flex-1">
+          <label
+            htmlFor="salary_type"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Salary Type <span className="text-red-500">*</span>
+          </label>
+          <select
+            name="salary_type"
+            value={formData.salary_type}
+            onChange={handleFormChange}
+            className={`mt-1 block w-full p-3 border ${
+              errors.salary_type ? 'border-red-500' : 'border-gray-300'
+            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+          >
+            <option value="">Select Salary Type</option>
+            {salaryTypes.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+          {errors.salary_type && (
+            <div className="mt-1 text-sm text-red-600">{errors.salary_type}</div>
+          )}
+        </div>
+
+        <div className="flex-1">
+          <label
+            htmlFor="expected_salary_type"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Expected Salary Type <span className="text-red-500">*</span>
+          </label>
+          <select
+            name="expected_salary_type"
+            value={formData.expected_salary_type}
+            onChange={handleFormChange}
+            className={`mt-1 block w-full p-3 border ${
+              errors.expected_salary_type ? 'border-red-500' : 'border-gray-300'
+            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+          >
+            <option value="">Select Expected Salary Type</option>
+            {salaryTypes.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+          {errors.expected_salary_type && (
+            <div className="mt-1 text-sm text-red-600">{errors.expected_salary_type}</div>
+          )}
+        </div>
+      </div>
+
+      <div className="flex flex-wrap gap-4 mt-4">
+        <div className="flex-1">
+          <label
+            htmlFor="batch_start_year"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Batch Start Year <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="number"
+            name="batch_start_year"
+            value={formData.batch_start_year}
+            onChange={handleFormChange}
+            className={`mt-1 block w-full p-3 border ${
+              errors.batch_start_year ? 'border-red-500' : 'border-gray-300'
+            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+            placeholder="Enter batch start year"
+          />
+          {errors.batch_start_year && (
+            <div className="mt-1 text-sm text-red-600">{errors.batch_start_year}</div>
+          )}
+        </div>
+
+        <div className="flex-1">
+          <label
+            htmlFor="batch_end_year"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Batch End Year <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="number"
+            name="batch_end_year"
+            value={formData.batch_end_year}
+            onChange={handleFormChange}
+            className={`mt-1 block w-full p-3 border ${
+              errors.batch_end_year ? 'border-red-500' : 'border-gray-300'
+            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+            placeholder="Enter batch end year"
+          />
+          {errors.batch_end_year && (
+            <div className="mt-1 text-sm text-red-600">{errors.batch_end_year}</div>
+          )}
+        </div>
+      </div>
+
       <button
         type="submit"
-        className="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        disabled={isSubmitting}
+        className={`mt-6 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+          isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+        }`}
       >
-        Submit
+        {isSubmitting ? 'Submitting...' : 'Submit'}
       </button>
     </form>
   );
