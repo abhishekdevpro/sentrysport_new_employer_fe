@@ -51,7 +51,7 @@
 //   //     );
 //   //   } else toast.error("please fill all the fields");
 //   // };
-   
+
 //   const handleLogin = async(e)=>{
 //     const {email} = e;
 //     console.log(e);
@@ -75,7 +75,7 @@
 //       toast.error(error.response?.data?.message || "An error occurred");
 //     }
 //   }
-  
+
 //   const handleGoogleSignin = async () => {
 //     const url = `${BASE_URL}/api/user/auth/google`;
 
@@ -200,19 +200,13 @@
 // import { useForm } from "react-hook-form";
 // import { useDispatch, useSelector } from "react-redux";
 
-
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { LoginSchema } from "@/schema/LoginSchema";
@@ -222,8 +216,11 @@ import { FcGoogle } from "react-icons/fc";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { BASE_URL } from "@/utils/constant/endPoints";
-import { useNavigate } from "react-router-dom";
-import { handleGoogleSignIn, handleSendOTP } from "@/store/slices/service/authService";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  handleGoogleSignIn,
+  handleSendOTP,
+} from "@/store/slices/service/authService";
 import { sendOtp } from "@/store/slices/authSlice";
 
 const Login = ({ setIsLogin }) => {
@@ -231,6 +228,7 @@ const Login = ({ setIsLogin }) => {
   const navigate = useNavigate();
   const { loading } = useSelector((state) => state.auth);
   const [submitting, setSubmitting] = useState(false);
+  const [agreed, setAgreed] = useState(false);
 
   const {
     register,
@@ -240,24 +238,24 @@ const Login = ({ setIsLogin }) => {
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
-    }
+    },
   });
 
   // const handleLogin = async (formData) => {
   //   console.log("Form submitted:", formData);
   //   const { email } = formData;
-    
+
   //   if (!email) {
   //     toast.error("Please provide your email");
   //     return;
   //   }
-    
+
   //   setSubmitting(true); // Show loading state
-    
+
   //   try {
   //     console.log("Sending request to API with email:", email);
   //     const response = await axios.post(
-  //       "https://api.sentryspot.co.uk/api/employeer/auth/send-loginotp", 
+  //       "https://api.sentryspot.co.uk/api/employeer/auth/send-loginotp",
   //       { email },
   //       {
   //         headers: {
@@ -265,9 +263,9 @@ const Login = ({ setIsLogin }) => {
   //         }
   //       }
   //     );
-      
+
   //     console.log("API response:", response);
-      
+
   //     if (response.status === 200) {
   //       toast.success(response.data.message || "OTP sent to your email.");
   //       localStorage.setItem("userEmail", email);
@@ -282,17 +280,17 @@ const Login = ({ setIsLogin }) => {
   //     setSubmitting(false); // Hide loading state
   //   }
   // };
-   
- const handleLogin = async(FormData)=>{
-    const {email} = FormData
-    if(!email) {
-      toast.error("Email is Required")
+
+  const handleLogin = async (FormData) => {
+    const { email } = FormData;
+    if (!email) {
+      toast.error("Email is Required");
     }
     try {
-      const response = await dispatch(sendOtp(email)).unwrap()
-      console.log(response.status,"component response");
-      if(response.status == "success" || response.code ==200 ){
-        toast.success(response.message || "OTP Send SuccessFully!")
+      const response = await dispatch(sendOtp(email)).unwrap();
+      console.log(response.status, "component response");
+      if (response.status == "success" || response.code == 200) {
+        toast.success(response.message || "OTP Send SuccessFully!");
         localStorage.setItem("userEmail", email);
         navigate("/verify-otp");
       }
@@ -300,7 +298,7 @@ const Login = ({ setIsLogin }) => {
       console.error("SendOtp error:", error);
       toast.error(error || "Failed to send OTP");
     }
-  }
+  };
   const handleManualSubmit = (e) => {
     e.preventDefault();
     console.log("Manual submit triggered");
@@ -309,10 +307,10 @@ const Login = ({ setIsLogin }) => {
       toast.error("Please provide your email");
       return;
     }
-    
+
     handleLogin({ email });
   };
-  
+
   // const handleGoogleSignin = async () => {
   //   const url = `https://api.sentryspot.co.uk/api/employeer/auth/google`;
 
@@ -334,7 +332,7 @@ const Login = ({ setIsLogin }) => {
     try {
       const data = await handleGoogleSignIn();
       console.log("Google sign-in successful, data:", data);
-      toast.success(data.message ||" Google sign-in successful, data")
+      toast.success(data.message || " Google sign-in successful, data");
     } catch (err) {
       console.error("Error during Google sign-in:", err.message);
       toast.error(`${err.message || "Google sign-in failed"}`);
@@ -379,11 +377,34 @@ const Login = ({ setIsLogin }) => {
               <p className="text-red-500 text-sm">{errors.email.message}</p>
             )}
           </div>
+          <div className="form-group">
+            <div className="field-outer">
+              <div className="input-group checkboxes square">
+                <input
+                  type="checkbox"
+                  id="agree"
+                  required
+                  checked={agreed}
+                  onChange={() => setAgreed(!agreed)}
+                />
+                <label htmlFor="agree" className="remember">
+                  <span className="custom-checkbox"></span> I agree to the{" "}
+                  <Link
+                    to="/terms-and-conditions"
+                    className="text-blue-600 underline"
+                  >
+                    Terms and Conditions
+                  </Link>
+                </label>
+              </div>
+            </div>
+          </div>
           <Button
             type="submit"
             size="sm"
             className="px-3 py-4 w-full duration-300 bg-[#2d1f89] hover:bg-blue-800"
             onClick={handleManualSubmit}
+            disabled={!agreed || submitting}
           >
             {loading || submitting ? <ActionLoader /> : "Send OTP"}
           </Button>
@@ -394,6 +415,3 @@ const Login = ({ setIsLogin }) => {
 };
 
 export default Login;
-
-
- 
