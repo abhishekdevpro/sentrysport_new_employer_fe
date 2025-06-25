@@ -302,16 +302,16 @@ const AboutSection = ({ companyData = {},userInfo, onSave }) => {
   };
 
   return (
-    <div className='py-8  mx-auto'>
+    <div className='py-8 h-[80vh]  mx-auto'>
 
 <section className="py-16 about-section" id="about">
       <div className="auto-container max-w-7xl mx-auto px-4">
         <div className="row flex flex-col lg:flex-row">
           {/* Content Column - Left side with text */}
           <div className="content-column w-full lg:w-4/12 order-2 lg:order-1 relative mb-10 lg:mb-0">
-            <div className="lg:absolute top-1/4 lg:-left-16 bg-white shadow-2xl rounded-3xl p-8 z-10">
-              <span className="inline-block border-b-2 border-blue-700 w-36 mb-8"></span>
-              <p className="title text-2xl sm:text-3xl text-black font-bold mb-6">
+            <div className="lg:absolute top-1 lg:-left-16 bg-white shadow-2xl rounded-3xl p-4 z-10">
+              <span className="inline-block border-b-2 border-blue-700 w-36 mb-4"></span>
+              <p className="title text-2xl sm:text-3xl text-black font-bold mb-2">
                 {formData.title || "About Our Company"}
               </p>
               <div className="mb-8 text-gray-700">
@@ -321,7 +321,7 @@ const AboutSection = ({ companyData = {},userInfo, onSave }) => {
                   <p>We are a dedicated team committed to excellence and innovation in everything we do.</p>
                 )}
               </div>
-              <div className="mt-6">
+              <div className="mt-2">
                 <button
                   className="text-white bg-blue-700 hover:bg-blue-800 transition-colors duration-200 font-medium rounded-md px-5 py-2.5 flex items-center gap-2"
                   onClick={() => handleEditClick()}

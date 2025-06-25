@@ -33,6 +33,7 @@ import ScreeningQuestionsForm from "./ScreeningQuestions";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchJobTypes } from "@/store/slices/dataSlice";
 import { createJobPost } from "@/store/slices/JobPostSlice";
+import { Button } from "@/components/ui/button";
 const tags = [
   { value: "Banking", label: "Banking" },
   { value: "Digital & Creative", label: "Digital & Creative" },
@@ -472,7 +473,7 @@ const PostBoxForm = () => {
         }
       );
 
-      if (response.data.status === 200) {
+      if (response.data.status === "success" || response.data.code === 200) {
         toast.success('Job posted successfully!');
         // Reset form after successful submission
         setFormData({
@@ -492,6 +493,7 @@ const PostBoxForm = () => {
         setSelectedTags([]);
         setSelectedCategories([]);
         setSelectedTypes([]);
+        setSelectedCategoryNames([]);
         setScreeningQuestions([]);
         setVideoFile(null);
         setErrors({}); // Clear all errors
@@ -1246,15 +1248,13 @@ const PostBoxForm = () => {
         </div>
       </div>
 
-      <button
+      <Button
         type="submit"
         disabled={isSubmitting}
-        className={`mt-6 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-          isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
-        }`}
+        className={"w-full mt-4"}
       >
         {isSubmitting ? 'Submitting...' : 'Submit'}
-      </button>
+      </Button>
     </form>
   );
 };

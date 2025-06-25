@@ -5,6 +5,7 @@ import "react-quill/dist/quill.snow.css"
 import axios from "axios"
 import { toast } from "react-toastify"
 import Input from "@/UI-Components/Input"
+import { Button } from "@/components/ui/button"
 
 const AboutCompany = ({ token, BASE_IMAGE_URL, companyData }) => {
   const { register, setValue, getValues, formState: { errors }, control } = useFormContext()
@@ -364,14 +365,14 @@ const AboutCompany = ({ token, BASE_IMAGE_URL, companyData }) => {
       </div>
 
       <div className="flex justify-start">
-        <button
+        <Button
           type="button"
           onClick={handleAboutSave}
-          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+          className="w-full"
           disabled={loading}
         >
           {loading ? "Saving..." : "Save About Section"}
-        </button>
+        </Button>
       </div>
     </div>
   )

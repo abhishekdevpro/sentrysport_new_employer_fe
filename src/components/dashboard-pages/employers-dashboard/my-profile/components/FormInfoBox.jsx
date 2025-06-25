@@ -8,6 +8,7 @@ import { Constant } from "@/utils/constant/constant";
 import Input from "@/UI-Components/Input";
 import SelectInput from "@/UI-Components/SelectInput";
 import { updateUserProfile } from "@/store/slices/authSlice";
+import { Button } from "@/components/ui/button";
 
 const FormInfoBox = () => {
   const dispatch = useDispatch();
@@ -154,7 +155,7 @@ const FormInfoBox = () => {
                       console.error("Image failed to load:", logImg);
                       e.target.onerror = null; // Prevent infinite loop
                       setLogImg(null); // Reset image on error
-                      toast.error("Failed to load profile image");
+                      // toast.error("Failed to load profile image");
                     }}
                   />
                 ) : (
@@ -318,9 +319,9 @@ const FormInfoBox = () => {
               required: "Please select a recruiter type"
             })}
           />
-          {errors.recruiter_type_id && (
+          {/* {errors?.recruiter_type_id && (
             <p style={{ color: '#ff6b6b', fontSize: '0.875rem', fontWeight: '500', marginTop: '0.25rem', marginBottom: '0.5rem' }}>{errors.recruiter_type_id.message}</p>
-          )}
+          )} */}
         </div>
 
         <LocationSelector
@@ -330,14 +331,15 @@ const FormInfoBox = () => {
         />
       </div>
 
-      <div className="form-group col-lg-12 mt-6">
-        <button
+      <div className="form-group col-lg-12 ">
+        <Button
           type="submit"
-          className="py-2 px-6 rounded-md bg-blue-800 text-white hover:bg-blue-900 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          variant="default"
+          className="w-full"
           disabled={loading}
         >
           {loading ? "Saving..." : "Save"}
-        </button>
+        </Button>
       </div>
     </form>
   );
