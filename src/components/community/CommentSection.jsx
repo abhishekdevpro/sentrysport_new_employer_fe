@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { FaEllipsisV, FaEdit, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { Button } from "../ui/button";
 
 const CommentSection = ({
   post,
@@ -99,7 +100,7 @@ const CommentSection = ({
 
   return (
     <div className="mt-6">
-      <div className="bg-gray-50 rounded-lg p-4 mb-4">
+      <div className="bg-gray-50 rounded-lg p-2 mb-4">
         <textarea
           className="w-full p-3 bg-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 h-24 resize-none"
           value={commentContent}
@@ -133,12 +134,14 @@ const CommentSection = ({
               Comment Anonymously
             </label> */}
           </div>
-          <button
+          <Button
+          variant="default"
+            disabled={!commentContent.trim()}
             onClick={addComment}
-            className="bg-blue-900 text-white px-4 py-2 rounded-md hover:bg-blue-800"
+            className=""
           >
             Post Comment
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -150,10 +153,10 @@ const CommentSection = ({
               key={comment.id}
               className="bg-white p-3 rounded-lg flex items-start"
             >
-              <img
+             <img
                 src={
-                  comment.isAnonymous
-                    ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSTiGG5lX9viMNkyHJL-13qWwWJgQUI-LxSg&s"
+                  comment?.user_photo
+                    ? `https://api.sentryspot.co.uk${comment.user_photo}`
                     : "https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/149197250/original/e91f8ca9de6e762865d3c20959e544f07bb760cc/create-a-simple-professional-profile-picture-for-you.png"
                 }
                 alt="Profile"
@@ -185,7 +188,7 @@ const CommentSection = ({
                 <div className="flex justify-between items-center w-full">
                   <div className="flex flex-col">
                     <p className="font-semibold text-sm text-gray-800">
-                      {comment.isAnonymous ? "Anonymous" : "User"}
+                      {comment.user_first_name} {comment.user_last_name}
                     </p>
                     <p className="text-gray-700 text-sm">{comment.content}</p>
                   </div>

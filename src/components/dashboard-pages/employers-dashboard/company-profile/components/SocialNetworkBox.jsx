@@ -13,6 +13,7 @@ import TeamMemberManager from "./Teams"
 import WhatMakesUsUnique from "./WhatMakesUsUnique"
 import JoinUsSection from "./JoinUsSection"
 import SocialMediaLinks from "./SocialMediaLinks"
+import { Button } from "@/components/ui/button"
 
 const SocialNetworkBox = () => {
   const BASE_IMAGE_URL = "https://api.sentryspot.co.uk"
@@ -228,12 +229,12 @@ const SocialNetworkBox = () => {
                 <SocialMediaLinks />
               </FormSection>
               <div className="mt-8 flex justify-end">
-                <button
+                <Button
                   type="submit"
-                  className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center"
+                  className="w-full"
                 >
                  {loading ? "Saving..."  :" Save All Changes"}
-                </button>
+                </Button>
               </div>
             </>
           )}
