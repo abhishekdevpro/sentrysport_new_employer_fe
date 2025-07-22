@@ -318,7 +318,7 @@ function App() {
                   />
 
                   <Route
-                    path="all-applicants"
+                    path="all-applicants/:jobId"
                     element={<AllApplicantsEmploeesPage />}
                   />
                  
