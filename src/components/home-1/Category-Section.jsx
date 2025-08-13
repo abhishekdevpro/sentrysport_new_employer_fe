@@ -47,10 +47,10 @@ const CategorySection = () => {
   ];
 
   return (
-    <section className="bg-white py-16 sm:py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className=" ">
+      <div className="max-w-7xl mx-auto px-2 ">
         {/* Header */}
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-blue-900 text-center mb-12">
+        <h2 className="app-text-h1 text-center mb-4">
           Spot top-quality candidates across all key functions,
           <br className="hidden sm:block" /> 
           with AI effortlessly filtering the best for you
@@ -61,7 +61,7 @@ const CategorySection = () => {
           {categories.map((category, index) => (
             <div 
               key={index}
-              className="bg-white border border-gray-100 rounded-xl p-6
+              className="app-light-bg border border-gray-100 rounded-xl p-6
                          hover:shadow-lg transition-all duration-300
                          transform hover:-translate-y-1 group
                          flex flex-col items-center text-center"
@@ -73,7 +73,7 @@ const CategorySection = () => {
               </div>
 
               {/* Title */}
-              <h3 className="text-blue-900 font-semibold text-lg
+              <h3 className="app-text-h3
                            group-hover:text-blue-700 transition-colors duration-300
                            break-words">
                 {category.title}

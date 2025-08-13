@@ -1,4 +1,5 @@
 "use client"
+import Input from "@/UI-Components/Input"
 import { useFormContext } from "react-hook-form"
 
 const SocialMediaLinks = () => {
@@ -17,10 +18,11 @@ const SocialMediaLinks = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        {/* <label className="block text-sm font-medium text-gray-700 mb-1">
           Facebook <span className="text-red-500">*</span>
-        </label>
-        <input
+        </label> */}
+        <Input
+        label="Facebook"
           type="url"
           {...register("facebook_link", {
             required: "Facebook link is required",
@@ -41,10 +43,11 @@ const SocialMediaLinks = () => {
         )}
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        {/* <label className="block text-sm font-medium text-gray-700 mb-1">
           LinkedIn <span className="text-red-500">*</span>
-        </label>
-        <input
+        </label> */}
+        <Input
+        label="LinkedIn"
           type="url"
           {...register("linkedin_link", {
             required: "LinkedIn link is required",
@@ -65,10 +68,11 @@ const SocialMediaLinks = () => {
         )}
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        {/* <label className="block text-sm font-medium text-gray-700 mb-1">
           Twitter <span className="text-red-500">*</span>
-        </label>
-        <input
+        </label> */}
+        <Input
+        label="Twitter"
           type="url"
           {...register("twitter_link", {
             required: "Twitter link is required",
@@ -89,10 +93,11 @@ const SocialMediaLinks = () => {
         )}
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        {/* <label className="block text-sm font-medium text-gray-700 mb-1">
           Website <span className="text-red-500">*</span>
-        </label>
-        <input
+        </label> */}
+        <Input
+        label="Website"
           type="url"
           {...register("website_link", {
             required: "Website link is required",

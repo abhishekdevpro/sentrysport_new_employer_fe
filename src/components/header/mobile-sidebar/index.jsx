@@ -122,8 +122,8 @@ const Index = () => {
       id="offcanvasMenu"
       data-bs-scroll="true"
     >
-      <SidebarHeader />
-      <Sidebar>
+      {/* <SidebarHeader /> */}
+      <Sidebar className="pt-[80px]"> 
         <Menu>
           {menuItems.map((menuItem, index) => (
             <MenuItem

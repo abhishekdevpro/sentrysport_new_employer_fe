@@ -9,27 +9,34 @@ import Notification from "./components/Notification";
 import Applicants from "./components/Applicants";
 import CopyrightFooter from "../../CopyrightFooter";
 import MenuToggler from "../../MenuToggler";
+import DashboardEmployeeHeader from "@/components/header/mobile-sidebar/DashBoardEmployeeHeader";
 
 const Index = () => {
   return (
-    <div className="page-wrapper dashboard bg-blue-50">
+    <div className="page-wrapper dashboard app-gradient-bg">
       <span className="header-span"></span>
       {/* <!-- Header Span for hight --> */}
 
       <LoginPopup />
       {/* End Login Popup Modal */}
 
-      <DashboardHeader />
+      {/* <DashboardHeader /> */}
+      <div className="hidden md:block">
+        <DashboardEmployeeHeader />
+      </div>
+      <div className="block md:hidden">
+        <MobileMenu />
+      </div>
       {/* End Header */}
 
-      <MobileMenu />
+      {/* <MobileMenu /> */}
       {/* End MobileMenu */}
 
       <DashboardEmployerSidebar />
       {/* <!-- End User Sidebar Menu --> */}
 
       {/* <!-- Dashboard --> */}
-      <section className="user-dashboard bg-blue-50 " >
+      <section className="user-dashboard " >
         <div className="dashboard-outer">
           <BreadCrumb title="Dashboard Home!" />
           {/* breadCrumb */}
@@ -54,11 +61,11 @@ const Index = () => {
 
             <div className="col-xl-5 col-lg-12">
               {/* <!-- Notification Widget --> */}
-              <div className="notification-widget ls-widget">
+              <div className="notification-widget ls-widget app-light-bg">
                 <div className="widget-title">
                   <h4>Notifications</h4>
                 </div>
-                <div className="widget-content">
+                <div className="widget-content ">
                   <Notification />
                 </div>
               </div>
@@ -67,7 +74,7 @@ const Index = () => {
 
             <div className="col-lg-12">
               {/* <!-- applicants Widget --> */}
-              <div className="applicants-widget ls-widget">
+              <div className="applicants-widget ls-widget app-light-bg">
                 <div className="widget-title">
                   <h4>Recent Applicants</h4>
                 </div>

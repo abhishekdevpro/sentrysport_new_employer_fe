@@ -9,6 +9,14 @@ body {
   font-family: Ubuntu !important;
   color: #545353;
   letter-spacing: 1px;
+  background-image: linear-gradient(
+    to bottom right,
+    #dbeafe, /* blue-100 */
+    #93c5fd, /* blue-300 */
+    #dbeafe  /* blue-100 */
+  );
+  background-attachment: fixed; /* keeps gradient in place */
+  background-size: cover;
 }
 /* button {
   padding: 6px 25px;
@@ -74,7 +82,7 @@ button.register-btn:hover {
 .header {
   width: 100%;
   text-align: -webkit-center;
-  background: #fff;
+  /* background: #fff; */
   box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.05);
 }
 .header-menu {

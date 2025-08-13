@@ -1,3 +1,83 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  /* Backgrounds */
+  .app-gradient-bg {
+    @apply bg-gradient-to-br from-blue-100 via-blue-300 to-blue-100;
+  }
+  .app-light-bg {
+    @apply bg-blue-50;
+  }
+
+  /* Headings */
+  .app-text-h1 {
+    @apply text-4xl font-bold text-blue-900 leading-tight;
+  }
+  .app-text-h2 {
+    @apply text-2xl font-semibold text-blue-900 leading-snug;
+  }
+  .app-text-h3 {
+    @apply text-xl font-normal text-blue-700 leading-snug;
+  }
+  .app-text-h4 {
+    @apply text-lg font-medium text-blue-600 leading-normal;
+  }
+  .app-text-h5 {
+    @apply text-md font-normal text-blue-700;
+  }
+  .app-text-h6 {
+    @apply text-base font-medium text-blue-500;
+  }
+
+  /* Paragraph & Small Text */
+  .app-text-p {
+    @apply text-base font-normal leading-relaxed;
+  }
+  .app-text-sm {
+    @apply text-sm font-light;
+  }
+  .app-text-xs {
+    @apply text-xs font-light;
+  }
+  .app-text-muted {
+    @apply text-sm font-light;
+  }
+
+  /* Label */
+  .app-text-label {
+    @apply block text-base font-medium text-blue-900 mb-1;
+  }
+
+  /* Lead paragraph */
+  .app-text-lead {
+    @apply text-lg font-light text-blue-700;
+  }
+
+  /* Gradient Heading */
+  .app-text-gradient {
+    @apply text-4xl font-bold;
+    background-image: linear-gradient(to right, #3b82f6, #1e3a8a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Blockquote */
+  .app-blockquote {
+    @apply text-lg italic text-blue-600 border-l-4 border-blue-300 pl-4;
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    .app-text-h1 { @apply text-2xl; }
+    .app-text-h2 { @apply text-xl; }
+    .app-text-h3 { @apply text-lg; }
+    .app-text-h4 { @apply text-base; }
+    .app-text-h5 { @apply text-sm; }
+    .app-text-h6 { @apply text-xs; }
+    .app-text-p { @apply text-sm; }
+    .app-text-label { @apply text-xs; }
+    .app-text-lead { @apply text-base; }
+  }
+}

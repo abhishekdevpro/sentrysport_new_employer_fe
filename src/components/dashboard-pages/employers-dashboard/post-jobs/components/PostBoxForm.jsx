@@ -90,7 +90,7 @@ const PostBoxForm = () => {
     return Array.isArray(selectedCategories) ? selectedCategories.join(", ") : "";
   };
 
-  const { 
+  const {
     salaryTypes,
     status,
     error,
@@ -137,7 +137,7 @@ const PostBoxForm = () => {
       return;
     }
 
-    if (currentQuestion.type.includes("choice") && 
+    if (currentQuestion.type.includes("choice") &&
         currentQuestion.options.filter(opt => opt.trim() !== "").length < 2) {
       toast.error("Please add at least two options for choice questions");
       return;
@@ -145,8 +145,8 @@ const PostBoxForm = () => {
 
     const newQuestion = {
       ...currentQuestion,
-      options: currentQuestion.type.includes("choice") 
-        ? currentQuestion.options.filter(opt => opt.trim() !== "") 
+      options: currentQuestion.type.includes("choice")
+        ? currentQuestion.options.filter(opt => opt.trim() !== "")
         : []
     };
 
@@ -222,7 +222,7 @@ const PostBoxForm = () => {
       setDropdownVisibility((prev) => ({ ...prev, location: false }));
     }
   }, [keywords.location]);
-  
+
   const handleSelect = (key, selectedItem) => {
     if (key === "job") {
       setKeywords((prevKeywords) => ({
@@ -290,7 +290,7 @@ const PostBoxForm = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     // Required Field Validation
     const requiredFields = {
       job_title: 'Job title',
@@ -406,17 +406,17 @@ const PostBoxForm = () => {
 
     // Validate form and get new errors
     const newErrors = validateForm();
-    
+
     // Set errors immediately
     setErrors(newErrors);
-    
+
     // Check if there are any errors
     if (Object.keys(newErrors).length > 0) {
       setIsSubmitting(false);
       // Show toast with number of errors
       const errorCount = Object.keys(newErrors).length;
       toast.error(`Please fix ${errorCount} error${errorCount > 1 ? 's' : ''} in the form`);
-      
+
       // Scroll to the first error
       setTimeout(() => {
         const firstErrorField = document.querySelector('.border-red-500');
@@ -424,7 +424,7 @@ const PostBoxForm = () => {
           firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       }, 100);
-      
+
       return;
     }
 
@@ -432,7 +432,7 @@ const PostBoxForm = () => {
 
     try {
       const formDataToSend = new FormData();
-      
+
       // Add basic form fields
       formDataToSend.append("job_title", formData.job_title);
       formDataToSend.append("location", formData.location);
@@ -581,7 +581,7 @@ const PostBoxForm = () => {
     const cleanLocation = String(location).trim();
 
     // Construct the request body as a string
-    setLoading(true); 
+    setLoading(true);
     const requestBody = {
       keyword: "Job Description",
       title: cleanJobTitle,
@@ -751,8 +751,8 @@ const PostBoxForm = () => {
             type="button"
             onClick={handleAiAssist}
             disabled={loading}
-            className={`px-4 py-2 bg-blue-900 text-white text-sm font-medium rounded-md 
-              hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 
+            className={`px-4 py-2 bg-blue-900 text-white text-sm font-medium rounded-md
+              hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
               ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
           >
             {loading ? (
@@ -983,7 +983,7 @@ const PostBoxForm = () => {
           {jobTypes.map((jobType) => (
             <div
               key={jobType.id}
-              className={`relative cursor-pointer p-2 rounded-lg flex flex-col items-center justify-center w-40 h-36 text-center 
+              className={`relative cursor-pointer p-2 rounded-lg flex flex-col items-center justify-center w-40 h-36 text-center
                 ${selectedTypes.includes(jobType.id)
                   ? "shadow-inner shadow-blue-700 border-2 border-blue-700"
                   : "border"
@@ -1014,7 +1014,7 @@ const PostBoxForm = () => {
             </p>
           </div>
         </div>
-        
+
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           {!showScreeningForm && screeningQuestions.length < 10 && (
             <button
@@ -1028,7 +1028,7 @@ const PostBoxForm = () => {
               Add Question
             </button>
           )}
-          
+
           {showScreeningForm && (
             <div className="border border-gray-200 rounded-lg p-4 mt-4 bg-white shadow-sm">
               <div className="flex justify-between items-center mb-4">
@@ -1119,7 +1119,7 @@ const PostBoxForm = () => {
               </div>
             </div>
           )}
-          
+
           {/* Display added questions */}
           {screeningQuestions.length > 0 && (
             <div className="mt-6 space-y-4">
@@ -1260,3 +1260,446 @@ const PostBoxForm = () => {
 };
 
 export default PostBoxForm;
+
+// import { useEffect, useState } from "react";
+// import { useForm, FormProvider } from "react-hook-form";
+// import axios from "axios";
+// import { Constant } from "@/utils/constant/constant";
+// import { toast } from "react-toastify";
+// import { useDispatch, useSelector } from "react-redux";
+// import { fetchJobTypes } from "@/store/slices/dataSlice";
+// import Input from "@/UI-Components/Input";
+// import TextEditor from "@/UI-Components/TextEditor";
+// import SelectInput from "@/UI-Components/SelectInput";
+// import {
+//   Briefcase,
+//   BriefcaseIcon,
+//   CheckIcon,
+//   Clock1Icon,
+//   ClockIcon,
+//   Folder,
+//   HandIcon,
+//   Loader2,
+//   User2Icon,
+//   UserIcon,
+// } from "lucide-react";
+// import { IoDocument } from "react-icons/io5";
+// import { FaPerson, FaUserGroup } from "react-icons/fa6";
+// import {
+//   MultiSelector,
+//   MultiSelectorContent,
+//   MultiSelectorInput,
+//   MultiSelectorItem,
+//   MultiSelectorList,
+//   MultiSelectorTrigger,
+// } from "@/components/ui/multiSelector";
+// import { Button } from "@/components/ui/button";
+// import TitleAutocomplete from "../../my-profile/components/TitleDropdown";
+
+// const tags = [
+//   { id: 1, name: "Banking" },
+//   { id: 2, name: "Digital & Creative" },
+//   { id: 3, name: "Retail" },
+//   { id: 4, name: "Human Resources" },
+//   { id: 5, name: "Management" },
+//   { id: 6, name: "Accounting & Finance" },
+//   { id: 7, name: "Digital" },
+//   { id: 8, name: "Creative Art" },
+// ];
+
+// const PostBoxForm = () => {
+//   const [loading, setLoading] = useState(false);
+//   const [videoFile, setVideoFile] = useState(null);
+//   const [selectedTags, setSelectedTags] = useState([]);
+//   const [selectedTypes, setSelectedTypes] = useState([]);
+//   const [selectedCategories, setSelectedCategories] = useState([]);
+//   const [screeningQuestions, setScreeningQuestions] = useState([]);
+//   const [showScreeningForm, setShowScreeningForm] = useState(false);
+//   const [industries, setIndustries] = useState([]);
+//   const [functionalAreas, setFunctionalAreas] = useState([]);
+//   const [jobCategories, setJobCategories] = useState([]);
+//   const [experienceYears, setExperienceYears] = useState([]);
+
+//   const { salaryTypes, jobTypes } = useSelector((state) => state.data);
+//   const token = localStorage.getItem(Constant.USER_TOKEN);
+
+//   const methods = useForm({
+//     defaultValues: {
+//       job_title: "",
+//       location: "",
+//       description: "",
+//       category_id: "",
+//       functional_area_id: "",
+//       experience_year: "",
+//       expected_experience_year: "",
+//       salary_type: "",
+//       expected_salary_type: "",
+//       batch_start_year: "",
+//       batch_end_year: "",
+//       industry_id: "",
+//       skills: "",
+//     },
+//   });
+
+//   const {
+//     handleSubmit,
+//     setValue,
+//     watch,
+//     formState: { errors },
+//   } = methods;
+
+//   // Fetch initial data
+//   useEffect(() => {
+//     const fetchAllData = async () => {
+//       try {
+//         const [
+//           experienceResponse,
+//           industriesResponse,
+//           functionalAreasResponse,
+//           jobCategoriesResponse,
+//         ] = await Promise.all([
+//           axios.get(
+//             "https://api.sentryspot.co.uk/api/jobseeker/experience-level"
+//           ),
+//           axios.get("https://api.sentryspot.co.uk/api/jobseeker/industries"),
+//           axios.get(
+//             "https://api.sentryspot.co.uk/api/jobseeker/functional-area"
+//           ),
+//           axios.get(
+//             "https://api.sentryspot.co.uk/api/employeer/job-categories"
+//           ),
+//         ]);
+
+//         setExperienceYears(experienceResponse.data.data || []);
+//         setIndustries(industriesResponse.data.data || []);
+//         setFunctionalAreas(functionalAreasResponse.data.data || []);
+//         setJobCategories(jobCategoriesResponse.data.data || []);
+//       } catch (error) {
+//         console.error("Error fetching data:", error);
+//         toast.error("Failed to load initial data");
+//       }
+//     };
+
+//     fetchAllData();
+//   }, []);
+
+//   const handleAiAssist = async () => {
+//     const jobTitle = watch("job_title");
+//     const location = watch("location");
+
+//     console.log(jobTitle,location ,"from Ai assist")
+
+//     if (!jobTitle || !location) {
+//       toast.warn("Please enter job title and location first");
+//       return;
+//     }
+
+//     setLoading(true);
+//     try {
+//       const response = await axios.post(
+//         "https://api.sentryspot.co.uk/api/employeer/ai-job-description",
+//         {
+//           keyword: "Job Description",
+//           title: jobTitle.trim(),
+//           location: location.trim(),
+//         },
+//         {
+//           headers: { Authorization: token },
+//         }
+//       );
+
+//       if (response.data.code === 200) {
+//         setValue("description", response.data.data.description);
+//       } else {
+//         toast.error("Failed to generate description");
+//       }
+//     } catch (error) {
+//       console.error("AI Assist Error:", error);
+//       toast.error("Failed to generate description");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const onSubmit = async (data) => {
+//     try {
+//       const formData = new FormData();
+
+//       // Add form fields
+//       Object.entries(data).forEach(([key, value]) => {
+//         formData.append(key, value);
+//       });
+
+//       // Add arrays and special fields
+//       formData.append("category_id", JSON.stringify(selectedCategories));
+//       formData.append("job_type_id", JSON.stringify(selectedTypes));
+//       formData.append("skills", selectedTags.join(","));
+
+//       if (screeningQuestions.length > 0) {
+//         formData.append(
+//           "screening_questions",
+//           JSON.stringify(screeningQuestions)
+//         );
+//       }
+
+//       if (videoFile) {
+//         formData.append("video_jd_file", videoFile);
+//       }
+
+//       const response = await axios.post(
+//         "https://api.sentryspot.co.uk/api/employeer/job-post",
+//         formData,
+//         {
+//           headers: {
+//             Authorization: token,
+//             "Content-Type": "multipart/form-data",
+//           },
+//         }
+//       );
+
+//       if (response.data.status === "success") {
+//         toast.success("Job posted successfully!");
+//         methods.reset();
+//         setSelectedTags([]);
+//         setSelectedCategories([]);
+//         setSelectedTypes([]);
+//         setScreeningQuestions([]);
+//         setVideoFile(null);
+//       }
+//     } catch (error) {
+//       console.error("Error:", error);
+//       toast.error(error.response?.data?.message || "Failed to post job");
+//     }
+//   };
+
+//   return (
+//     <FormProvider {...methods}>
+//       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+//         <Input
+//           label="Job Title"
+//           name="job_title"
+//           rules={{
+//             required: "Job title is required",
+//             minLength: {
+//               value: 3,
+//               message: "Job title must be at least 3 characters",
+//             },
+//           }}
+//           placeholder="Enter job title"
+//         />
+//         {/* <TitleAutocomplete
+//           register={register}
+//           setValue={setValue}
+//           defaultValue={watch("job_title")}
+//         /> */}
+//         <Input
+//           label="Location"
+//           name="location"
+//           rules={{ required: "Location is required" }}
+//           placeholder="Enter location"
+//         />
+//         <div className="relative">
+//           <div className="flex justify-between items-center mb-4">
+//             <label className="app-text-label">Job Description</label>
+//             <Button
+//               type="button"
+//               onClick={handleAiAssist}
+//               disabled={loading}
+//               // variant="outline"
+//             >
+//               {loading ? (
+//                 <>
+//                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+//                   Generating...
+//                 </>
+//               ) : (
+//                 "AI Assist"
+//               )}
+//             </Button>
+//           </div>
+
+//           <TextEditor
+//             name="description"
+//             rules={{
+//               required: "Description is required",
+//               minLength: {
+//                 value: 50,
+//                 message: "Description must be at least 50 characters",
+//               },
+//             }}
+//             maxLength={5000}
+//           />
+//         </div>
+//         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//           <SelectInput
+//             label="Minimum Experience"
+//             name="experience_year"
+//             options={experienceYears}
+//             rules={{ required: "Minimum experience is required" }}
+//           />
+
+//           <SelectInput
+//             label="Maximum Experience"
+//             name="expected_experience_year"
+//             options={experienceYears}
+//             rules={{ required: "Maximum experience is required" }}
+//           />
+//         </div>
+//         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//           <SelectInput
+//             label="Industry"
+//             name="industry_id"
+//             options={industries}
+//             rules={{ required: "Industry is required" }}
+//           />
+
+//           <SelectInput
+//             label="Functional Area"
+//             name="functional_area_id"
+//             options={functionalAreas}
+//             rules={{ required: "Functional Area is required" }}
+//           />
+//         </div>
+//         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//           <SelectInput
+//             label="Current Salary"
+//             name="salary_type"
+//             options={salaryTypes}
+//             rules={{ required: "Current Salary is required" }}
+//           />
+
+//           <SelectInput
+//             label="Expected Salary"
+//             name="expected_salary_type"
+//             options={salaryTypes}
+//             rules={{ required: "Expected Salary is required" }}
+//           />
+//         </div>
+//         <div>
+//           <SelectInput
+//             label="Job category"
+//             name="category_id"
+//             options={jobCategories}
+//             rules={{ required: "Functional Area is required" }}
+//           />
+//         </div>
+//         {/* <div>
+//           <SelectInput
+//             label="Job Types"
+//             name="job_type_id"
+//             options={jobTypes}
+//             rules={{ required: "Job Type is required" }}
+//           />
+//         </div> */}
+//         {/* Job Types Selection with Icons */}
+//         <div className="form-group mt-6">
+//           <label className="app-text-label font-medium text-blue-900">
+//             Job Type <span className="text-red-500">*</span>
+//           </label>
+//           <div
+//             className={`flex flex-wrap gap-4 mt-2 ${
+//               errors.job_type_id?.message
+//                 ? "border border-red-500 rounded-md p-2"
+//                 : ""
+//             }`}
+//           >
+//             {jobTypes.map((jobType) => (
+//               <div
+//                 key={jobType.id}
+//                 className={`relative cursor-pointer p-2 rounded-lg flex flex-col items-center justify-center w-40 h-36 text-center 
+//           ${
+//             selectedTypes.includes(jobType.id)
+//               ? "shadow-inner shadow-blue-700 border-2 border-blue-700"
+//               : "border"
+//           }`}
+//                 onClick={() => {
+//                   const newTypes = selectedTypes.includes(jobType.id)
+//                     ? selectedTypes.filter((id) => id !== jobType.id)
+//                     : [...selectedTypes, jobType.id];
+//                   setSelectedTypes(newTypes);
+//                   setValue("job_type_id", newTypes);
+//                 }}
+//               >
+//                 <div className="text-center">
+//                   {(() => {
+//                     switch (jobType.name.toLowerCase()) {
+//                       case "full-time":
+//                         return <Briefcase className="w-8 h-8" />;
+//                       case "part-time":
+//                         return <Clock1Icon className="w-8 h-8" />;
+//                       case "contract":
+//                         return <Folder className="w-8 h-8" />;
+//                       case "temporary":
+//                         return (
+//                           <Clock1Icon className="w-8 h-8 text-yellow-500" />
+//                         );
+//                       case "other":
+//                         return <FaPerson className="w-8 h-8" />;
+//                       case "volunteer":
+//                         return <HandIcon className="w-8 h-8" />;
+//                       case "internship":
+//                         return <FaUserGroup className="w-8 h-8" />;
+//                       default:
+//                         return <User2Icon className="w-8 h-8" />;
+//                     }
+//                   })()}
+//                 </div>
+//                 <p className="text-sm mt-2">{jobType.name}</p>
+//                 {selectedTypes.includes(jobType.id) && (
+//                   <CheckIcon className="absolute -top-2 -right-1 rounded-full border-2 border-blue-700 w-7 h-7 text-blue-700 bg-white" />
+//                 )}
+//               </div>
+//             ))}
+//           </div>
+//           {errors.job_type_id?.message && (
+//             <p className="text-sm text-red-600 mt-1">
+//               {errors.job_type_id.message}
+//             </p>
+//           )}
+//         </div>
+//         {/* Skills Multiselect */}
+//         <div className="form-group mt-6">
+//           <label className="app-text-label font-medium text-blue-900">
+//             Skills <span className="text-red-500">*</span>
+//           </label>
+//           <MultiSelector
+//             values={selectedTags}
+//             onValuesChange={(newTags) => {
+//               setSelectedTags(newTags);
+//               setValue("skills", newTags.join(","));
+//             }}
+//             className={`w-full relative ${
+//               errors.skills?.message ? "border-red-500" : ""
+//             }`}
+//           >
+//             <MultiSelectorTrigger className="w-full px-3 py-3 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+//               <MultiSelectorInput placeholder="Select skills" />
+//             </MultiSelectorTrigger>
+//             <MultiSelectorContent>
+//               <MultiSelectorList className="bg-white absolute z-10 w-full mt-1 border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+//                 {tags.map((tag) => (
+//                   <MultiSelectorItem
+//                     value={tag.name}
+//                     key={tag.id}
+//                     className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
+//                   >
+//                     {tag.name}
+//                   </MultiSelectorItem>
+//                 ))}
+//               </MultiSelectorList>
+//             </MultiSelectorContent>
+//           </MultiSelector>
+//           {errors.skills?.message && (
+//             <p className="text-sm text-red-600 mt-1">{errors.skills.message}</p>
+//           )}
+//         </div>
+//         {/* Continue with other form fields similarly... */}
+//         <Button type="submit" className="w-full" disabled={loading}>
+//           {loading ? "Posting..." : "Post Job"}
+//         </Button>
+//       </form>
+//     </FormProvider>
+//   );
+// };
+
+// export default PostBoxForm;

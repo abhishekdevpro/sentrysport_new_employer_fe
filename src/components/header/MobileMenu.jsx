@@ -17,7 +17,7 @@ const MobileMenu = () => {
   const userToken = localStorage.getItem(Constant.USER_TOKEN)
   return (
     // <!-- Main Header-->
-    <header className="main-header main-header-mobile z-10"  >
+    <header className="main-header main-header-mobile z-20"  >
       <div className="auto-container">
         {/* <!-- Main box --> */}
         <div className="inner-box">

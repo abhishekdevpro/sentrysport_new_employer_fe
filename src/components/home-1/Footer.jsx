@@ -13,7 +13,7 @@ const Footer = ({ footerStyle = "" }) => {
               <img 
                 src="https://htmlsentryspot.vercel.app/img/company_logo_white.png" 
                 alt="SentrySpot Logo"
-                className="h-8 w-auto mb-4"
+                className="h-12 w-auto mb-4"
               />
               <div className="flex space-x-4 mt-4">
                 <a href="#" className="hover:text-blue-400 transition-colors">
