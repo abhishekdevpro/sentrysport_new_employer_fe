@@ -199,10 +199,11 @@ const DashboardEmployeeHeader = () => {
                       </li>
                       <li>
                         <Button
-                        varinat="destructive"
+                          variant="destructive"
                           // className="flex items-center w-full px-4 py-2 hover:bg-gray-100 text-left"
-                          className="w-full p-2"
+                          
                           onClick={logoutHandler}
+                          className="w-full px-3"
                         >
                           <span className="mr-2">
                             <IoLogOutOutline size={20} />
@@ -253,10 +254,12 @@ const DashboardEmployeeHeader = () => {
               <div className="btn-box">
                 {userToken ? (
                   <Button
-                    className="bg-gray-500 p-2 duration-500 hover:bg-red-600 flex items-center"
+                  variant="destructive"
+                    // className="bg-gray-500 p-2 duration-500 hover:bg-red-600 flex items-center"
                     onClick={logoutHandler}
+                    className="p-2"
                   >
-                    <IoLogOutOutline size={24} />
+                    <IoLogOutOutline size={24}  />
                   </Button>
                 ) : (
                   <Link to="/login" className="text-gray-700 hover:text-blue-600">

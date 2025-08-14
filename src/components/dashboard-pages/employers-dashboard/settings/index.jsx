@@ -288,7 +288,12 @@ const SettingsPage = () => {
   return (
     <div className="page-wrapper dashboard min-h-screen app-gradient-bg">
       {/* Fixed Header */}
-      <DashboardEmployeeHeader />
+     <div className="hidden md:block">
+        <DashboardEmployeeHeader />
+      </div>
+      <div className="block md:hidden">
+        <MobileMenu />
+      </div>
 
       {/* Sidebar */}
       <DashboardEmployerSidebar />

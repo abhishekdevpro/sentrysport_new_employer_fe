@@ -8,6 +8,7 @@ import JobListingsTable from "./components/JobListingsTable";
 import MenuToggler from "../../MenuToggler";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import DashboardEmployeeHeader from "@/components/header/mobile-sidebar/DashBoardEmployeeHeader";
 
 const index = () => {
   return (
@@ -18,10 +19,15 @@ const index = () => {
       <LoginPopup />
       {/* End Login Popup Modal */}
 
-      <DashboardHeader />
+      <div className="hidden md:block">
+        <DashboardEmployeeHeader />
+      </div>
+      <div className="block md:hidden">
+        <MobileMenu />
+      </div>
       {/* End Header */}
 
-      <MobileMenu />
+      {/* <MobileMenu /> */}
       {/* End MobileMenu */}
 
       <DashboardEmployerSidebar />

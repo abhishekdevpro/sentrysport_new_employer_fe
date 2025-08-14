@@ -26,7 +26,7 @@ const index = () => {
       </div>
       {/* End Header */}
 
-      <MobileMenu />
+      {/* <MobileMenu /> */}
       {/* End MobileMenu */}
 
       <DashboardEmployerSidebar />

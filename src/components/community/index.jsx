@@ -11,12 +11,20 @@ import { Constant } from "@/utils/constant/constant";
 import DashboardCandidatesHeader from "../header/DashboardCandidatesHeader";
 import DashboardEmployeeHeader from "../header/mobile-sidebar/DashBoardEmployeeHeader";
 import Footer from "../home-1/Footer";
+import MobileMenu from "../header/MobileMenu";
 
 const Index = () => {
   return (
     <>
       <LoginPopup />
-      {localStorage.getItem(Constant.USER_TOKEN)? <DashboardEmployeeHeader />  :<DefaulHeader2 />}
+      {/* {localStorage.getItem(Constant.USER_TOKEN)? <DashboardEmployeeHeader />  :<DefaulHeader2 />} */}
+
+      <div className="hidden md:block">
+        <DashboardEmployeeHeader />
+      </div>
+      <div className="block md:hidden">
+        <MobileMenu />
+      </div>
       {/* End Header */}
 
       <section className="ls-section app-gradient-bg mt-10 md:20">
