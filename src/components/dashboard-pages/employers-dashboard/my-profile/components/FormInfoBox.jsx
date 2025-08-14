@@ -9,7 +9,8 @@ import Input from "@/UI-Components/Input";
 import SelectInput from "@/UI-Components/SelectInput";
 import { updateUserProfile } from "@/store/slices/authSlice";
 import { Button } from "@/components/ui/button";
-import SearchSelect from "@/UI-Components/SearchSelect";
+import AutocompleteInput from "@/UI-Components/AutoCompleteInput";
+// import SearchSelect from "@/UI-Components/SearchSelect";
 
 const FormInfoBox = () => {
   const dispatch = useDispatch();
@@ -184,9 +185,9 @@ const FormInfoBox = () => {
           <Input
             label="First Name"
             placeholder="e.g. Jerome"
-            error={errors?.first_name}
-            className={`mb-4 w-full border ${
-              errors.first_name ? "border-red-500" : "border-gray-300"
+            error={errors?.first_name?.message}
+            className={` w-full border ${
+              errors?.first_name ? "border-red-500" : "border-gray-300"
             } rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
             {...register("first_name", {
               required: "First name is required",
@@ -205,26 +206,13 @@ const FormInfoBox = () => {
               },
             })}
           />
-          {errors.first_name && (
-            <p
-              style={{
-                color: "#ff6b6b",
-                fontSize: "0.875rem",
-                fontWeight: "500",
-                marginTop: "0.25rem",
-                marginBottom: "0.5rem",
-              }}
-            >
-              {errors.first_name.message}
-            </p>
-          )}
 
           <Input
             label="Last Name"
             placeholder="e.g. Doe"
-            error={errors?.last_name}
+            error={errors?.last_name?.message}
             className={`w-full border ${
-              errors.last_name ? "border-red-500" : "border-gray-300"
+              errors?.last_name ? "border-red-500" : "border-gray-300"
             } rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
             {...register("last_name", {
               required: "Last name is required",
@@ -243,19 +231,6 @@ const FormInfoBox = () => {
               },
             })}
           />
-          {errors.last_name && (
-            <p
-              style={{
-                color: "#ff6b6b",
-                fontSize: "0.875rem",
-                fontWeight: "500",
-                marginTop: "0.25rem",
-                marginBottom: "0.5rem",
-              }}
-            >
-              {errors.last_name.message}
-            </p>
-          )}
         </div>
 
         <div className="form-group col-lg-6 col-md-12">
@@ -263,8 +238,8 @@ const FormInfoBox = () => {
             label="Email"
             type="email"
             placeholder="e.g. email@example.com"
-            className={`mb-4 w-full border ${
-              errors.email ? "border-red-500" : "border-gray-300"
+            className={` w-full border ${
+              errors?.email ? "border-red-500" : "border-gray-300"
             } rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
             readOnly
             {...register("email", {
@@ -275,19 +250,6 @@ const FormInfoBox = () => {
               },
             })}
           />
-          {errors.email && (
-            <p
-              style={{
-                color: "#ff6b6b",
-                fontSize: "0.875rem",
-                fontWeight: "500",
-                marginTop: "0.25rem",
-                marginBottom: "0.5rem",
-              }}
-            >
-              {errors.email.message}
-            </p>
-          )}
         </div>
 
         <div className="form-group col-lg-6 col-md-12">
@@ -296,9 +258,9 @@ const FormInfoBox = () => {
             label="Phone"
             inputMode="numeric"
             placeholder="e.g. 1234567890"
-            error={errors?.phone}
+            error={errors?.phone?.message}
             maxLength={10}
-            className={`mb-4 `}
+            className={` `}
             {...register("phone", {
               maxLength: {
                 value: 10,
@@ -310,19 +272,6 @@ const FormInfoBox = () => {
               },
             })}
           />
-          {errors.phone && (
-            <p
-              style={{
-                color: "#ff6b6b",
-                fontSize: "0.875rem",
-                fontWeight: "500",
-                marginTop: "0.25rem",
-                marginBottom: "0.5rem",
-              }}
-            >
-              {errors.phone.message}
-            </p>
-          )}
         </div>
 
         <div className="form-group col-lg-6 col-md-12">
@@ -330,11 +279,12 @@ const FormInfoBox = () => {
             type="url"
             label="Website"
             placeholder="e.g. www.example.com"
-            error={errors?.website}
-            className={`mb-4 w-full border ${
-              errors.website ? "border-red-500" : "border-gray-300"
+            error={errors?.website?.message}
+            className={` w-full border ${
+              errors?.website ? "border-red-500" : "border-gray-300"
             } rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
             {...register("website", {
+              required: "Website is required",
               pattern: {
                 value:
                   /^(https?:\/\/)?(www\.)?[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$/,
@@ -342,47 +292,15 @@ const FormInfoBox = () => {
               },
             })}
           />
-          {errors.website && (
-            <p
-              style={{
-                color: "#ff6b6b",
-                fontSize: "0.875rem",
-                fontWeight: "500",
-                marginTop: "0.25rem",
-                marginBottom: "0.5rem",
-              }}
-            >
-              {errors.website.message}
-            </p>
-          )}
         </div>
 
-        {/* Title Autocomplete - passes setValue to update form */}
-        <TitleAutocomplete
-          register={register}
-          setValue={setValue}
-          defaultValue={watch("designation")}
-        />
-
-        {/* <SearchSelect
-          label="Job Title"
-          placeholder="Search job title..."
-          apiUrl="https://api.sentryspot.co.uk/api/jobseeker/job-title"
-          queryParam="job_title_keyword"
-          name="jobTitle"
-          register={register}
-          setValue={setValue}
-          className="mb-4"
-          // error={errors?.jobTitle}
-        /> */}
-
-        <div className="form-group col-lg-12 col-md-12">
+        <div className="form-group col-lg-6 col-md-12">
           <Input
             label="Organization"
             placeholder="e.g. Company XYZ"
-            error={errors?.organization}
-            className={`mb-4 w-full border ${
-              errors.organization ? "border-red-500" : "border-gray-300"
+            error={errors?.organization?.message}
+            className={` w-full border ${
+              errors?.organization ? "border-red-500" : "border-gray-300"
             } rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
             {...register("organization", {
               required: "Organization name is required",
@@ -396,52 +314,70 @@ const FormInfoBox = () => {
               },
             })}
           />
-          {errors.organization && (
-            <p
-              style={{
-                color: "#ff6b6b",
-                fontSize: "0.875rem",
-                fontWeight: "500",
-                marginTop: "0.25rem",
-                marginBottom: "0.5rem",
-              }}
-            >
-              {errors.organization.message}
-            </p>
-          )}
 
-          <SelectInput
-            label="Recruiter Type"
-            options={recruiterTypes}
-            className={`w-full border ${
-              errors.recruiter_type_id ? "border-red-500" : "border-gray-300"
-            } rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
-            {...register("recruiter_type_id", {
-              required: "Please select a recruiter type",
-            })}
-          />
+         
           {/* {errors?.recruiter_type_id && (
             <p style={{ color: '#ff6b6b', fontSize: '0.875rem', fontWeight: '500', marginTop: '0.25rem', marginBottom: '0.5rem' }}>{errors.recruiter_type_id.message}</p>
           )} */}
         </div>
 
-        <LocationSelector
+        <div className="form-group col-lg-12 col-md-12">
+           <SelectInput
+            label="Recruiter Type"
+            options={recruiterTypes}
+            className={`w-full border ${"border-red-500"} rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            {...register("recruiter_type_id", {
+              required: "Please select a recruiter type",
+            })}
+          />
+        </div>
+
+        {/* Title Autocomplete - passes setValue to update form */}
+        {/* <TitleAutocomplete
           register={register}
           setValue={setValue}
-          defaultLocation={watch("location_name")}
+          defaultValue={watch("designation")}
+        /> */}
+
+        <AutocompleteInput
+          label="Designation"
+          name="designation"
+          defaultValue={userInfo.designation}
+          apiUrl={(term) =>
+            `https://api.sentryspot.co.uk/api/jobseeker/job-title?job_title_keyword=${encodeURIComponent(
+              term
+            )}`
+          }
+          dataExtractor={(res) => res.data?.data || []}
+          onSelectFormat={(item) => item.name}
+          register={register}
+          setValue={setValue}
         />
 
-         {/* <SearchSelect
+       
+
+        
+
+       
+
+        <AutocompleteInput
           label="Location"
-          placeholder="Search locations..."
-          apiUrl="https://api.sentryspot.co.uk/api/jobseeker/locations"
-          queryParam="locations"
           name="location_name"
+          defaultValue={userInfo.location_name}
+          apiUrl={(term) =>
+            `https://api.sentryspot.co.uk/api/jobseeker/locations?locations=${encodeURIComponent(
+              term
+            )}`
+          }
+          dataExtractor={(res) => res.data?.data?.location_names || []}
+          onSelectFormat={(item) =>
+            typeof item === "string" ? item : item.name
+          }
           register={register}
           setValue={setValue}
-          className="mb-4"
-          // error={errors?.jobTitle}
-        /> */}
+        />
+
+       
       </div>
 
       <div className="form-group col-lg-12 ">

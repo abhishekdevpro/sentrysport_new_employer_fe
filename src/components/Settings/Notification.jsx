@@ -66,7 +66,7 @@ export default function Notification() {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        "https://api.sentryspot.co.uk/api/jobseeker/notification-permission",
+        "https://api.sentryspot.co.uk/api/employeer/notification-permission",
         data,
         {
           headers: { Authorization: token },

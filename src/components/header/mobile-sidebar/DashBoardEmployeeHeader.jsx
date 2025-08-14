@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import { Button } from "../ui/button";
 import { IoLogOutOutline } from "react-icons/io5";
 import axios from "axios";
-import { Bell, Building, User } from "lucide-react";
+import { Bell, Building, Folder, User } from "lucide-react";
 import { logout } from "@/store/slices/authSlice";
 import { Button } from "@/components/ui/button";
 
@@ -96,8 +96,8 @@ const DashboardEmployeeHeader = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link to="" className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm xl:text-base py-2 px-1">
-                      Find Talent
+                    <Link to="/showcase/org" className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm xl:text-base py-2 px-1">
+                      view
                     </Link>
                   </li>
                   <li>
@@ -160,31 +160,28 @@ const DashboardEmployeeHeader = () => {
 
               {/* Desktop User Dropdown */}
               <div id="user-dropdown-desktop" className="hidden md:block relative me-4">
-                <button
-                  className="flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg focus:outline-none transition duration-200"
+                <Button
+                variant="default"
+                  // className="flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg focus:outline-none transition duration-200"
                   onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
                 >
                   <User size={20} className="mr-2" />
                   {userInfo?.company_name || userInfo?.first_name || "User"}
-                </button>
+                </Button>
 
                 {isUserDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-xl shadow-lg z-50 text-left">
                     <div className="px-4 pt-4 pb-2 border-b border-gray-100">
                       <div className="text-sm text-gray-600">
                         Current Plan: <span className="bg-blue-100 text-blue-600 text-xs font-semibold px-2 py-0.5 rounded">
-                          Business
+                          Free
                         </span>
                       </div>
                     </div>
                     <ul className="py-2 text-base text-gray-700">
                       <li>
                         <Link to="/employers-dashboard/dashboard" className="flex items-center px-4 py-2 hover:bg-gray-100">
-                          <span className="mr-2">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6m-6 0H7m6 0v6m0 0H7m6 0h6" />
-                            </svg>
-                          </span>
+                         <User size={20} className="mr-2" />
                           Dashboard
                         </Link>
                       </li>
@@ -196,24 +193,22 @@ const DashboardEmployeeHeader = () => {
                       </li>
                       <li>
                         <Link to="/employers-dashboard/post-jobs" className="flex items-center px-4 py-2 hover:bg-gray-100">
-                          <span className="mr-2">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                            </svg>
-                          </span>
+                          <Folder size={20} className="mr-2" />
                           Post a Job
                         </Link>
                       </li>
                       <li>
-                        <button
-                          className="flex items-center w-full px-4 py-2 hover:bg-gray-100 text-left"
+                        <Button
+                        varinat="destructive"
+                          // className="flex items-center w-full px-4 py-2 hover:bg-gray-100 text-left"
+                          className="w-full p-2"
                           onClick={logoutHandler}
                         >
                           <span className="mr-2">
                             <IoLogOutOutline size={20} />
                           </span>
                           Logout
-                        </button>
+                        </Button>
                       </li>
                     </ul>
                   </div>

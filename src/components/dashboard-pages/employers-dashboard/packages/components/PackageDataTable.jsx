@@ -226,13 +226,13 @@ import React, { useState } from "react";
 
 function BuyCreditsComponent() {
   return (
-    <section className="bg-white min-h-screen w-full py-8 px-4 sm:px-6 lg:px-8">
+    <section className="app-light-bg min-h-screen w-full py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8 lg:mb-12">
-          <h2 className="mb-4 text-3xl sm:text-4xl font-extrabold text-gray-900">
+          <h2 className="app-text-h1 ">
             Designed for business teams like yours
           </h2>
-          <p className="mb-5 text-gray-500 sm:text-xl max-w-3xl mx-auto">
+          <p className="app-text-h2 mb-5 mx-auto">
             Here we focus on markets where technology, innovation, and capital can unlock long-term value and drive economic growth.
           </p>
         </div>
@@ -343,7 +343,7 @@ function PackageDataTable() {
         <BuyCreditsComponent />
       ) : (
         <div className="max-w-8xl mx-auto md:px-4 lg:px-8 py-8">
-          <main className="bg-white rounded-lg shadow-lg p-6 md:p-8 mx-auto max-w-3xl">
+          <main className="app-light-bg rounded-lg shadow-lg p-6 md:p-8 mx-auto max-w-3xl">
             <h1 className="text-2xl md:text-3xl font-bold mb-4 text-center text-gray-900">
               Looks like you don't have any credits
             </h1>

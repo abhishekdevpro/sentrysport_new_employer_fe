@@ -6,10 +6,12 @@ import BreadCrumb from "../../BreadCrumb";
 import CopyrightFooter from "../../CopyrightFooter";
 import JobListingsTable from "./components/JobListingsTable";
 import MenuToggler from "../../MenuToggler";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const index = () => {
   return (
-    <div className="page-wrapper dashboard">
+    <div className="page-wrapper dashboard app-gradient-bg">
       <span className="header-span"></span>
       {/* <!-- Header Span for hight --> */}
 
@@ -26,7 +28,7 @@ const index = () => {
       {/* <!-- End User Sidebar Menu --> */}
 
       {/* <!-- Dashboard --> */}
-      <section className="user-dashboard bg-blue-50 ">
+      <section className="user-dashboard ">
         <div className="dashboard-outer">
           <BreadCrumb title="Manage jobs!" />
           {/* breadCrumb */}
@@ -37,7 +39,13 @@ const index = () => {
           <div className="row">
             <div className="col-lg-12">
               {/* <!-- Ls widget --> */}
-              <div className="ls-widget">
+              <div className="ls-widget app-light-bg">
+                <div className="widget-title ">
+                  <h4 className="app-text-h2 !text-blue-900">Job Listings</h4>
+                  <Link to={"/employers-dashboard/post-jobs"}>
+                    <Button className="bg-blue-900 text-white">Post Job</Button>
+                  </Link>
+                </div>
                 <JobListingsTable />
               </div>
             </div>

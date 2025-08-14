@@ -87,7 +87,7 @@ const SelectInput = React.forwardRef(function SelectInput({
       
       <div className="relative">
         <select
-          className={`w-full appearance-none text-blue-900 border border-blue-300 rounded-none px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${error ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : ''} ${className}`}
+          className={`w-full py-4 appearance-none text-blue-900 border border-blue-300 rounded-xl px-3  pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${error ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : ''} ${className}`}
           ref={ref}
           {...props}
           id={id}

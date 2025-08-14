@@ -121,6 +121,7 @@ import Subscription from "./components/Settings/Subscribtion";
 import Gauth from "./components/auth/GAuth";
 import ApplicantDetails from "./pages/employers-dashboard/Single-applicant/ApplicantDetailsPage";
 import { fetchCategories, fetchExpectedExperienceYears, fetchExperienceYears, fetchFunctionalTypes, fetchIndustries, fetchJobTypes, fetchSalaryTypes } from "./store/slices/dataSlice";
+import SettingsPage from "./components/dashboard-pages/employers-dashboard/settings";
 
 function App() {
   useEffect(() => {
@@ -142,15 +143,15 @@ function App() {
     error
   } = useSelector((state) => state.data);
 
-  useEffect(() => {
-    dispatch(fetchExperienceYears());
-    dispatch(fetchExpectedExperienceYears());
-    dispatch(fetchCategories());
-    dispatch(fetchFunctionalTypes());
-    dispatch(fetchSalaryTypes());
-    dispatch(fetchIndustries());
-    dispatch(fetchJobTypes());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchExperienceYears());
+  //   dispatch(fetchExpectedExperienceYears());
+  //   dispatch(fetchCategories());
+  //   dispatch(fetchFunctionalTypes());
+  //   dispatch(fetchSalaryTypes());
+  //   dispatch(fetchIndustries());
+  //   dispatch(fetchJobTypes());
+  // }, [dispatch]);
 
   return (
     <>
@@ -312,6 +313,7 @@ function App() {
                     element={<CompanyProfileEmploeeDBPage />}
                   />
                   <Route path="post-jobs" element={<PostJobsEmploeeDBPage />} />
+                  <Route path="post-jobs/:id" element={<PostJobsEmploeeDBPage />} />
                   <Route
                     path="manage-jobs"
                     element={<ManageJobsEmploeeDBPage />}
@@ -328,6 +330,7 @@ function App() {
                   />
                   <Route path="packages" element={<PackageEmploeeDBPage />} />
                   <Route path="messages" element={<MessageEmploeeDBPage />} />
+                  <Route path="settings" element={<SettingsPage />} />
                   <Route
                     path="resume-alerts"
                     element={<ResumeAlertsEmploeeDBPage />}

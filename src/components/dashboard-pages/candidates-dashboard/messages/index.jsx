@@ -12,6 +12,7 @@ import ChatBox from "./components";
 import DashboardCandidatesHeader from "../../../header/DashboardCandidatesHeader";
 import MenuToggler from "../../MenuToggler";
 import { useSelector } from "react-redux";
+import DashboardEmployeeHeader from "@/components/header/mobile-sidebar/DashBoardEmployeeHeader";
 
 const Index = () => {
   const { chatSidebar } = useSelector((state) => state.toggle);
@@ -24,7 +25,7 @@ const Index = () => {
       <LoginPopup />
       {/* End Login Popup Modal */}
 
-      <DashboardCandidatesHeader />
+      <DashboardEmployeeHeader />
       {/* End Header */}
 
       <MobileMenu />

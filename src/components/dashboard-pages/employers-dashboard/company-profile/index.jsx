@@ -49,7 +49,7 @@ const index = () => {
                     <h4>Company Profileeee</h4>
                   </div> */}
 
-              <div className="widget-content ">
+              <div className="widget-content  ">
                 <SocialNetworkBox />
               </div>
               {/* </div> */}

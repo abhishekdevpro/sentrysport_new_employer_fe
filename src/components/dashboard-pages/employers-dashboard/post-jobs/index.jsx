@@ -8,8 +8,12 @@ import PostJobSteps from "./components/PostJobSteps";
 import PostBoxForm from "./components/PostBoxForm";
 import MenuToggler from "../../MenuToggler";
 import DashboardEmployeeHeader from "@/components/header/mobile-sidebar/DashBoardEmployeeHeader";
+import { useParams } from "react-router-dom";
+import CreateJob from "./components/JobForm/CreateJob";
+import EditJob from "./components/JobForm/EditJob";
 
 const index = () => {
+  const {id} = useParams()
   return (
     
     <div className="page-wrapper dashboard app-gradient-bg">
@@ -36,7 +40,7 @@ const index = () => {
       {/* <!-- Dashboard --> */}
       <section className="user-dashboard ">
         <div className="dashboard-outer">
-          <BreadCrumb title="Post a New Job!" />
+          <BreadCrumb  title={id ? "Edit Your Job!"  : "Post a New Job!"} />
           {/* breadCrumb */}
 
           <MenuToggler />
@@ -45,16 +49,17 @@ const index = () => {
           <div className="row">
             <div className="col-lg-12">
               {/* <!-- Ls widget --> */}
-              <div className="ls-widget">
+              <div className="ls-widget app-light-bg">
                 <div className="tabs-box">
                   <div className="widget-title">
-                    <h4>Post Job</h4>
+                    <h4 className="app-text-h2 !text-blue-900">{id? "Edit Job" : "Post Job"}</h4>
                   </div>
 
-                  <div className="widget-content">
+                  <div className="widget-content ">
                     {/* <PostJobSteps /> */}
                     {/* End job steps form */}
-                    <PostBoxForm />
+                    {/* <PostBoxForm /> */}
+                    {id ? <EditJob /> : <CreateJob />}
                     {/* End post box form */}
                   </div>
                 </div>
