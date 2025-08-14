@@ -153,52 +153,34 @@ const SocialNetworkBox = () => {
   // Form section component
   const FormSection = ({ children, className = "" }) => <div className={`space-y-6 mb-8 ${className}`}>{children}</div>
 
+   const tabs = [
+    { id: "basic", label: "Basic Information" },
+    { id: "about", label: "About Company" },
+    { id: "images", label: "Inside Company Images" },
+    { id: "team", label: "Team Members" },
+  ];
+
   return (
     <FormProvider {...methods}>
       <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-        {/* Tabs */}
-        <div className="flex space-x-4 mb-6 border-b pb-2">
+       
+        <div className="flex space-x-2 mb-4 overflow-x-auto scrollbar-hide">
+        {tabs.map((tab) => (
           <button
-            onClick={() => setActiveTab("basic")}
-            className={`py-2 px-4 rounded-t-lg ${
-              activeTab === "basic"
-                ? "bg-blue-600 text-white"
-                : "bg-gray-200 text-gray-700"
-            }`}
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`whitespace-nowrap py-2 px-4 rounded-t-lg transition-colors duration-200 
+              ${
+                activeTab === tab.id
+                  ? "bg-blue-600 text-white shadow"
+                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              }`}
           >
-            Basic Information
+            {tab.label}
           </button>
-          <button
-            onClick={() => setActiveTab("about")}
-            className={`py-2 px-4 rounded-t-lg ${
-              activeTab === "about"
-                ? "bg-blue-600 text-white"
-                : "bg-gray-200 text-gray-700"
-            }`}
-          >
-            About Company
-          </button>
-          <button
-            onClick={() => setActiveTab("images")}
-            className={`py-2 px-4 rounded-t-lg ${
-              activeTab === "images"
-                ? "bg-blue-600 text-white"
-                : "bg-gray-200 text-gray-700"
-            }`}
-          >
-            Inside Company Images
-          </button>
-          <button
-            onClick={() => setActiveTab("team")}
-            className={`py-2 px-4 rounded-t-lg ${
-              activeTab === "team"
-                ? "bg-blue-600 text-white"
-                : "bg-gray-200 text-gray-700"
-            }`}
-          >
-            Team Members
-          </button>
-        </div>
+        ))}
+      </div>
+        {/* <NavigationTabs/> */}
 
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -207,25 +189,25 @@ const SocialNetworkBox = () => {
             <>
               {/* Basic Info */}
               <FormSection>
-                <SectionTitle>Basic Information</SectionTitle>
+                <h2 className="app-text-h2 ">Basic Information</h2>
                 <BasicInformation />
               </FormSection>
 
               {/* What Makes Us Unique */}
               <FormSection>
-                <SectionTitle>What Makes Us Unique</SectionTitle>
+                <h2 className="app-text-h2 ">What Makes Us Unique</h2>
                 <WhatMakesUsUnique />
               </FormSection>
 
               {/* Join Us */}
               <FormSection>
-                <SectionTitle>Join Us</SectionTitle>
+                <h2 className="app-text-h2 ">Join Us</h2>
                 <JoinUsSection companyData={companyData} />
               </FormSection>
 
               {/* Social Links */}
               <FormSection>
-                <SectionTitle>Social Media & Website</SectionTitle>
+                <h2 className="app-text-h2 ">Social Media & Website</h2>
                 <SocialMediaLinks />
               </FormSection>
               <div className="mt-8 flex justify-end">
@@ -241,7 +223,7 @@ const SocialNetworkBox = () => {
           {/* ABOUT COMPANY TAB */}
           {activeTab === "about" && (
             <FormSection>
-              <SectionTitle>About Company</SectionTitle>
+              <h2 className="app-text-h2 ">About Company</h2>
               <AboutCompany token={token} BASE_IMAGE_URL={BASE_IMAGE_URL} companyData={companyData} />
              
             </FormSection>
@@ -250,7 +232,7 @@ const SocialNetworkBox = () => {
           {/* INSIDE COMPANY IMAGES TAB */}
           {activeTab === "images" && (
             <FormSection>
-              <SectionTitle>Inside Company Images</SectionTitle>
+              <h2 className="app-text-h2 ">Inside Company Images</h2>
               <InsideCompanyImages token={token} BASE_IMAGE_URL={BASE_IMAGE_URL} companyData={companyData} />
               
             </FormSection>
@@ -259,7 +241,7 @@ const SocialNetworkBox = () => {
           {/* TEAM MEMBERS TAB */}
           {activeTab === "team" && (
             <FormSection>
-              <SectionTitle>Team Member Manager</SectionTitle>
+              <h2 className="app-text-h2 ">Team Member Manager</h2>
               <TeamMemberManager />
               
             </FormSection>

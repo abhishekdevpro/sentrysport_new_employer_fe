@@ -255,7 +255,7 @@ const InsideCompanyImages = ({ token, BASE_IMAGE_URL, companyData }) => {
     
     return (
       <div className="mb-8">
-        <h5 className="text-lg font-medium text-gray-900 mb-4">{title}</h5>
+        <h5 className="app-text-label mb-4">{title}</h5>
         
         {/* Display existing images */}
         {existingImages.length > 0 && (

@@ -7,18 +7,24 @@ import CopyrightFooter from "../../CopyrightFooter";
 import PostJobSteps from "./components/PostJobSteps";
 import PostBoxForm from "./components/PostBoxForm";
 import MenuToggler from "../../MenuToggler";
+import DashboardEmployeeHeader from "@/components/header/mobile-sidebar/DashBoardEmployeeHeader";
 
 const index = () => {
   return (
     
-    <div className="page-wrapper dashboard">
+    <div className="page-wrapper dashboard app-gradient-bg">
       <span className="header-span"></span>
       {/* <!-- Header Span for hight --> */}
 
       <LoginPopup />
       {/* End Login Popup Modal */}
 
-      <DashboardHeader />
+      <div className="hidden md:block">
+        <DashboardEmployeeHeader />
+      </div>
+      <div className="block md:hidden">
+        <MobileMenu />
+      </div>
       {/* End Header */}
 
       <MobileMenu />
@@ -28,7 +34,7 @@ const index = () => {
       {/* <!-- End User Sidebar Menu --> */}
 
       {/* <!-- Dashboard --> */}
-      <section className="user-dashboard bg-blue-50 ">
+      <section className="user-dashboard ">
         <div className="dashboard-outer">
           <BreadCrumb title="Post a New Job!" />
           {/* breadCrumb */}

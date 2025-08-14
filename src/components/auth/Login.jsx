@@ -341,7 +341,7 @@ const Login = ({ setIsLogin }) => {
   return (
     <Card className="w-[350px] sm:w-[400px] p-2 m-auto shadow-lg">
       <CardHeader>
-        <CardTitle className="text-3xl text-left font-ubuntu">
+        <CardTitle className="app-text-h1 text-center">
           Get started for Free
         </CardTitle>
       </CardHeader>
@@ -401,8 +401,8 @@ const Login = ({ setIsLogin }) => {
           </div>
           <Button
             type="submit"
-            size="sm"
-            className="px-3 py-4 w-full duration-300 bg-[#2d1f89] hover:bg-blue-800"
+            // size="sm"
+            className="w-full"
             onClick={handleManualSubmit}
             disabled={!agreed || submitting}
           >

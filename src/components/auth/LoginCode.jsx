@@ -146,8 +146,8 @@ const LoginCode = () => {
 };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <div className="min-h-screen app-gradient-bg flex items-center justify-center  px-4">
+      <div className="app-light-bg p-8 rounded-lg shadow-md w-full max-w-md">
         {/* Back Button */}
         <Link
           to="/"
@@ -166,10 +166,10 @@ const LoginCode = () => {
         </div>
 
         {/* Title */}
-        <h2 className="text-2xl font-semibold text-center mb-2">
+        <h2 className="app-text-h2 text-center mb-2">
           Sign in with login code
         </h2>
-        <p className="text-gray-600 text-center mb-6">
+        <p className="app-text-p text-center mb-6">
           We have sent your one-time passcode to <br />
           <strong className="text-blue-700">{email}</strong>. This passcode will
           expire after 5 minutes.
@@ -220,9 +220,9 @@ const LoginCode = () => {
             Resend verification code
           </button>
           <p>
-            <Link to="/login" className="text-blue-600 font-semibold hover:text-blue-700 text-sm">
+            {/* <Link to="/login" className="text-blue-600 font-semibold hover:text-blue-700 text-sm">
               Don't have access to this email?
-            </Link>
+            </Link> */}
           </p>
         </div>
       </div>

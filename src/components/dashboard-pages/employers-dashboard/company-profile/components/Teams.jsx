@@ -350,3 +350,205 @@ const TeamMemberManager = () => {
 };
 
 export default TeamMemberManager;
+
+
+// import React, { useState, useEffect, useCallback } from "react";
+// import { Plus, X } from "lucide-react";
+// import { useForm, FormProvider } from "react-hook-form";
+// ;
+// import { Constant } from "@/utils/constant/constant";
+// import TeamMemberForm from "./Teams/TeamMemeberForm";
+// import TeamMemberCard from "./Teams/TeamMembersCard";
+
+// const baseUrl = "https://api.sentryspot.co.uk/api/employeer";
+// const baseImageUrl = "https://api.sentryspot.co.uk";
+
+// const TeamMemberManager = () => {
+//   const [teamMembers, setTeamMembers] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [actionLoading, setActionLoading] = useState({});
+//   const [error, setError] = useState(null);
+//   const [editingId, setEditingId] = useState(null);
+//   const [isAdding, setIsAdding] = useState(false);
+
+//   const token = localStorage.getItem(Constant.USER_TOKEN);
+
+//   // Fetch members
+//   const fetchTeamMembers = useCallback(async () => {
+//     try {
+//       setLoading(true);
+//       const res = await fetch(`${baseUrl}/company-teams`, {
+//         headers: { Authorization: `${token}` },
+//       });
+//       if (!res.ok) {
+//         setTeamMembers([]);
+//         return;
+//       }
+//       const result = await res.json();
+//       if (result.status === "success" && Array.isArray(result.data)) {
+//         setTeamMembers(result.data);
+//       } else {
+//         setTeamMembers([]);
+//       }
+//     } catch {
+//       setTeamMembers([]);
+//     } finally {
+//       setLoading(false);
+//     }
+//   }, [token]);
+
+//   useEffect(() => {
+//     fetchTeamMembers();
+//   }, [fetchTeamMembers]);
+
+//   // Save new member
+//   const handleSaveNew = async (data) => {
+//     try {
+//       setActionLoading((prev) => ({ ...prev, new: true }));
+//       const formData = new FormData();
+//       formData.append("name", data.name);
+//       formData.append("description", data.description);
+//       formData.append("media_upload", data.photo[0]);
+
+//       const res = await fetch(`${baseUrl}/company-teams`, {
+//         method: "POST",
+//         headers: { Authorization: `${token}` },
+//         body: formData,
+//       });
+
+//       if (!res.ok) throw new Error("Failed to add team member");
+//       const result = await res.json();
+//       setTeamMembers((prev) => [...prev, result.data]);
+//       setIsAdding(false);
+//     } catch (err) {
+//       setError(err.message);
+//     } finally {
+//       setActionLoading((prev) => ({ ...prev, new: false }));
+//     }
+//   };
+
+//   // Save edited member
+//   const handleSaveEdit = async (data, memberId) => {
+//     try {
+//       setActionLoading((prev) => ({ ...prev, [memberId]: true }));
+//       const formData = new FormData();
+//       formData.append("name", data.name);
+//       formData.append("description", data.description);
+//       if (data.photo?.length) {
+//         formData.append("media_upload", data.photo[0]);
+//       }
+
+//       const res = await fetch(`${baseUrl}/company-teams/${memberId}`, {
+//         method: "PATCH",
+//         headers: { Authorization: `${token}` },
+//         body: formData,
+//       });
+
+//       if (!res.ok) throw new Error("Failed to update member");
+//       const result = await res.json();
+//       setTeamMembers((prev) =>
+//         prev.map((m) => (m.id === memberId ? result.data : m))
+//       );
+//       setEditingId(null);
+//     } catch (err) {
+//       setError(err.message);
+//     } finally {
+//       setActionLoading((prev) => ({ ...prev, [memberId]: false }));
+//     }
+//   };
+
+//   // Delete member
+//   const handleDelete = async (id) => {
+//     try {
+//       setActionLoading((prev) => ({ ...prev, [id]: true }));
+//       const res = await fetch(`${baseUrl}/company-teams/${id}`, {
+//         method: "DELETE",
+//         headers: { Authorization: `${token}` },
+//       });
+//       if (!res.ok) throw new Error("Failed to delete member");
+//       setTeamMembers((prev) => prev.filter((m) => m.id !== id));
+//     } catch (err) {
+//       setError(err.message);
+//     } finally {
+//       setActionLoading((prev) => ({ ...prev, [id]: false }));
+//     }
+//   };
+
+//   if (loading) return <p className="text-center p-4">Loading...</p>;
+
+//   return (
+//     <div className="md:max-w-5xl md:mx-auto md:p-4">
+//       <h1 className="text-2xl font-bold mb-4">Team Members</h1>
+
+//       {error && (
+//         <div className="mb-4 bg-red-100 border border-red-400 text-red-700 p-3 rounded relative">
+//           <span>{error}</span>
+//           <button
+//             onClick={() => {
+//               setError(null);
+//               fetchTeamMembers();
+//             }}
+//             className="absolute top-0 bottom-0 right-0 px-4"
+//           >
+//             <X className="w-4 h-4" />
+//           </button>
+//         </div>
+//       )}
+
+//       {/* Member List */}
+//       {teamMembers.length > 0 ? (
+//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+//           {teamMembers.map((member) =>
+//             editingId === member.id ? (
+//               <TeamMemberForm
+//                 key={member.id}
+//                 defaultValues={{
+//                   name: member.name,
+//                   description: member.description,
+//                 }}
+//                 onCancel={() => setEditingId(null)}
+//                 onSubmit={(data) => handleSaveEdit(data, member.id)}
+//                 loading={actionLoading[member.id]}
+//               />
+//             ) : (
+//               <TeamMemberCard
+//                 key={member.id}
+//                 member={member}
+//                 baseImageUrl={baseImageUrl}
+//                 onEdit={() => setEditingId(member.id)}
+//                 onDelete={() => handleDelete(member.id)}
+//                 deleting={actionLoading[member.id]}
+//               />
+//             )
+//           )}
+//         </div>
+//       ) : (
+//         !isAdding && (
+//           <p className="text-center bg-gray-50 p-4 rounded">
+//             No team members yet. Add your first one!
+//           </p>
+//         )
+//       )}
+
+//       {/* Add New Member */}
+//       {isAdding ? (
+//         <div className="mt-4">
+//           <TeamMemberForm
+//             onSubmit={handleSaveNew}
+//             onCancel={() => setIsAdding(false)}
+//             loading={actionLoading.new}
+//           />
+//         </div>
+//       ) : (
+//         <button
+//           onClick={() => setIsAdding(true)}
+//           className="mt-4 bg-blue-500 text-white px-4 py-2 rounded flex items-center"
+//         >
+//           <Plus className="w-5 h-5 mr-2" /> Add New Team Member
+//         </button>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default TeamMemberManager;

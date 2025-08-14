@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from '../ui/button';
 
 const PeopleSection = () => {
   const cards = [
@@ -20,18 +21,24 @@ const PeopleSection = () => {
   ];
 
   return (
-    <section className="bg-white py-16 sm:py-24">
+    <section className="">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Cards Grid */}
+       
+          <div className='text-center'>
+            <h2 className="app-text-h1 text-center !text-blue-900 mb-4">
+            Discover the power of our community
+          </h2>
+          </div>
+          
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {cards.map((card, index) => (
             <div 
               key={index}
-              className="bg-white rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl"
+              className="app-light-bg rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl"
               data-aos="fade"
             >
               {/* Image Container */}
-              <div className="aspect-w-16 aspect-h-9 w-full">
+              <div className="aspect-w-16 aspect-h-9 w-full p-2">
                 <img 
                   src={card.image} 
                   alt={card.title}
@@ -41,10 +48,10 @@ const PeopleSection = () => {
               
               {/* Content */}
               <div className="p-6">
-                <h2 className="text-blue-900 text-xl font-semibold mb-4 min-h-[60px]">
+                <h2 className="app-text-h2  mb-2">
                   {card.title}
                 </h2>
-                <p className="text-gray-600 text-base">
+                <p className="app-text-p  ">
                   {card.description}
                 </p>
               </div>
@@ -54,15 +61,12 @@ const PeopleSection = () => {
 
         {/* Button Section */}
         <div className="mt-12 text-center">
-          <button 
+          <Button 
             type="button" 
-            className="bg-blue-900 text-white py-3 px-8 rounded-lg font-medium
-                     transition-all duration-300 hover:bg-blue-800 
-                     transform hover:scale-105 focus:outline-none focus:ring-2 
-                     focus:ring-blue-900 focus:ring-offset-2"
+            size="lg"
           >
             Create Account
-          </button>
+          </Button>
         </div>
       </div>
     </section>

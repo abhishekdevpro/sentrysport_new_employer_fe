@@ -1,6 +1,7 @@
 "use client"
 import { useFormContext } from "react-hook-form"
 import { Switch } from "@/components/ui/switch"
+import Input from "@/UI-Components/Input"
 
 const WhatMakesUsUnique = () => {
   const { register, watch, setValue, formState: { errors } } = useFormContext()
@@ -66,7 +67,7 @@ const WhatMakesUsUnique = () => {
             </div>
             {isEnabled && (
               <div>
-                <input
+                <Input
                   type="text"
                   {...register(feature.valueKey, {
                     required: `${feature.title} description is required`,
