@@ -271,7 +271,7 @@ const TextEditor = ({
           <>
             <ReactQuill
               ref={quillRef}
-              theme="snow"
+              // theme="snow"
               value={field.value || ""}
               onChange={field.onChange}
               placeholder={placeholder}

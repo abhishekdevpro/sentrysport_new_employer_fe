@@ -19,8 +19,8 @@ const CommentSection = ({
 
   const addComment = async () => {
     if (!token) {
-    //   setLoginModal(true);
-      toast.error("You need to login first")
+      setLoginModal(true);
+      // toast.error("You need to login first")
       return;
     }
 
@@ -100,22 +100,22 @@ const CommentSection = ({
 
   return (
     <div className="mt-6">
-      <div className="bg-gray-50 rounded-lg p-2 mb-4">
+      <div className="bg-gray-50 rounded-lg p-4 mb-4">
         <textarea
-          className="w-full p-3 bg-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 h-24 resize-none"
+          className="w-full p-3 bg-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
           value={commentContent}
           onChange={(e) => setCommentContent(e.target.value)}
           placeholder="Join the conversation..."
         />
         <div className="flex justify-between items-center mt-4">
           <div className="flex items-center">
-            <input
+            {/* <input
               type="checkbox"
               id={`comment-anonymous-${post.id}`}
               checked={isCommentAnonymous}
               onChange={(e) => setIsCommentAnonymous(e.target.checked)}
               className="hidden"
-            />
+            /> */}
             {/* <label
               htmlFor={`comment-anonymous-${post.id}`}
               className="flex items-center cursor-pointer text-gray-700"
@@ -153,7 +153,7 @@ const CommentSection = ({
               key={comment.id}
               className="bg-white p-3 rounded-lg flex items-start"
             >
-             <img
+              <img
                 src={
                   comment?.user_photo
                     ? `https://api.sentryspot.co.uk${comment.user_photo}`
@@ -193,12 +193,13 @@ const CommentSection = ({
                     <p className="text-gray-700 text-sm">{comment.content}</p>
                   </div>
                   <div className="relative">
-                    <button
+                    {comment.is_edit && <button
                       onClick={() => toggleDropdown(comment.id)}
                       className="p-2 text-gray-600 hover:text-gray-800 transition-colors"
                     >
                       <FaEllipsisV />
                     </button>
+                    }
 
                     {openDropdownId === comment.id && (
                       <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-lg z-10">

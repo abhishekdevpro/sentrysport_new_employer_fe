@@ -17,8 +17,8 @@ const MobileMenu = () => {
   const userToken = localStorage.getItem(Constant.USER_TOKEN)
   return (
     // <!-- Main Header-->
-    <header className="main-header main-header-mobile z-20"  >
-      <div className="auto-container">
+    <header className="main-header main-header-mobile z-20 border-2 border-red-900 !app-light-bg"  >
+      <div className="auto-container !app-light-bg ">
         {/* <!-- Main box --> */}
         <div className="inner-box">
           <div className="nav-outer">
@@ -40,13 +40,14 @@ const MobileMenu = () => {
             <div className="login-box">
               {userToken ? (
                 <Button
-                  className="bg-gray-500 p-3 ml-2 duration-500 hover:bg-[#E60278]"
+                 variant="destructive"
+                  // className="bg-gray-500 p-3 ml-2 duration-500 hover:bg-[#E60278]"
                   title="logout"
                   onClick={() => {
                     dispatch(logout());
                   }}
                 >
-                  <IoLogOutOutline size={24} className="" />
+                  <IoLogOutOutline size={20} className="" />
                 </Button>
               ) : (
                 <button

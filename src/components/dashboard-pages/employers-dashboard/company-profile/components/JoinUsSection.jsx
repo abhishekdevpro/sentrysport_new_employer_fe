@@ -110,7 +110,7 @@ const JoinUsSection = ({ companyData }) => {
           name="join_us"
           label="Career Opportunities"
           placeholder="Describe career opportunities at your company..."
-          maxLength={100}
+          maxLength={500}
           minLength={50}
           rules={{ required: "This field is required" }}
         />

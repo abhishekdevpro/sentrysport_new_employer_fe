@@ -234,9 +234,9 @@ const ChatBoxContentField = () => {
   };
 
   return (
-    <div className="flex h-screen bg-blue-50">
+    <div className="flex h-screen ">
       {/* Contacts Sidebar */}
-      <div className="w-80 bg-white border-r border-blue-100 shadow-lg">
+      <div className="w-80 app-light-bg border-r border-blue-100 shadow-lg">
         <div className="search-box-one p-2">
           <SearchBox onSearch={(searchTerm) => {
             // Reset users to original list when search is cleared

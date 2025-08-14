@@ -162,7 +162,7 @@ const SocialNetworkBox = () => {
 
   return (
     <FormProvider {...methods}>
-      <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <div className="max-w-7xl mx-auto p-6 app-light-bg rounded-lg shadow-lg">
        
         <div className="flex space-x-2 mb-4 overflow-x-auto scrollbar-hide">
         {tabs.map((tab) => (
